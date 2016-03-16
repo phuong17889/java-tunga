@@ -18,9 +18,9 @@ public class Invoice {
     private float total;
     private String token;
     private boolean status;
-    private String createAt;
+    private String createdAt;
 
-    public Invoice(int id, String fullName, String address, String phone, float tax, float total, String token, boolean status, String createAt) {
+    public Invoice(int id, String fullName, String address, String phone, float tax, float total, String token, boolean status, String createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.address = address;
@@ -29,7 +29,7 @@ public class Invoice {
         this.total = total;
         this.token = token;
         this.status = status;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -97,11 +97,11 @@ public class Invoice {
     }
 
     public String getCreateAt() {
-        return createAt;
+        return createdAt;
     }
 
-    public void setCreateAt(String createAt) {
-        this.createAt = createAt;
+    public void setCreateAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
    
