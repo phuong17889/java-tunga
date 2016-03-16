@@ -6,19 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="dataProcess" uri="/WEB-INF/tlds/dataProcess" %>
-<jsp:useBean id="dataProcess" class="utility.DataProcess" scope="session" />
-<c:if test="${not empty param.username && not empty param.password}">
-    <c:choose>
-        <c:when test="${dataProcess:login(param.username, param.password)}">
-            <c:set var="login" value="1" scope="session"></c:set>
-            <c:redirect url="index.jsp"></c:redirect>
-        </c:when>
-        <c:otherwise>
-            <c:set var="error" value="Wrong username or password!" scope="session"></c:set>
-        </c:otherwise>
-    </c:choose>
-</c:if>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -152,7 +139,7 @@
         </script>
         <script>
             <c:if test="${not empty sessionScope.error}">
-                alert("${sessionScope.error}");
+            alert("<c:out value="${sessionScope.error}"/>");
                 <c:remove var="error" scope="session"/>
             </c:if>
         </script>

@@ -23,6 +23,10 @@ import org.ini4j.IniPreferences;
  * @author notte
  */
 public class DataProcess {
+    public static void main(String[] args) {
+        DataProcess dt = new DataProcess();
+        dt.getConnection();
+    }
 
     public Connection getConnection() {
         Connection conn = null;
@@ -52,7 +56,7 @@ public class DataProcess {
     public String appPath() {
         String reponsePath = "";
         try {
-            String path = this.getClass().getClassLoader().getResource("").getPath();
+            String path = DataProcess.class.getResource("").getPath();
             String fullPath = URLDecoder.decode(path, "UTF-8");
             String pathArr[] = fullPath.split("/WEB-INF/classes");
             fullPath = pathArr[0];
@@ -62,15 +66,10 @@ public class DataProcess {
         }
         return reponsePath;
     }
-    public DataProcess(){
-        //TODO set path o day
-    }
 
     public static boolean login(String u, String p) {
         DataProcess dt = new DataProcess();
         Preferences login = dt.readConfig("login");
-        System.out.println("" + login.get("username", null));
-        return false;
-//        return (u.equals(login.get("username", null)) && p.equals(login.get("password", null)));
+        return (u.equals(login.get("username", null)) && p.equals(login.get("password", null)));
     }
 }

@@ -1,7 +1,14 @@
+<%-- 
+    Document   : index
+    Created on : Mar 17, 2016, 1:59:27 AM
+    Author     : MyPC
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Gourmet Traditional Restaurant</title>
+        <title>Tunga Traditional Restaurant</title>
         <meta charset="utf-8">
         <link rel="icon" href="assets/images/favicon.ico">
         <link rel="shortcut icon" href="assets/images/favicon.ico">
