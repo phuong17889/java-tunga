@@ -62,4 +62,15 @@ public class DataProcess {
         }
         return reponsePath;
     }
+    public DataProcess(){
+        //TODO set path o day
+    }
+
+    public static boolean login(String u, String p) {
+        DataProcess dt = new DataProcess();
+        Preferences login = dt.readConfig("login");
+        System.out.println("" + login.get("username", null));
+        return false;
+//        return (u.equals(login.get("username", null)) && p.equals(login.get("password", null)));
+    }
 }
