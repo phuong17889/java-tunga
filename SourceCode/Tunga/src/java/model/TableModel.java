@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,8 +33,7 @@ public class TableModel extends Model {
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
-            System.out.println("error on table insert");
-            return false;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }
@@ -50,8 +51,7 @@ public class TableModel extends Model {
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
-            System.out.println("error on table update");
-            return false;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }
@@ -74,8 +74,7 @@ public class TableModel extends Model {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            System.out.println("error on table findall");
-            return null;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -98,8 +97,7 @@ public class TableModel extends Model {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            System.out.println("error on table findall condition");
-            return null;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -116,8 +114,7 @@ public class TableModel extends Model {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            System.out.println("error on table find id");
-            return t;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return t;
     }
@@ -134,8 +131,7 @@ public class TableModel extends Model {
             rs.close();
             st.close();
         } catch (SQLException ex) {
-            System.out.println("error on table find condition");
-            return t;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return t;
     }
@@ -149,8 +145,7 @@ public class TableModel extends Model {
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
-            System.out.println("error on table delete id");
-            return false;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }
@@ -163,8 +158,7 @@ public class TableModel extends Model {
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
-            System.out.println("error on table delete condition");
-            return false;
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }

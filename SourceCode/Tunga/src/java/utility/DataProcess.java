@@ -12,6 +12,8 @@ import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import org.ini4j.Ini;
 import org.ini4j.IniPreferences;
@@ -30,8 +32,7 @@ public class DataProcess {
             String url = "jdbc:sqlserver://" + database.get("dbhost", null) + ":" + database.get("dbport", null) + ";databaseName=" + database.get("dbname", null);
             conn = DriverManager.getConnection(url, database.get("dbuser", null), database.get("dbpass", null));
         } catch (ClassNotFoundException | SQLException ex) {
-            System.out.println("error on getConnection");
-            return conn;
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return conn;
     }
@@ -43,8 +44,7 @@ public class DataProcess {
             java.util.prefs.Preferences prefs = new IniPreferences(ini);
             pref = prefs.node(node);
         } catch (IOException ex) {
-            System.out.println("error on readConfig");
-            return pref;
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return pref;
     }
@@ -58,8 +58,7 @@ public class DataProcess {
             fullPath = pathArr[0];
             reponsePath = new File(fullPath).getPath() + File.separatorChar;
         } catch (UnsupportedEncodingException ex) {
-            System.out.println("error on appPath");
-            return reponsePath;
+            Logger.getLogger(DataProcess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return reponsePath;
     }
