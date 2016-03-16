@@ -5,65 +5,70 @@
  */
 package Entity;
 
+import java.awt.Image;
+import java.util.jar.Attributes.Name;
+import javax.persistence.Id;
+
 /**
  *
  * @author Hoangha.FPT
  */
 public class Food {
-    private int Id;
-    private int Menu_id;
-    private String Name;
-    private float Price;
-    private String Image;
+    private int id;
+    private int menuId;
+    private String name;
+    private float price;
+    private String image;
 
-    public Food(int Id, int Menu_id, String Name, float Price, String Image) {
-        this.Id = Id;
-        this.Menu_id = Menu_id;
-        this.Name = Name;
-        this.Price = Price;
-        this.Image = Image;
+    public Food(int id, int menuId, String name, float price, String image) {
+        this.id = id;
+        this.menuId = menuId;
+        this.name = name;
+        this.price = price;
+        this.image = image;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getMenu_id() {
-        return Menu_id;
+    public int getMenuId() {
+        return menuId;
     }
 
-    public void setMenu_id(int Menu_id) {
-        this.Menu_id = Menu_id;
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public float getPrice() {
-        return Price;
+        return price;
     }
 
-    public void setPrice(float Price) {
-        this.Price = Price;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
-    public void setImage(String Image) {
-        this.Image = Image;
+    public void setImage(String image) {
+        this.image = image;
     }
 
+  
     public Food() {
     }
     

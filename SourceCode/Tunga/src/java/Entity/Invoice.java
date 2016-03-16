@@ -10,27 +10,100 @@ package Entity;
  * @author Hoangha.FPT
  */
 public class Invoice {
-    private int Id;
-    private String Full_name;
-    private String Address;
-    private String Phone;
-    private float Tax;
-    private float Total;
-    private String Token;
-    private boolean Status;
-    private String Create_at;
+    private int id;
+    private String fullName;
+    private String address;
+    private String phone;
+    private float tax;
+    private float total;
+    private String token;
+    private boolean status;
+    private String createAt;
 
-    public Invoice(int Id, String Full_name, String Address, String Phone, float Tax, float Total, String Token, boolean Status, String Create_at) {
-        this.Id = Id;
-        this.Full_name = Full_name;
-        this.Address = Address;
-        this.Phone = Phone;
-        this.Tax = Tax;
-        this.Total = Total;
-        this.Token = Token;
-        this.Status = Status;
-        this.Create_at = Create_at;
+    public Invoice(int id, String fullName, String address, String phone, float tax, float total, String token, boolean status, String createAt) {
+        this.id = id;
+        this.fullName = fullName;
+        this.address = address;
+        this.phone = phone;
+        this.tax = tax;
+        this.total = total;
+        this.token = token;
+        this.status = status;
+        this.createAt = createAt;
     }
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public float getTax() {
+        return tax;
+    }
+
+    public void setTax(float tax) {
+        this.tax = tax;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(String createAt) {
+        this.createAt = createAt;
+    }
+
+   
     
 }

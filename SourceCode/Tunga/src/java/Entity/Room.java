@@ -10,39 +10,39 @@ package Entity;
  * @author Hoangha.FPT
  */
 public class Room {
-    private int Id;
-    private String Name;
-    private boolean Type;
+    private int id;
+    private String name;
+    private boolean type;
 
-    public Room(int Id, String Name, boolean Type) {
-        this.Id = Id;
-        this.Name = Name;
-        this.Type = Type;
+    public Room(int id, String name, boolean type) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isType() {
-        return Type;
+        return type;
     }
 
-    public void setType(boolean Type) {
-        this.Type = Type;
+    public void setType(boolean type) {
+        this.type = type;
     }
-    
-    
+
+   
 }

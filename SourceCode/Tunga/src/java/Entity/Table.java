@@ -10,59 +10,59 @@ package Entity;
  * @author Hoangha.FPT
  */
 public class Table {
-    private int Id;
-    private int Room_id;
-    private String Name;
-    private int Type;
-    private float Price;
+    private int id;
+    private int roomId;
+    private String name;
+    private int type;
+    private float price;
 
-    public Table(int Id, int Room_id, String Name, int Type, float Price) {
-        this.Id = Id;
-        this.Room_id = Room_id;
-        this.Name = Name;
-        this.Type = Type;
-        this.Price = Price;
+    public Table(int id, int roomId, String name, int type, float price) {
+        this.id = id;
+        this.roomId = roomId;
+        this.name = name;
+        this.type = type;
+        this.price = price;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getRoom_id() {
-        return Room_id;
+    public int getRoomId() {
+        return roomId;
     }
 
-    public void setRoom_id(int Room_id) {
-        this.Room_id = Room_id;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getType() {
-        return Type;
+        return type;
     }
 
-    public void setType(int Type) {
-        this.Type = Type;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public float getPrice() {
-        return Price;
+        return price;
     }
 
-    public void setPrice(float Price) {
-        this.Price = Price;
+    public void setPrice(float price) {
+        this.price = price;
     }
-    
-    
+
+   
 }

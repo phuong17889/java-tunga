@@ -10,29 +10,30 @@ package Entity;
  * @author Hoangha.FPT
  */
 public class Menu {
-    private int Id;
-    private String Name;
+    private int id;
+    private String name;
 
-    public Menu(int Id, String Name) {
-        this.Id = Id;
-        this.Name = Name;
+    public Menu(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
-    
+
+   
     
 }
