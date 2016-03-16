@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity;
+package entity;
 
 /**
  *
  * @author Hoangha.FPT
  */
 public class Room {
+
     private int id;
     private String name;
     private boolean type;
@@ -44,5 +45,4 @@ public class Room {
         this.type = type;
     }
 
-   
 }

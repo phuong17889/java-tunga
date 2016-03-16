@@ -27,9 +27,10 @@ public class DataProcess {
         try {
             Preferences database = this.readConfig("database");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://" + database.get("dbhost", null) + ":" + database.get("dbport", null) + ";databaseName=" + database.get("dbbname", null);
+            String url = "jdbc:sqlserver://" + database.get("dbhost", null) + ":" + database.get("dbport", null) + ";databaseName=" + database.get("dbname", null);
             conn = DriverManager.getConnection(url, database.get("dbuser", null), database.get("dbpass", null));
         } catch (ClassNotFoundException | SQLException ex) {
+            System.out.println("error on getConnection");
             return conn;
         }
         return conn;
@@ -42,6 +43,7 @@ public class DataProcess {
             java.util.prefs.Preferences prefs = new IniPreferences(ini);
             pref = prefs.node(node);
         } catch (IOException ex) {
+            System.out.println("error on readConfig");
             return pref;
         }
         return pref;
@@ -56,6 +58,7 @@ public class DataProcess {
             fullPath = pathArr[0];
             reponsePath = new File(fullPath).getPath() + File.separatorChar;
         } catch (UnsupportedEncodingException ex) {
+            System.out.println("error on appPath");
             return reponsePath;
         }
         return reponsePath;

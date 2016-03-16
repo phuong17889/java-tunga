@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity;
+package entity;
 
 /**
  *
  * @author Hoangha.FPT
  */
 public class Table {
+
     private int id;
     private int roomId;
     private String name;
@@ -18,6 +19,17 @@ public class Table {
 
     public Table(int id, int roomId, String name, int type, float price) {
         this.id = id;
+        this.roomId = roomId;
+        this.name = name;
+        this.type = type;
+        this.price = price;
+    }
+
+    public Table() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Table(int roomId, String name, int type, float price) {
         this.roomId = roomId;
         this.name = name;
         this.type = type;
@@ -64,5 +76,4 @@ public class Table {
         this.price = price;
     }
 
-   
 }
