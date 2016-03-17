@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="menumodel" uri="/WEB-INF/tlds/menuModel.tld" %>
 <%@include file="header.jsp" %>
 <div class="container">
     <div class="grid_12">
@@ -28,45 +30,21 @@
     </div>
     <div class="grid_12">
         <div class="car_wrap">
-            <h2>Best Choice</h2>
-            <a href="#" class="prev"></a><a href="#" class="next"></a>
-            <ul class="carousel1">
-                <li>
-                    <div><img src="assets/images/page1_img1.jpg" alt="">
-                        <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
-                        <span> Dorem ipsum dolor amet consectetur</span>
-                        <div class="price">45$</div>
-                    </div>
-                </li>
-                <li>
-                    <div><img src="assets/images/page1_img2.jpg" alt="">
-                        <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
-                        <span> Dorem ipsum dolor amet consectetur</span>
-                        <div class="price">45$</div>
-                    </div>
-                </li>
-                <li>
-                    <div><img src="assets/images/page1_img3.jpg" alt="">
-                        <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
-                        <span> Dorem ipsum dolor amet consectetur</span>
-                        <div class="price">45$</div>
-                    </div>
-                </li>
-                <li>
-                    <div><img src="assets/images/page1_img4.jpg" alt="">
-                        <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
-                        <span> Dorem ipsum dolor amet consectetur</span>
-                        <div class="price">45$</div>
-                    </div>
-                </li>
-                <li>
-                    <div><img src="assets/images/page1_img3.jpg" alt="">
-                        <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
-                        <span> Dorem ipsum dolor amet consectetur</span>
-                        <div class="price">45$</div>
-                    </div>
-                </li>
-            </ul>
+            <c:forEach var="menu" items="${menus}">
+                <h2>${menu.name}</h2>
+                <a href="#" class="prev"></a><a href="#" class="next"></a>
+                <ul class="carousel1">
+                    <c:forEach var="food" items="${menumodel:getFoods(menu.id)}">
+                        <li>
+                            <div><img src="${food.image}" alt="">
+                                <div class="col1 upp"> <a href="#">${food.name}</a></div>
+                                <span> Dorem ipsum dolor amet consectetur</span>
+                                <div class="price">${food.price}$</div>
+                            </div>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </c:forEach>
         </div>
     </div>
     <div class="clear"></div>
