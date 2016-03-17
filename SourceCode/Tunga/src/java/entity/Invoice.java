@@ -104,6 +104,18 @@ public class Invoice {
         this.createdAt = createdAt;
     }
 
+    public Invoice(int id, String fullName, String address, String phone, float tax, float total, boolean status, String createdAt) {
+        this.id = id;
+        this.fullName = fullName;
+        this.address = address;
+        this.phone = phone;
+        this.tax = tax;
+        this.total = total;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
+    
+
    
     
 }
