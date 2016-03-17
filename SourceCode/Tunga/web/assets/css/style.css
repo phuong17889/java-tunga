@@ -319,6 +319,7 @@ header h1 a img {
     box-shadow: 2px 2px 3px #ddd;
     padding: 4px;
     background: #fff;
+    min-height: 167.5px;
     border: 1px solid #e6e4e4;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
