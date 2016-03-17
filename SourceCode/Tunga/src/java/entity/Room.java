@@ -14,6 +14,8 @@ public class Room {
     private int id;
     private String name;
     private boolean type;
+    
+    
 
     public Room(int id, String name, boolean type) {
         this.id = id;
@@ -45,4 +47,5 @@ public class Room {
         this.type = type;
     }
 
+   
 }
