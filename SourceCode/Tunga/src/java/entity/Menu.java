@@ -5,11 +5,13 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Hoangha.FPT
  */
-public class Menu {
+public class Menu implements Serializable{
     private int id;
     private String name;
 
