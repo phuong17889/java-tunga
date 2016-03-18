@@ -11,13 +11,21 @@ import java.io.Serializable;
  *
  * @author Hoangha.FPT
  */
-public class Menu implements Serializable{
+public class Menu implements Serializable {
+
     private int id;
     private String name;
+    private int order;
 
-    public Menu(int id, String name) {
+    public Menu(int id, String name, int order) {
         this.id = id;
         this.name = name;
+        this.order = order;
+    }
+
+    public Menu(String name, int order) {
+        this.name = name;
+        this.order = order;
     }
 
     public int getId() {
@@ -36,6 +44,11 @@ public class Menu implements Serializable{
         this.name = name;
     }
 
-   
-    
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 }

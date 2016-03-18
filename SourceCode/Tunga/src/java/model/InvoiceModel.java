@@ -5,6 +5,7 @@
  */
 package model;
 
+import core.Model;
 import entity.Invoice;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

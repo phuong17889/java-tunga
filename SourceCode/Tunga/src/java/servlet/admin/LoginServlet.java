@@ -5,6 +5,7 @@
  */
 package servlet.admin;
 
+import core.AdminServlet;
 import utility.DataProcess;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author MyPC
  */
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends AdminServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,7 +35,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("views/site/login.jsp");
             rd.include(request, response);
         }
     }

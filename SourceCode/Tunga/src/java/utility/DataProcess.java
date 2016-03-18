@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import model.MenuModel;
 import org.ini4j.Ini;
 import org.ini4j.IniPreferences;
 
@@ -26,6 +27,8 @@ public class DataProcess {
     public static void main(String[] args) {
         DataProcess dt = new DataProcess();
         dt.getConnection();
+        MenuModel mm = new MenuModel();
+        System.out.println(""+mm.findAll().size());
     }
 
     public Connection getConnection() {

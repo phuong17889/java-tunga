@@ -5,6 +5,7 @@
  */
 package model;
 
+import core.Model;
 import entity.Food;
 import entity.Menu;
 import java.sql.PreparedStatement;
@@ -55,14 +56,15 @@ public class MenuModel extends Model {
 
     public List<Menu> findAll() {
         List<Menu> list = new ArrayList<Menu>();
-        String sql = "SELECT * FROM menu";
+        String sql = "SELECT * FROM menu ORDER BY `order`";
         try {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                Menu m = new Menu(id, name);
+                int order = rs.getInt("order");
+                Menu m = new Menu(id, name, order);
                 list.add(m);
             }
             rs.close();
@@ -75,14 +77,15 @@ public class MenuModel extends Model {
 
     public List<Menu> findAll(String condition) {
         List<Menu> list = new ArrayList<Menu>();
-        String sql = "SELECT * FROM menu WHERE " + condition;
+        String sql = "SELECT * FROM menu WHERE " + condition + " ORDER BY `order`";
         try {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                Menu m = new Menu(id, name);
+                int order = rs.getInt("order");
+                Menu m = new Menu(id, name, order);
                 list.add(m);
             }
             rs.close();
@@ -100,7 +103,7 @@ public class MenuModel extends Model {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                m = new Menu(rs.getInt("id"), rs.getString("name"));
+                m = new Menu(rs.getInt("id"), rs.getString("name"),rs.getInt("order"));
             }
             rs.close();
             st.close();
@@ -117,7 +120,7 @@ public class MenuModel extends Model {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                m = new Menu(rs.getInt("id"), rs.getString("name"));
+                m = new Menu(rs.getInt("id"), rs.getString("name"),rs.getInt("order"));
             }
             rs.close();
             st.close();

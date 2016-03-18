@@ -5,19 +5,23 @@
  */
 package servlet.admin;
 
+import core.AdminServlet;
+import entity.Menu;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.MenuModel;
 
 /**
  *
  * @author MyPC
  */
-public class IndexServlet extends HttpServlet {
+//TODO cần phải kế thừa AdminServlet
+public class MenuServlet extends AdminServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +39,37 @@ public class IndexServlet extends HttpServlet {
             if (request.getSession().getAttribute("login") != (Object) 1) {
                 response.sendRedirect("login");
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher("views/site/index.jsp");
-                rd.include(request, response);
+                String action = request.getParameter("action");
+                switch (action) {
+                    case "add":
+                        this.actionAdd(request, response);
+                        break;
+                    default:
+                        out.println("Unknown action");
+                        break;
+                }
             }
         }
+    }
+
+    private void actionAdd(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.setTitle(request, "Add a new menu");
+        if ("POST".equals(request.getMethod())) {
+            String name = request.getParameter("name");
+            int order = Integer.parseInt(request.getParameter("order"));
+            MenuModel mm = new MenuModel();
+            Menu m = new Menu(name, order);
+            HttpSession session = request.getSession();
+            if (mm.insert(m)) {
+                session.setAttribute("message", "success");
+            } else {
+                session.setAttribute("message", "error");
+            }
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("views/menu/add.jsp");
+        rd.include(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

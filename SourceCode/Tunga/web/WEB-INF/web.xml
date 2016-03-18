@@ -12,6 +12,10 @@
         <servlet-name>AdminIndexServlet</servlet-name>
         <servlet-class>servlet.admin.IndexServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MenuServlet</servlet-name>
+        <servlet-class>servlet.admin.MenuServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminLoginServlet</servlet-name>
         <url-pattern>/admin/login</url-pattern>
@@ -24,9 +28,13 @@
         <servlet-name>AdminIndexServlet</servlet-name>
         <url-pattern>/admin/index</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MenuServlet</servlet-name>
+        <url-pattern>/admin/menu</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            300
         </session-timeout>
     </session-config>
 </web-app>

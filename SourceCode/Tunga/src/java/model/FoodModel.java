@@ -5,6 +5,7 @@
  */
 package model;
 
+import core.Model;
 import entity.Food;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
