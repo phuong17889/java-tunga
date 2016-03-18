@@ -28,9 +28,10 @@ public class MenuModel extends Model {
         int result = 0;
 
         try {
-            String sql = "INSERT INTO menu (name) VALUES(?)";
+            String sql = "INSERT INTO menu (name, [order]) VALUES(?, ?)";
             PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
             prst.setString(1, m.getName());
+            prst.setInt(1, m.getOrder());
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -41,11 +42,12 @@ public class MenuModel extends Model {
 
     public boolean update(int id, Menu m) {
         int result = 0;
-        String sql = "UPDATE menu SET name = ? WHERE id = ?";
+        String sql = "UPDATE menu SET name = ?, [order] = ? WHERE id = ?";
         try {
             PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
             prst.setString(1, m.getName());
-            prst.setInt(2, id);
+            prst.setInt(2, m.getOrder());
+            prst.setInt(3, id);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -56,7 +58,7 @@ public class MenuModel extends Model {
 
     public List<Menu> findAll() {
         List<Menu> list = new ArrayList<Menu>();
-        String sql = "SELECT * FROM menu ORDER BY `order`";
+        String sql = "SELECT * FROM menu ORDER BY [order]";
         try {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -77,7 +79,7 @@ public class MenuModel extends Model {
 
     public List<Menu> findAll(String condition) {
         List<Menu> list = new ArrayList<Menu>();
-        String sql = "SELECT * FROM menu WHERE " + condition + " ORDER BY `order`";
+        String sql = "SELECT * FROM menu WHERE " + condition + " ORDER BY [order]";
         try {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -103,7 +105,7 @@ public class MenuModel extends Model {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                m = new Menu(rs.getInt("id"), rs.getString("name"),rs.getInt("order"));
+                m = new Menu(rs.getInt("id"), rs.getString("name"), rs.getInt("order"));
             }
             rs.close();
             st.close();
@@ -120,7 +122,7 @@ public class MenuModel extends Model {
             Statement st = this.dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                m = new Menu(rs.getInt("id"), rs.getString("name"),rs.getInt("order"));
+                m = new Menu(rs.getInt("id"), rs.getString("name"), rs.getInt("order"));
             }
             rs.close();
             st.close();
