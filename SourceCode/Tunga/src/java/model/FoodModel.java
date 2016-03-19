@@ -22,12 +22,12 @@ import java.util.logging.Logger;
  */
 public class FoodModel extends Model {
 
-    public boolean insert(Food f) {
+    public static boolean insert(Food f) {
         int result = 0;
         try {
 
-            String sql = "INSERT INTO food (menu_id, name, price, image) VALUES (?, ?, ?, ?)";
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            String sql = "INSERT INTO food (menuId, name, price, image) VALUES (?, ?, ?, ?)";
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, f.getMenuId());
             prst.setString(2, f.getName());
             prst.setFloat(3, f.getPrice());
@@ -40,11 +40,11 @@ public class FoodModel extends Model {
         return result > 0;
     }
 
-    public boolean update(int id, Food f) {
+    public static boolean update(int id, Food f) {
         int result = 0;
-        String sql = "UPDATE food SET menu_id = ?, name = ?, price = ?, image= ? WHERE id = ?";
+        String sql = "UPDATE food SET menuId = ?, name = ?, price = ?, image= ? WHERE id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, f.getMenuId());
             prst.setString(2, f.getName());
             prst.setFloat(3, f.getPrice());
@@ -58,19 +58,19 @@ public class FoodModel extends Model {
         return result > 0;
     }
 
-    public List<Food> findAll() {
+    public static List<Food> findAll() {
         List<Food> list = new ArrayList<>();
         String sql = "SELECT * FROM food";
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
-                int menu_id = rs.getInt("menu_id");
+                int menuId = rs.getInt("menuId");
                 String name = rs.getString("name");
                 float price = rs.getInt("price");
                 String image = rs.getString("image");
-                Food f = new Food(id, menu_id, name, price, image);
+                Food f = new Food(id, menuId, name, price, image);
                 list.add(f);
             }
             rs.close();
@@ -81,19 +81,19 @@ public class FoodModel extends Model {
         return list;
     }
 
-    public List<Food> findAll(String condition) {
+    public static List<Food> findAll(String condition) {
         List<Food> list = new ArrayList<>();
         String sql = "SELECT * FROM food WHERE " + condition;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
-                int menu_id = rs.getInt("menu_id");
+                int menuId = rs.getInt("menuId");
                 String name = rs.getString("name");
                 float price = rs.getFloat("price");
                 String image = rs.getString("image");
-                Food f = new Food(id, menu_id, name, price, image);
+                Food f = new Food(id, menuId, name, price, image);
                 list.add(f);
             }
             rs.close();
@@ -104,14 +104,14 @@ public class FoodModel extends Model {
         return list;
     }
 
-    public Food find(int id) {
+    public static Food find(int id) {
         Food f = null;
         String sql = "SELECT * FROM food WHERE id = " + id;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                f = new Food(rs.getInt("id"), rs.getInt("menu_id"), rs.getString("name"), rs.getFloat("price"), rs.getString("image"));
+                f = new Food(rs.getInt("id"), rs.getInt("menuId"), rs.getString("name"), rs.getFloat("price"), rs.getString("image"));
             }
             rs.close();
             st.close();
@@ -121,14 +121,14 @@ public class FoodModel extends Model {
         return f;
     }
 
-    public Food find(String condition) {
+    public static Food find(String condition) {
         Food f = null;
         String sql = "SELECT * FROM food WHERE " + condition;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                f = new Food(rs.getInt("id"), rs.getInt("menu_id"), rs.getString("name"), rs.getFloat("price"), rs.getString("image"));
+                f = new Food(rs.getInt("id"), rs.getInt("menuId"), rs.getString("name"), rs.getFloat("price"), rs.getString("image"));
             }
             rs.close();
             st.close();
@@ -138,11 +138,11 @@ public class FoodModel extends Model {
         return f;
     }
 
-    public boolean delete(int id) {
+    public static boolean delete(int id) {
         int result = 0;
         String sql = "DELETE FROM food WHERE id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, id);
             result = prst.executeUpdate();
             prst.close();
@@ -152,11 +152,11 @@ public class FoodModel extends Model {
         return result > 0;
     }
 
-    public boolean delete(String condition) {
+    public static boolean delete(String condition) {
         int result = 0;
         String sql = "DELETE FROM food WHERE " + condition;
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {

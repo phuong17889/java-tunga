@@ -24,12 +24,12 @@ import utility.DataProcess;
  */
 public class MenuModel extends Model {
 
-    public boolean insert(Menu m) {
+    public static boolean insert(Menu m) {
         int result = 0;
 
         try {
             String sql = "INSERT INTO menu (name, [order]) VALUES(?, ?)";
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setString(1, m.getName());
             prst.setInt(2, m.getOrder());
             result = prst.executeUpdate();
@@ -40,11 +40,11 @@ public class MenuModel extends Model {
         return result > 0;
     }
 
-    public boolean update(int id, Menu m) {
+    public static boolean update(int id, Menu m) {
         int result = 0;
         String sql = "UPDATE menu SET name = ?, [order] = ? WHERE id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setString(1, m.getName());
             prst.setInt(2, m.getOrder());
             prst.setInt(3, id);
@@ -56,11 +56,11 @@ public class MenuModel extends Model {
         return result > 0;
     }
 
-    public List<Menu> findAll() {
-        List<Menu> list = new ArrayList<Menu>();
+    public static List<Menu> findAll() {
+        List<Menu> list = new ArrayList<>();
         String sql = "SELECT * FROM menu ORDER BY [order]";
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -77,11 +77,11 @@ public class MenuModel extends Model {
         return list;
     }
 
-    public List<Menu> findAll(String condition) {
-        List<Menu> list = new ArrayList<Menu>();
+    public static List<Menu> findAll(String condition) {
+        List<Menu> list = new ArrayList<>();
         String sql = "SELECT * FROM menu WHERE " + condition + " ORDER BY [order]";
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -98,11 +98,11 @@ public class MenuModel extends Model {
         return list;
     }
 
-    public Menu find(int id) {
+    public static Menu find(int id) {
         Menu m = null;
         String sql = "SELECT * FROM menu WHERE id = " + id;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 m = new Menu(rs.getInt("id"), rs.getString("name"), rs.getInt("order"));
@@ -115,11 +115,11 @@ public class MenuModel extends Model {
         return m;
     }
 
-    public Menu find(String condition) {
+    public static Menu find(String condition) {
         Menu m = null;
         String sql = "SELECT * FROM menu WHERE " + condition;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 m = new Menu(rs.getInt("id"), rs.getString("name"), rs.getInt("order"));
@@ -132,11 +132,11 @@ public class MenuModel extends Model {
         return m;
     }
 
-    public boolean delete(int id) {
+    public static boolean delete(int id) {
         int result = 0;
         String sql = "DELETE FROM menu WHERE id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, id);
             result = prst.executeUpdate();
             prst.close();
@@ -146,11 +146,11 @@ public class MenuModel extends Model {
         return result > 0;
     }
 
-    public boolean delete(String condition) {
+    public static boolean delete(String condition) {
         int result = 0;
         String sql = "DELETE FROM menu WHERE " + condition;
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -159,10 +159,10 @@ public class MenuModel extends Model {
         return result > 0;
     }
 
-    public static List<Food> getFoods(int menu_id) {
+    public static List<Food> getFoods(int menuId) {
         DataProcess dt = new DataProcess();
-        List<Food> list = new ArrayList<Food>();
-        String sql = "SELECT * FROM food WHERE menu_id = " + menu_id;
+        List<Food> list = new ArrayList<>();
+        String sql = "SELECT * FROM food WHERE menuId = " + menuId;
         try {
             Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -171,7 +171,7 @@ public class MenuModel extends Model {
                 String name = rs.getString("name");
                 float price = rs.getFloat("price");
                 String image = rs.getString("image");
-                Food f = new Food(id, menu_id, name, price, image);
+                Food f = new Food(id, menuId, name, price, image);
                 list.add(f);
             }
             rs.close();

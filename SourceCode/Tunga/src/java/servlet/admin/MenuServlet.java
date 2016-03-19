@@ -21,8 +21,6 @@ import model.MenuModel;
 //TODO cần phải kế thừa AdminServlet
 public class MenuServlet extends AdminServlet {
 
-    MenuModel mm = new MenuModel();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -64,7 +62,7 @@ public class MenuServlet extends AdminServlet {
         this.setTitle(request, "View an existing menu");
         this.setActiveSidebar(request, "menu/index");
         int id = Integer.parseInt(request.getParameter("id"));
-        Menu m = mm.find(id);
+        Menu m = MenuModel.find(id);
         if (m == null) {
             throw new ServletException("Not found");
         }
@@ -75,8 +73,8 @@ public class MenuServlet extends AdminServlet {
     private void actionDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Menu m = mm.find(id);
-        if (m != null && mm.delete(id)) {
+        Menu m = MenuModel.find(id);
+        if (m != null && MenuModel.delete(id)) {
             request.setAttribute("message", "success");
         } else {
             request.setAttribute("message", "error");
@@ -89,13 +87,13 @@ public class MenuServlet extends AdminServlet {
         this.setTitle(request, "Edit a menu");
         this.setActiveSidebar(request, "menu/index");
         int id = Integer.parseInt(request.getParameter("id"));
-        Menu m = mm.find(id);
+        Menu m = MenuModel.find(id);
         if (this.isPost(request) && m != null) {
             String name = request.getParameter("name");
             int order = Integer.parseInt(request.getParameter("order"));
             m.setName(name);
             m.setOrder(order);
-            if (mm.update(id, m)) {
+            if (MenuModel.update(id, m)) {
                 request.setAttribute("message", "success");
             } else {
                 request.setAttribute("message", "error");
@@ -113,7 +111,7 @@ public class MenuServlet extends AdminServlet {
             String name = request.getParameter("name");
             int order = Integer.parseInt(request.getParameter("order"));
             Menu m = new Menu(name, order);
-            if (mm.insert(m)) {
+            if (MenuModel.insert(m)) {
                 request.setAttribute("message", "success");
             } else {
                 request.setAttribute("message", "error");
@@ -126,7 +124,7 @@ public class MenuServlet extends AdminServlet {
             throws ServletException, IOException {
         this.setTitle(request, "List menu");
         this.setActiveSidebar(request, "menu/index");
-        List<Menu> list = mm.findAll();
+        List<Menu> list = MenuModel.findAll();
         request.setAttribute("menus", list);
         this.include("views/menu/index.jsp", request, response);
     }

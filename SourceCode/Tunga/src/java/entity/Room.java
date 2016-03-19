@@ -5,6 +5,9 @@
  */
 package entity;
 
+import java.util.List;
+import model.TableModel;
+
 /**
  *
  * @author Hoangha.FPT
@@ -14,11 +17,14 @@ public class Room {
     private int id;
     private String name;
     private boolean type;
-    
-    
 
     public Room(int id, String name, boolean type) {
         this.id = id;
+        this.name = name;
+        this.type = type;
+    }
+
+    public Room(String name, boolean type) {
         this.name = name;
         this.type = type;
     }
@@ -39,7 +45,7 @@ public class Room {
         this.name = name;
     }
 
-    public boolean isType() {
+    public boolean getType() {
         return type;
     }
 
@@ -47,5 +53,7 @@ public class Room {
         this.type = type;
     }
 
-   
+    public List<Table> getTables() {
+        return TableModel.findAll("roomId = " + this.id);
+    }
 }

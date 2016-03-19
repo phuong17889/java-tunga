@@ -5,6 +5,8 @@
  */
 package entity;
 
+import model.RoomModel;
+
 /**
  *
  * @author Hoangha.FPT
@@ -26,7 +28,6 @@ public class Table {
     }
 
     public Table() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public Table(int roomId, String name, int type, float price) {
@@ -76,4 +77,7 @@ public class Table {
         this.price = price;
     }
 
+    public Room getRoom() {
+        return RoomModel.find(this.roomId);
+    }
 }

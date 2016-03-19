@@ -60,3 +60,55 @@
         </li>
     </ul>
 </li>
+<li class="<c:if test="${requestScope.servlet == 'room'}">active</c:if>">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-desktop"></i>
+        <span class="menu-text">
+            Room
+        </span>
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu">
+        <li class="<c:if test="${requestScope.route == 'room/add'}">active</c:if>">
+            <a href="room?action=add">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Add new room
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="<c:if test="${requestScope.route == 'room/index'}">active</c:if>">
+        <a href="room?action=index">
+            <i class="menu-icon fa fa-caret-right"></i>
+            List room
+        </a>
+        <b class="arrow"></b>
+        </li>
+    </ul>
+</li>
+<li class="<c:if test="${requestScope.servlet == 'table'}">active</c:if>">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-desktop"></i>
+        <span class="menu-text">
+            Table
+        </span>
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu">
+        <li class="<c:if test="${requestScope.route == 'table/add'}">active</c:if>">
+            <a href="table?action=add">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Add new table
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="<c:if test="${requestScope.route == 'table/index'}">active</c:if>">
+        <a href="table?action=index">
+            <i class="menu-icon fa fa-caret-right"></i>
+            List table
+        </a>
+        <b class="arrow"></b>
+        </li>
+    </ul>
+</li>

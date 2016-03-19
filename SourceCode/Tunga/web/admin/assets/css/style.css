@@ -8,6 +8,6 @@ and open the template in the editor.
     Author     : MyPC
 */
 
-.breadcrumb span:first-letter{
-    text-transform: uppercase;
+.table img{
+    max-height: 40px;
 }

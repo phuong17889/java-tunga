@@ -10,6 +10,7 @@ package entity;
  * @author Hoangha.FPT
  */
 public class Invoice {
+
     private int id;
     private String fullName;
     private String address;
@@ -88,7 +89,7 @@ public class Invoice {
         this.token = token;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -114,8 +115,4 @@ public class Invoice {
         this.status = status;
         this.createdAt = createdAt;
     }
-    
-
-   
-    
 }

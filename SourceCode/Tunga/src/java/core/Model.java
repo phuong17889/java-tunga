@@ -13,9 +13,5 @@ import utility.DataProcess;
  */
 public class Model {
 
-    public DataProcess dt;
-
-    public Model() {
-        this.dt = new DataProcess();
-    }
+    public static DataProcess dt = new DataProcess();
 }

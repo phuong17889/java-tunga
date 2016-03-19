@@ -10,6 +10,7 @@ package entity;
  * @author Hoangha.FPT
  */
 public class InvoiceFood {
+
     private int id;
     private int invoiceId;
     private int foodId;
@@ -53,7 +54,4 @@ public class InvoiceFood {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-   
-    
 }

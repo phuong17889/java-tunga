@@ -5,10 +5,10 @@
 
     <div class="page-header">
         <h1>
-            Menu
+            Food
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                Add a new menu
+                Add a new food
             </small>
         </h1>
     </div><!-- /.page-header -->
@@ -29,9 +29,9 @@
 
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Menu </label>
                     <div class="col-sm-9">
-                        <select class="col-sm-5" name="menu_id">
+                        <select class="col-sm-5" name="menuId">
                             <c:forEach var="menu" items="${menus}">
-                                <option value="${menu.id}" <c:if test="${food.menu_id == menu.id}">selected</c:if>>${menu.name}</option>
+                                <option value="${menu.id}" <c:if test="${food.menuId == menu.id}">selected</c:if>>${menu.name}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -71,9 +71,8 @@
     </div><!-- /.row -->
 </div><!-- /.page-content -->
 <script>
-    <c:if test="${not empty sessionScope.message}">
-    alert("<c:out value="${sessionScope.message}"/>");
-        <c:remove var="message" scope="session"/>
+    <c:if test="${not empty requestScope.message}">
+    alert("<c:out value="${requestScope.message}"/>");
     </c:if>
     $("#menu_image").change(function () {
         var reader = new FileReader();

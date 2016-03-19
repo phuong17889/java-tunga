@@ -22,11 +22,11 @@ import java.util.logging.Logger;
  */
 public class TableModel extends Model {
 
-    public boolean insert(Table t) {
+    public static boolean insert(Table t) {
         int result = 0;
         try {
-            String sql = "INSERT INTO [tunga].[dbo].[table] (room_id, name, type, price) VALUES (?, ?, ?, ?)";
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            String sql = "INSERT INTO [tunga].[dbo].[table] (roomId, name, type, price) VALUES (?, ?, ?, ?)";
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, t.getRoomId());
             prst.setString(2, t.getName());
             prst.setInt(3, t.getType());
@@ -39,11 +39,11 @@ public class TableModel extends Model {
         return result > 0;
     }
 
-    public boolean update(int id, Table t) {
+    public static boolean update(int id, Table t) {
         int result = 0;
-        String sql = "UPDATE [tunga].[dbo].[table] set room_id = ?, name = ?, type = ?, price = ? where id = ?";
+        String sql = "UPDATE [tunga].[dbo].[table] set roomId = ?, name = ?, type = ?, price = ? where id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, t.getRoomId());
             prst.setString(2, t.getName());
             prst.setInt(3, t.getType());
@@ -57,19 +57,19 @@ public class TableModel extends Model {
         return result > 0;
     }
 
-    public List<Table> findAll() {
-        List<Table> list = new ArrayList<Table>();
+    public static List<Table> findAll() {
+        List<Table> list = new ArrayList<>();
         String sql = "SELECT * FROM [tunga].[dbo].[table]";
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
-                int room_id = rs.getInt("room_id");
+                int roomId = rs.getInt("roomId");
                 String name = rs.getString("name");
                 int type = rs.getInt("type");
                 float price = rs.getFloat("price");
-                Table t = new Table(id, room_id, name, type, price);
+                Table t = new Table(id, roomId, name, type, price);
                 list.add(t);
             }
             rs.close();
@@ -80,19 +80,19 @@ public class TableModel extends Model {
         return list;
     }
 
-    public List<Table> findAll(String condition) {
-        List<Table> list = new ArrayList<Table>();
+    public static List<Table> findAll(String condition) {
+        List<Table> list = new ArrayList<>();
         String sql = "SELECT * FROM [tunga].[dbo].[table] WHERE " + condition;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
-                int room_id = rs.getInt("room_id");
+                int roomId = rs.getInt("roomId");
                 String name = rs.getString("name");
                 int type = rs.getInt("type");
                 float price = rs.getFloat("price");
-                Table t = new Table(id, room_id, name, type, price);
+                Table t = new Table(id, roomId, name, type, price);
                 list.add(t);
             }
             rs.close();
@@ -103,14 +103,14 @@ public class TableModel extends Model {
         return list;
     }
 
-    public Table find(int id) {
+    public static Table find(int id) {
         Table t = null;
         String sql = "SELECT * FROM [tunga].[dbo].[table] WHERE id = " + id;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                t = new Table(rs.getInt("id"), rs.getInt("room_id"), rs.getString("name"), rs.getInt("type"), rs.getFloat("price"));
+                t = new Table(rs.getInt("id"), rs.getInt("roomId"), rs.getString("name"), rs.getInt("type"), rs.getFloat("price"));
             }
             rs.close();
             st.close();
@@ -120,14 +120,14 @@ public class TableModel extends Model {
         return t;
     }
 
-    public Table find(String condition) {
+    public static Table find(String condition) {
         Table t = null;
         String sql = "SELECT * FROM [tunga].[dbo].[table] WHERE " + condition;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                t = new Table(rs.getInt("id"), rs.getInt("room_id"), rs.getString("name"), rs.getInt("type"), rs.getFloat("price"));
+                t = new Table(rs.getInt("id"), rs.getInt("roomId"), rs.getString("name"), rs.getInt("type"), rs.getFloat("price"));
             }
             rs.close();
             st.close();
@@ -137,11 +137,11 @@ public class TableModel extends Model {
         return t;
     }
 
-    public boolean delete(int id) {
+    public static boolean delete(int id) {
         int result = 0;
         String sql = "DELETE FROM [tunga].[dbo].[table] WHERE id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, id);
             result = prst.executeUpdate();
             prst.close();
@@ -151,11 +151,11 @@ public class TableModel extends Model {
         return result > 0;
     }
 
-    public boolean delete(String condition) {
+    public static boolean delete(String condition) {
         int result = 0;
         String sql = "DELETE FROM [tunga].[dbo].[table] WHERE " + condition;
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {

@@ -5,15 +5,12 @@
  */
 package entity;
 
-import java.awt.Image;
-import java.util.jar.Attributes.Name;
-import javax.persistence.Id;
-
 /**
  *
  * @author Hoangha.FPT
  */
 public class Food {
+
     private int id;
     private int menuId;
     private String name;
@@ -75,11 +72,6 @@ public class Food {
         this.image = image;
     }
 
-  
     public Food() {
     }
-    
-    
 }
-
-

@@ -1,5 +1,6 @@
 <%@include file="../layout/header.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="helper" uri="/WEB-INF/tlds/helper" %>
 <div class="page-content">
     <div class="page-header">
         <h1>
@@ -15,7 +16,8 @@
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
             <form class="form-horizontal" method="POST" role="form" action="" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="add">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="id" value="${food.id}">
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
 
@@ -27,7 +29,7 @@
 
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Menu </label>
                     <div class="col-sm-9">
-                        <select class="col-sm-5" name="menu_id">
+                        <select class="col-sm-5" name="menuId">
                             <c:forEach var="menu" items="${menus}">
                                 <option value="${menu.id}" <c:if test="${food.menuId == menu.id}">selected</c:if>>${menu.name}</option>
                             </c:forEach>
@@ -45,7 +47,7 @@
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Image </label>
                     <div class="col-sm-3">
                         <input type="file" id="menu_image" name="image" value="${food.image}" class="file-picker"/>
-                        <img src="" style="width: 100px;" id="menu_image_preview">
+                        <img src="${helper:getBaseUrl()}/uploads/${food.image}" style="width: 100px;" id="menu_image_preview">
                     </div>
                 </div>
 
@@ -69,9 +71,8 @@
     </div><!-- /.row -->
 </div><!-- /.page-content -->
 <script>
-    <c:if test="${not empty sessionScope.message}">
-    alert("<c:out value="${sessionScope.message}"/>");
-        <c:remove var="message" scope="session"/>
+    <c:if test="${not empty requestScope.message}">
+    alert("<c:out value="${requestScope.message}"/>");
     </c:if>
     $("#menu_image").change(function () {
         var reader = new FileReader();

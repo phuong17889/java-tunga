@@ -21,13 +21,14 @@ import java.util.logging.Logger;
  * @author TuanDo
  */
 public class RoomModel extends Model {
-    public boolean insert(Room r) {
+
+    public static boolean insert(Room r) {
         int result = 0;
         try {
             String sql = "INSERT INTO room (name, type) VALUES (?, ?)";
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setString(1, r.getName());
-            prst.setBoolean(2, r.isType());
+            prst.setInt(2, r.getType() ? 1 : 0);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -35,13 +36,14 @@ public class RoomModel extends Model {
         }
         return result > 0;
     }
-    public boolean update(int id, Room r) {
+
+    public static boolean update(int id, Room r) {
         int result = 0;
-        String sql = "UPDATE room set name = ?, type = ? where id = ?";
+        String sql = "UPDATE room SET name = ?, type = ? WHERE id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setString(1, r.getName());
-            prst.setBoolean(2, r.isType());
+            prst.setInt(2, r.getType() ? 1 : 0);
             prst.setInt(3, id);
             result = prst.executeUpdate();
             prst.close();
@@ -50,17 +52,18 @@ public class RoomModel extends Model {
         }
         return result > 0;
     }
-    public List<Room> findAll() {
-        List<Room> list = new ArrayList<Room>();
+
+    public static List<Room> findAll() {
+        List<Room> list = new ArrayList<>();
         String sql = "SELECT * FROM room";
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                int type = rs.getType();
-                Room r= new Room(id, name, true);
+                int type = rs.getInt("type");
+                Room r = new Room(id, name, (type == 1));
                 list.add(r);
             }
             rs.close();
@@ -70,17 +73,18 @@ public class RoomModel extends Model {
         }
         return list;
     }
-    public List<Room> findAll(String condition) {
-        List<Room> list = new ArrayList<Room>();
+
+    public static List<Room> findAll(String condition) {
+        List<Room> list = new ArrayList<>();
         String sql = "SELECT * FROM room WHERE " + condition;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-               int id = rs.getInt("id");
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
-                int type = rs.getType();
-                Room r= new Room(id, name, true);
+                int type = rs.getInt("type");
+                Room r = new Room(id, name, (type == 1));
                 list.add(r);
             }
             rs.close();
@@ -90,14 +94,15 @@ public class RoomModel extends Model {
         }
         return list;
     }
-    public Room find(int id) {
+
+    public static Room find(int id) {
         Room r = null;
         String sql = "SELECT * FROM room WHERE id = " + id;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                r = new Room(rs.getInt("id"), rs.getString("name"), rs.getBoolean("type"));
+                r = new Room(rs.getInt("id"), rs.getString("name"), (rs.getInt("type") == 1));
             }
             rs.close();
             st.close();
@@ -106,14 +111,15 @@ public class RoomModel extends Model {
         }
         return r;
     }
-    public Room find(String condition) {
+
+    public static Room find(String condition) {
         Room r = null;
         String sql = "SELECT * FROM room WHERE " + condition;
         try {
-            Statement st = this.dt.getConnection().createStatement();
+            Statement st = dt.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-               r= new Room(rs.getInt("id"), rs.getNString("name"), rs.getBoolean("type"));
+                r = new Room(rs.getInt("id"), rs.getString("name"), (rs.getInt("type") == 1));
             }
             rs.close();
             st.close();
@@ -122,11 +128,12 @@ public class RoomModel extends Model {
         }
         return r;
     }
-    public boolean delete(int id) {
+
+    public static boolean delete(int id) {
         int result = 0;
         String sql = "DELETE FROM room WHERE id = ?";
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             prst.setInt(1, id);
             result = prst.executeUpdate();
             prst.close();
@@ -135,11 +142,12 @@ public class RoomModel extends Model {
         }
         return result > 0;
     }
-    public boolean delete(String condition) {
+
+    public static boolean delete(String condition) {
         int result = 0;
         String sql = "DELETE FROM room WHERE " + condition;
         try {
-            PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {

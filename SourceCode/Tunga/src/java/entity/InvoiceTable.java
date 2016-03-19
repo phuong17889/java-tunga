@@ -10,6 +10,7 @@ package entity;
  * @author Hoangha.FPT
  */
 public class InvoiceTable {
+
     private int id;
     private int invoiceId;
     private int tableId;
@@ -73,7 +74,4 @@ public class InvoiceTable {
     public void setToTime(String toTime) {
         this.toTime = toTime;
     }
-
-   
-    
 }

@@ -1,12 +1,14 @@
 <%@include file="../layout/header.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="page-content">
+
     <div class="page-header">
         <h1>
-            Menu
+            Room
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                Add a new menu
+                Add a new room
             </small>
         </h1>
     </div><!-- /.page-header -->
@@ -20,14 +22,17 @@
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
 
                     <div class="col-sm-9">
-                        <input type="text" id="form-field-1" name="name" value="${requestScope.name}" placeholder="Menu's name" class="col-sm-5" />
+                        <input type="text" name="name" value="${room.name}" placeholder="Room's name" class="col-sm-5" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Order </label>
 
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Type </label>
                     <div class="col-sm-9">
-                        <input type="number" id="form-field-1" name="order" value="${requestScope.order}" class="col-sm-2" />
+                        <select class="col-sm-5" name="type">
+                            <option value="0" <c:if test="${!room.type}">selected</c:if>>Normal</option>
+                            <option value="1" <c:if test="${room.type}">selected</c:if>>VIP</option>
+                        </select>
                     </div>
                 </div>
 
@@ -52,7 +57,7 @@
 </div><!-- /.page-content -->
 <script>
     <c:if test="${not empty requestScope.message}">
-        alert("<c:out value="${requestScope.message}"/>");
-   </c:if>
+    alert("<c:out value="${requestScope.message}"/>");
+    </c:if>
 </script>
 <%@include file="../layout/footer.jsp" %>
