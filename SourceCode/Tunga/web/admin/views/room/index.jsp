@@ -39,7 +39,7 @@
                                         <a class="green" href="room?action=edit&id=${room.id}">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
-                                        <a data-bind="" class="red" href="room?action=delete&id=${room.id}">
+                                        <a class="red" href="room?action=delete&id=${room.id}">
                                             <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                         </a>
                                     </div>

@@ -43,7 +43,7 @@
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
 
-                                        <a data-bind="" class="red" href="menu?action=delete&id=${menu.id}">
+                                        <a class="red" href="menu?action=delete&id=${menu.id}">
                                             <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                         </a>
                                     </div>

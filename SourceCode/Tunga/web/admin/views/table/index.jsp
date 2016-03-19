@@ -1,6 +1,6 @@
 <%@include file="../layout/header.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="roomModel" uri="/WEB-INF/tlds/roomModel" %>
+<%@taglib prefix="helper" uri="/WEB-INF/tlds/helper" %>
 <div class="page-content">
     <div class="page-header">
         <h1>
@@ -21,8 +21,8 @@
                     <thead>
                         <tr>
                             <th class="col-sm-1">Table ID</th>
-                            <th>Table's name</th>
                             <th class="col-sm-3">Room's name</th>
+                            <th>Table's name</th>
                             <th class="col-sm-1">Number holders</th>
                             <th class="col-sm-2">Price</th>
                             <th class="col-sm-2"></th>
@@ -32,9 +32,10 @@
                         <c:forEach var="table" items="${tables}">
                             <tr>
                                 <td>${table.id}</td>
+                                <td>${table.room.name}</td>
                                 <td>${table.name}</td>
-                                <td>${roomtable.name}</td>
                                 <td>${table.type}</td>
+                                <td>${helper:currency(table.price)}</td>
                                 <td class="col-sm-2">
                                     <div class="action-buttons">
                                         <a class="blue" href="table?action=view&id=${table.id}">
@@ -43,7 +44,7 @@
                                         <a class="green" href="table?action=edit&id=${table.id}">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
-                                        <a data-bind="" class="red" href="table?action=delete&id=${table.id}">
+                                        <a class="red" href="table?action=delete&id=${table.id}">
                                             <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                         </a>
                                     </div>
@@ -60,7 +61,7 @@
     var oTable1 = $('#dynamic-table').dataTable({
         bAutoWidth: false,
         "aoColumns": [
-            null, null, null,
+            null, null, null, null, null,
             {"bSortable": false}
         ]
     });

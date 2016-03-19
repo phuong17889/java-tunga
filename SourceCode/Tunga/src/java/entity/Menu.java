@@ -5,6 +5,9 @@
  */
 package entity;
 
+import java.util.List;
+import model.FoodModel;
+
 /**
  *
  * @author Hoangha.FPT
@@ -48,5 +51,9 @@ public class Menu {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public List<Food> getFoods() {
+        return FoodModel.findAll("menuId = " + this.id);
     }
 }

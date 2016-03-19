@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import model.FoodModel;
 import model.MenuModel;
+import utility.Helper;
 
 /**
  *
@@ -106,7 +107,7 @@ public class FoodServlet extends AdminServlet {
 
     private String uploadFile(String column, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = this.dt.appPath() + "uploads";
+        String path = Helper.appPath() + "uploads";
         Part imagePart = request.getPart(column);
         String imageName = getFileName(imagePart);
         if (imageName != null) {

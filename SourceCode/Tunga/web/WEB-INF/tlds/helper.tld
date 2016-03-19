@@ -4,10 +4,10 @@
     <short-name>helper</short-name>
     <uri>/WEB-INF/tlds/helper</uri>
     <function>
-        <name>getBaseUrl</name>
+        <name>baseUrl</name>
         <function-class>utility.Helper</function-class>
         <function-signature>
-            java.lang.String getBaseUrl()
+            java.lang.String baseUrl()
         </function-signature>
     </function>
     <function>

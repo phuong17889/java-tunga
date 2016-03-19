@@ -5,6 +5,8 @@
  */
 package entity;
 
+import model.MenuModel;
+
 /**
  *
  * @author Hoangha.FPT
@@ -73,5 +75,9 @@ public class Food {
     }
 
     public Food() {
+    }
+    
+    public Menu getMenu(){
+        return MenuModel.find(this.menuId);
     }
 }

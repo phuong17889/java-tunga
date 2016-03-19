@@ -3,6 +3,7 @@
     Created on : Mar 17, 2016, 2:09:59 AM
     Author     : MyPC
 --%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -34,17 +35,17 @@
                             <nav>
                                 <ul class="sf-menu">
                                     <li class="current"><a href="index.html">Home</a></li>
-                                    <li class="with_ul"><a href="about-us.html">About Us</a>
-                                        <ul>
-                                            <li><a href="#"> cuisine</a></li>
-                                            <li><a href="#">Good rest</a></li>
-                                            <li><a href="#">Services</a></li>
-                                        </ul>
+                                    <ul>
+                                        <li><a href="#"> cuisine</a></li>
+                                        <li><a href="#">Good rest</a></li>
+                                        <li><a href="#">Services</a></li>
+                                    </ul>
                                     </li>
                                     <li><a href="menu.html">Menu</a></li>
                                     <li><a href="portfolio.html">Portfolio</a></li>
                                     <li><a href="news.html">News</a></li>
                                     <li><a href="contacts.html">Contacts</a></li>
+                                    <li class="with_ul"><a href="about-us.html">About Us</a>
                                 </ul>
                             </nav>
                             <div class="clear"></div>

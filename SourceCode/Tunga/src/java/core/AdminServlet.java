@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import utility.DataProcess;
 
 /**
  *
@@ -19,7 +18,7 @@ import utility.DataProcess;
  */
 public class AdminServlet extends HttpServlet {
 
-    public DataProcess dt = new DataProcess();
+    public EntityModel em = new EntityModel();
 
     public void setTitle(HttpServletRequest request, String title) {
         request.setAttribute("title", title);

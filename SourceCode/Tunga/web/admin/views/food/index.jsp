@@ -1,6 +1,5 @@
 <%@include file="../layout/header.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="menuModel" uri="/WEB-INF/tlds/menuModel" %>
 <%@taglib prefix="helper" uri="/WEB-INF/tlds/helper" %>
 <div class="page-content">
     <div class="page-header">
@@ -33,9 +32,9 @@
                         <c:forEach var="food" items="${foods}">
                             <tr>
                                 <td>${food.id}</td>
-                                <td>${menuModel:find(food.menuId).name}</td>
+                                <td>${food.menu.name}</td>
                                 <td>${food.name}</td>
-                                <td><img src="${helper:getBaseUrl()}/uploads/${food.image}"></td>
+                                <td><img src="${helper:baseUrl()}/uploads/${food.image}"></td>
                                 <td>${helper:currency(food.price)}</td>
                                 <td class="col-sm-2">
                                     <div class="action-buttons">
@@ -45,7 +44,7 @@
                                         <a class="green" href="food?action=edit&id=${food.id}">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
-                                        <a data-bind="" class="red" href="food?action=delete&id=${food.id}">
+                                        <a class="red" href="food?action=delete&id=${food.id}">
                                             <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                         </a>
                                     </div>

@@ -5,7 +5,7 @@
  */
 package model;
 
-import core.Model;
+import core.EntityModel;
 import entity.Invoice;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +20,13 @@ import java.util.logging.Logger;
  *
  * @author TuanDo
  */
-public class InvoiceModel extends Model {
+public class InvoiceModel extends EntityModel {
 
     public static boolean insert(Invoice in) {
         int result = 0;
         try {
             String sql = "INSERT INTO invoice (fullName, address, phone, tax, total, token, status, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setString(1, in.getFullName());
             prst.setString(2, in.getAddress());
             prst.setString(3, in.getPhone());
@@ -47,7 +47,7 @@ public class InvoiceModel extends Model {
         int result = 0;
         String sql = "UPDATE invoice SET fullName = ?, address = ?, phone = ?, tax = ?, total= ?, status= ?, createdAt= ? WHERE id = ?";
         try {
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setString(1, in.getFullName());
             prst.setString(2, in.getAddress());
             prst.setString(3, in.getPhone());
@@ -68,7 +68,7 @@ public class InvoiceModel extends Model {
         List<Invoice> list = new ArrayList<>();
         String sql = "SELECT * FROM invoice";
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -88,14 +88,14 @@ public class InvoiceModel extends Model {
         } catch (SQLException ex) {
             Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return list.size() > 0 ? list : null;
     }
 
     public static List<Invoice> findAll(String condition) {
         List<Invoice> list = new ArrayList<>();
         String sql = "SELECT * FROM invoice WHERE " + condition;
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -115,14 +115,14 @@ public class InvoiceModel extends Model {
         } catch (SQLException ex) {
             Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return list.size() > 0 ? list : null;
     }
 
     public static Invoice find(int id) {
         Invoice in = null;
         String sql = "SELECT * FROM invoice WHERE id = " + id;
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 in = new Invoice(rs.getInt("id"), rs.getString("fullName"), rs.getString("address"), rs.getString("phone"), rs.getFloat("tax"), rs.getFloat("total"), rs.getString("token"), (rs.getInt("status") == 1), rs.getString("created_at"));
@@ -139,7 +139,7 @@ public class InvoiceModel extends Model {
         Invoice in = null;
         String sql = "SELECT * FROM invoice WHERE " + condition;
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 in = new Invoice(rs.getInt("id"), rs.getString("fullName"), rs.getString("address"), rs.getString("phone"), rs.getFloat("tax"), rs.getFloat("total"), rs.getString("token"), (rs.getInt("status") == 1), rs.getString("created_at"));
@@ -156,7 +156,7 @@ public class InvoiceModel extends Model {
         int result = 0;
         String sql = "DELETE FROM invoice WHERE id = ?";
         try {
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setInt(1, id);
             result = prst.executeUpdate();
             prst.close();
@@ -170,7 +170,7 @@ public class InvoiceModel extends Model {
         int result = 0;
         String sql = "DELETE FROM invoice WHERE " + condition;
         try {
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {

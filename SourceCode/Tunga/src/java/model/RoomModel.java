@@ -5,7 +5,7 @@
  */
 package model;
 
-import core.Model;
+import core.EntityModel;
 import entity.Room;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +20,13 @@ import java.util.logging.Logger;
  *
  * @author TuanDo
  */
-public class RoomModel extends Model {
+public class RoomModel extends EntityModel {
 
     public static boolean insert(Room r) {
         int result = 0;
         try {
             String sql = "INSERT INTO room (name, type) VALUES (?, ?)";
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setString(1, r.getName());
             prst.setInt(2, r.getType() ? 1 : 0);
             result = prst.executeUpdate();
@@ -41,7 +41,7 @@ public class RoomModel extends Model {
         int result = 0;
         String sql = "UPDATE room SET name = ?, type = ? WHERE id = ?";
         try {
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setString(1, r.getName());
             prst.setInt(2, r.getType() ? 1 : 0);
             prst.setInt(3, id);
@@ -57,7 +57,7 @@ public class RoomModel extends Model {
         List<Room> list = new ArrayList<>();
         String sql = "SELECT * FROM room";
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -71,14 +71,14 @@ public class RoomModel extends Model {
         } catch (SQLException ex) {
             Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return list.size() > 0 ? list : null;
     }
 
     public static List<Room> findAll(String condition) {
         List<Room> list = new ArrayList<>();
         String sql = "SELECT * FROM room WHERE " + condition;
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -92,14 +92,14 @@ public class RoomModel extends Model {
         } catch (SQLException ex) {
             Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return list.size() > 0 ? list : null;
     }
 
     public static Room find(int id) {
         Room r = null;
         String sql = "SELECT * FROM room WHERE id = " + id;
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 r = new Room(rs.getInt("id"), rs.getString("name"), (rs.getInt("type") == 1));
@@ -116,7 +116,7 @@ public class RoomModel extends Model {
         Room r = null;
         String sql = "SELECT * FROM room WHERE " + condition;
         try {
-            Statement st = dt.getConnection().createStatement();
+            Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 r = new Room(rs.getInt("id"), rs.getString("name"), (rs.getInt("type") == 1));
@@ -133,7 +133,7 @@ public class RoomModel extends Model {
         int result = 0;
         String sql = "DELETE FROM room WHERE id = ?";
         try {
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setInt(1, id);
             result = prst.executeUpdate();
             prst.close();
@@ -147,7 +147,7 @@ public class RoomModel extends Model {
         int result = 0;
         String sql = "DELETE FROM room WHERE " + condition;
         try {
-            PreparedStatement prst = dt.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {

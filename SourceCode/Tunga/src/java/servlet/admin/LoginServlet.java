@@ -6,7 +6,7 @@
 package servlet.admin;
 
 import core.AdminServlet;
-import utility.DataProcess;
+import core.EntityModel;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -69,7 +69,7 @@ public class LoginServlet extends AdminServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HttpSession session = request.getSession(true);
-        if (DataProcess.login(username, password)) {
+        if (EntityModel.login(username, password)) {
             session.setAttribute("login", 1);
             response.sendRedirect("index");
         } else {

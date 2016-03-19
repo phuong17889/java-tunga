@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Image </label>
                     <div class="col-sm-3">
-                        <img src="${helper:getBaseUrl()}/uploads/${food.image}" style="width: 100px;" id="menu_image_preview">
+                        <img src="${helper:baseUrl()}/uploads/${food.image}" style="width: 100px;" id="menu_image_preview">
                     </div>
                 </div>
 
