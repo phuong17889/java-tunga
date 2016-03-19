@@ -68,6 +68,13 @@ public class Food {
         this.image = image;
     }
 
+    public Food(int menuId, String name, float price, String image) {
+        this.menuId = menuId;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+    }
+
   
     public Food() {
     }
