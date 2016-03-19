@@ -31,7 +31,7 @@ public class MenuModel extends Model {
             String sql = "INSERT INTO menu (name, [order]) VALUES(?, ?)";
             PreparedStatement prst = this.dt.getConnection().prepareStatement(sql);
             prst.setString(1, m.getName());
-            prst.setInt(1, m.getOrder());
+            prst.setInt(2, m.getOrder());
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {

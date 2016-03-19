@@ -35,7 +35,7 @@ public class FoodServlet extends AdminServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        this.checkLogin(request, response);
+//        this.checkLogin(request, response);
         String action = request.getParameter("action");
         switch (action) {
             case "add":
@@ -90,7 +90,7 @@ public class FoodServlet extends AdminServlet {
             String name = request.getParameter("name");
             float price = Float.parseFloat(request.getParameter("price"));
             String image = request.getParameter("price");
-            int menu_id = Integer.parseInt(request.getParameter("menu.id"));
+            int menu_id = Integer.parseInt(request.getParameter("menu_id"));
             FoodModel fm = new FoodModel();
             Food f = new Food(menu_id, name, price, image);
             HttpSession session = request.getSession();

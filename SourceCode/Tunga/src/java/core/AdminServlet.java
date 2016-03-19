@@ -18,10 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AdminServlet extends HttpServlet {
 
-    public String[] breadcrumbs;
-    public String servlet;
-    public String method;
-
     public void setTitle(HttpServletRequest request, String title) {
         request.setAttribute("title", title);
     }
@@ -35,25 +31,17 @@ public class AdminServlet extends HttpServlet {
     public boolean isPost(HttpServletRequest request) {
         return "POST".equals(request.getMethod());
     }
-    
-    public void include(String viewPath, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    public void include(String viewPath, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = request.getRequestDispatcher(viewPath);
         rd.include(request, response);
     }
 
-    public String getServlet() {
-        return servlet;
-    }
-
-    public void setServlet(String servlet) {
-        this.servlet = servlet;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
+    public void setActiveSidebar(HttpServletRequest request, String name) {
+        String[] names = name.split("/");
+        String servlet = names[0];
+        String method = names[1];
+        request.setAttribute("servlet", servlet);
+        request.setAttribute("method", method);
     }
 }
