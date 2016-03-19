@@ -5,8 +5,12 @@
  */
 package core;
 
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -20,6 +24,21 @@ public class AdminServlet extends HttpServlet {
 
     public void setTitle(HttpServletRequest request, String title) {
         request.setAttribute("title", title);
+    }
+
+    public void checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getSession().getAttribute("login") != (Object) 1) {
+            response.sendRedirect("login");
+        }
+    }
+
+    public boolean isPost(HttpServletRequest request) {
+        return "POST".equals(request.getMethod());
+    }
+    
+    public void include(String viewPath, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        RequestDispatcher rd = request.getRequestDispatcher(viewPath);
+        rd.include(request, response);
     }
 
     public String getServlet() {

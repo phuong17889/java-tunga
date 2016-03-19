@@ -9,13 +9,8 @@ import core.AdminServlet;
 import entity.Food;
 import entity.Menu;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -40,16 +35,13 @@ public class FoodServlet extends AdminServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if (request.getSession().getAttribute("login") != (Object) 1) {
-            response.sendRedirect("login");
-        } else {
-            String action = request.getParameter("action");
-            switch (action) {
-                case "add":
-                    this.actionAdd(request, response);
-                    break;
+        this.checkLogin(request, response);
+        String action = request.getParameter("action");
+        switch (action) {
+            case "add":
+                this.actionAdd(request, response);
+                break;
 
-            }
         }
     }
 
@@ -92,31 +84,25 @@ public class FoodServlet extends AdminServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void actionAdd(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            this.setTitle(request, "Add a new fod");
-            if ("POST".equals(request.getMethod())) {
-                String name = request.getParameter("name");
-                float price = Float.parseFloat(request.getParameter("price"));
-                String image = request.getParameter("price");
-                int menu_id = Integer.parseInt(request.getParameter("menu.id"));
-                FoodModel fm = new FoodModel();
-                Food f = new Food(menu_id, name, price, image);
-                HttpSession session = request.getSession();
-                if (fm.insert(f)) {
-                    session.setAttribute("message", "OK");
-                } else {
-                    session.setAttribute("message", "FAILED");
-                }
+    private void actionAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        this.setTitle(request, "Add a new fod");
+        if (this.isPost(request)) {
+            String name = request.getParameter("name");
+            float price = Float.parseFloat(request.getParameter("price"));
+            String image = request.getParameter("price");
+            int menu_id = Integer.parseInt(request.getParameter("menu.id"));
+            FoodModel fm = new FoodModel();
+            Food f = new Food(menu_id, name, price, image);
+            HttpSession session = request.getSession();
+            if (fm.insert(f)) {
+                session.setAttribute("message", "OK");
+            } else {
+                session.setAttribute("message", "FAILED");
             }
-            MenuModel mm = new MenuModel();
-            List<Menu> list = mm.findAll();
-            request.setAttribute("menus", list);
-            RequestDispatcher rd = request.getRequestDispatcher("views/food/add.jsp");
-            rd.include(request, response);
-        } catch (ServletException | IOException ex) {
-            Logger.getLogger(FoodServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        MenuModel mm = new MenuModel();
+        List<Menu> list = mm.findAll();
+        request.setAttribute("menus", list);
+        this.include("views/food/add.jsp", request, response);
     }
-
 }

@@ -35,27 +35,22 @@ public class MenuServlet extends AdminServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            if (request.getSession().getAttribute("login") != (Object) 1) {
-                response.sendRedirect("login");
-            } else {
-                String action = request.getParameter("action");
-                switch (action) {
-                    case "add":
-                        this.actionAdd(request, response);
-                        break;
-                    default:
-                        out.println("Unknown action");
-                        break;
-                }
-            }
+        this.checkLogin(request, response);
+        String action = request.getParameter("action");
+        switch (action) {
+            case "add":
+                this.actionAdd(request, response);
+                break;
+            default:
+                
+                break;
         }
     }
-
+    
     private void actionAdd(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.setTitle(request, "Add a new menu");
-        if ("POST".equals(request.getMethod())) {
+        if (this.isPost(request)) {
             String name = request.getParameter("name");
             int order = Integer.parseInt(request.getParameter("order"));
             MenuModel mm = new MenuModel();
@@ -67,9 +62,7 @@ public class MenuServlet extends AdminServlet {
                 session.setAttribute("message", "error");
             }
         }
-        RequestDispatcher rd = request.getRequestDispatcher("views/menu/add.jsp");
-        rd.include(request, response);
-
+        this.include("views/menu/add.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
