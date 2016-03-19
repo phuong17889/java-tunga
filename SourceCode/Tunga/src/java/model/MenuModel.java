@@ -180,6 +180,5 @@ public class MenuModel extends Model {
             Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
-
     }
 }

@@ -10,58 +10,40 @@
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta charset="utf-8" />
-        <title>${title} | Tunga Restaurant</title>
-
+        <title>${requestScope.title} | Tunga Restaurant</title>
         <meta name="description" content="Common form elements and layouts" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-        <!-- bootstrap & fontawesome -->
         <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="assets/font-awesome/4.2.0/css/font-awesome.min.css" />
-
-        <!-- page specific plugin styles -->
         <link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
-        <link rel="stylesheet" href="assets/css/chosen.min.css" />
-        <link rel="stylesheet" href="assets/css/datepicker.min.css" />
-        <link rel="stylesheet" href="assets/css/bootstrap-timepicker.min.css" />
-        <link rel="stylesheet" href="assets/css/daterangepicker.min.css" />
-        <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
-        <link rel="stylesheet" href="assets/css/colorpicker.min.css" />
-
-        <!-- text fonts -->
         <link rel="stylesheet" href="assets/fonts/fonts.googleapis.com.css" />
-
-        <!-- ace styles -->
         <link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
-
-        <!--[if lte IE 9]>
-                <link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
-        <![endif]-->
-
-        <!--[if lte IE 9]>
-          <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
-        <![endif]-->
-
-        <!-- inline styles related to this page -->
-
-        <!-- ace settings handler -->
+        <link rel="stylesheet" href="assets/css/style.css"/>
         <script src="assets/js/ace-extra.min.js"></script>
-
-        <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-
-        <!--[if lte IE 8]>
-        <script src="assets/js/html5shiv.min.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-        <![endif]-->
+        <script type="text/javascript">
+            if ('ontouchstart' in document.documentElement)
+                document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        </script>
+        <script src="assets/js/jquery.2.1.1.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery-ui.custom.min.js"></script>
+        <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+        <script src="assets/js/jquery.dataTables.min.js"></script>
+        <script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
+        <script src="assets/js/dataTables.tableTools.min.js"></script>
+        <script src="assets/js/dataTables.colVis.min.js"></script>
+        <script src="assets/js/jquery.inputmask.bundle.js"></script>
+        <script src="assets/js/ace-elements.min.js"></script>
+        <script src="assets/js/ace.min.js"></script>
     </head>
 
     <body class="no-skin">
         <div id="navbar" class="navbar navbar-default">
             <script type="text/javascript">
-                try {
-                    ace.settings.check('navbar', 'fixed')
-                } catch (e) {
-                }
+            try {
+                ace.settings.check('navbar', 'fixed')
+            } catch (e) {
+            }
             </script>
 
             <div class="navbar-container" id="navbar-container">
@@ -186,13 +168,12 @@
                         <ul class="breadcrumb">
                             <li>
                                 <i class="ace-icon fa fa-home home-icon"></i>
-                                <a href="#">Home</a>
+                                <a href="index">Home</a>
                             </li>
-
                             <li>
-                                <a href="#">Forms</a>
+                                <a href="${requestScope.servlet}"><span>${requestScope.servlet}</span></a>
                             </li>
-                            <li class="active">Form Elements</li>
-                        </ul><!-- /.breadcrumb -->
+                            <li class="active"><span>${requestScope.method}</span></li>
+                        </ul>
                     </div>
 

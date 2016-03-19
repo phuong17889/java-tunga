@@ -1,14 +1,12 @@
 <%@include file="../layout/header.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <div class="page-content">
-
     <div class="page-header">
         <h1>
-            Menu
+            Food
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                Add a new menu
+                Update an existing food
             </small>
         </h1>
     </div><!-- /.page-header -->
@@ -31,7 +29,7 @@
                     <div class="col-sm-9">
                         <select class="col-sm-5" name="menu_id">
                             <c:forEach var="menu" items="${menus}">
-                                <option value="${menu.id}" <c:if test="${food.menu_id == menu.id}">selected</c:if>>${menu.name}</option>
+                                <option value="${menu.id}" <c:if test="${food.menuId == menu.id}">selected</c:if>>${menu.name}</option>
                             </c:forEach>
                         </select>
                     </div>

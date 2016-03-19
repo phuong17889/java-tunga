@@ -3,47 +3,49 @@
 <div class="page-content">
     <div class="page-header">
         <h1>
-            Menu
+            Food
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                List of all menu
+                List of all food
             </small>
         </h1>
     </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="table-header">
-                List of all menu
+                List of all food
             </div>
             <div>
                 <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th class="col-sm-1">Menu ID</th>
-                            <th>Menu's name</th>
-                            <th class="col-sm-3">Order</th>
+                            <th class="col-sm-1">Food ID</th>
+                            <th class="col-sm-2">Menu's name</th>
+                            <th>Food's name</th>
+                            <th class="col-sm-2">Image</th>
+                            <th class="col-sm-2">Price</th>
                             <th class="col-sm-2"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="menu" items="${menus}">
+                        <c:forEach var="food" items="${foods}">
                             <tr>
-                                <td class="col-sm-1">
-                                    ${menu.id}
-                                </td>
-                                <td>${menu.name}</td>
-                                <td class="col-sm-3">${menu.order}</td>
+                                <td>${food.id}</td>
+                                <td>${food.menuId}</td>
+                                <td>${food.name}</td>
+                                <td>${food.image}</td>
+                                <td>${food.price}</td>
                                 <td class="col-sm-2">
                                     <div class="action-buttons">
-                                        <a class="blue" href="menu?action=view&id=${menu.id}">
+                                        <a class="blue" href="food?action=view&id=${food.id}">
                                             <i class="ace-icon fa fa-search-plus bigger-130"></i>
                                         </a>
 
-                                        <a class="green" href="menu?action=edit&id=${menu.id}">
+                                        <a class="green" href="food?action=edit&id=${food.id}">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
 
-                                        <a data-bind="" class="red" href="menu?action=delete&id=${menu.id}">
+                                        <a data-bind="" class="red" href="food?action=delete&id=${food.id}">
                                             <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                         </a>
                                     </div>
@@ -61,6 +63,8 @@
         bAutoWidth: false,
         "aoColumns": [
             null, null, null,
+            {"bSortable": false},
+            null,
             {"bSortable": false}
         ]
     });

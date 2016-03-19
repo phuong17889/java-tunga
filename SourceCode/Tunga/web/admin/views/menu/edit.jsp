@@ -6,7 +6,7 @@
             Menu
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
-                Add a new menu
+                Update an existing menu
             </small>
         </h1>
     </div><!-- /.page-header -->
@@ -15,19 +15,20 @@
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
             <form class="form-horizontal" method="POST" role="form" action="">
-                <input type="hidden" name="action" value="add">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="id" value="${menu.id}">
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
 
                     <div class="col-sm-9">
-                        <input type="text" id="form-field-1" name="name" value="${requestScope.name}" placeholder="Menu's name" class="col-sm-5" />
+                        <input type="text" id="form-field-1" name="name" value="${menu.name}" placeholder="Menu's name" class="col-sm-5" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Order </label>
 
                     <div class="col-sm-9">
-                        <input type="number" id="form-field-1" name="order" value="${requestScope.order}" class="col-sm-2" />
+                        <input type="number" id="form-field-1" name="order" value="${menu.order}" class="col-sm-2" />
                     </div>
                 </div>
 
@@ -51,9 +52,8 @@
     </div><!-- /.row -->
 </div><!-- /.page-content -->
 <script>
-    <c:if test="${not empty sessionScope.message}">
-        alert("<c:out value="${sessionScope.message}"/>");
-        <c:remove var="message" scope="session"/>
-   </c:if>
+    <c:if test="${not empty requestScope.message}">
+    alert("<c:out value="${requestScope.message}"/>");
+    </c:if>
 </script>
 <%@include file="../layout/footer.jsp" %>

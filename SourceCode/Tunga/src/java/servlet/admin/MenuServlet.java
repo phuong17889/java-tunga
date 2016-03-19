@@ -12,7 +12,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.MenuModel;
 
 /**
@@ -45,10 +44,65 @@ public class MenuServlet extends AdminServlet {
             case "index":
                 this.actionIndex(request, response);
                 break;
+            case "edit":
+                this.actionEdit(request, response);
+                break;
+            case "view":
+                this.actionView(request, response);
+                break;
+            case "delete":
+                this.actionDelete(request, response);
+                break;
             default:
                 this.actionIndex(request, response);
                 break;
         }
+    }
+
+    private void actionView(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.setTitle(request, "View an existing menu");
+        this.setActiveSidebar(request, "menu/index");
+        int id = Integer.parseInt(request.getParameter("id"));
+        Menu m = mm.find(id);
+        if (m == null) {
+            throw new ServletException("Not found");
+        }
+        request.setAttribute("menu", m);
+        this.include("views/menu/view.jsp", request, response);
+    }
+
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Menu m = mm.find(id);
+        if (m != null && mm.delete(id)) {
+            request.setAttribute("message", "success");
+        } else {
+            request.setAttribute("message", "error");
+        }
+        this.actionIndex(request, response);
+    }
+
+    private void actionEdit(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.setTitle(request, "Edit a menu");
+        this.setActiveSidebar(request, "menu/index");
+        int id = Integer.parseInt(request.getParameter("id"));
+        Menu m = mm.find(id);
+        if (this.isPost(request) && m != null) {
+            String name = request.getParameter("name");
+            int order = Integer.parseInt(request.getParameter("order"));
+            m.setName(name);
+            m.setOrder(order);
+            if (mm.update(id, m)) {
+                request.setAttribute("message", "success");
+            } else {
+                request.setAttribute("message", "error");
+            }
+        }
+        request.setAttribute("menu", m);
+        this.include("views/menu/edit.jsp", request, response);
     }
 
     private void actionAdd(HttpServletRequest request, HttpServletResponse response)
@@ -59,11 +113,10 @@ public class MenuServlet extends AdminServlet {
             String name = request.getParameter("name");
             int order = Integer.parseInt(request.getParameter("order"));
             Menu m = new Menu(name, order);
-            HttpSession session = request.getSession();
             if (mm.insert(m)) {
-                session.setAttribute("message", "success");
+                request.setAttribute("message", "success");
             } else {
-                session.setAttribute("message", "error");
+                request.setAttribute("message", "error");
             }
         }
         this.include("views/menu/add.jsp", request, response);

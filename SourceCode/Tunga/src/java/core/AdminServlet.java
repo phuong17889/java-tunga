@@ -11,12 +11,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import utility.DataProcess;
 
 /**
  *
  * @author MyPC
  */
 public class AdminServlet extends HttpServlet {
+
+    public DataProcess dt = new DataProcess();
 
     public void setTitle(HttpServletRequest request, String title) {
         request.setAttribute("title", title);
@@ -37,10 +40,11 @@ public class AdminServlet extends HttpServlet {
         rd.include(request, response);
     }
 
-    public void setActiveSidebar(HttpServletRequest request, String name) {
-        String[] names = name.split("/");
-        String servlet = names[0];
-        String method = names[1];
+    public void setActiveSidebar(HttpServletRequest request, String route) {
+        String[] routes = route.split("/");
+        String servlet = routes[0];
+        String method = routes[1];
+        request.setAttribute("route", route);
         request.setAttribute("servlet", servlet);
         request.setAttribute("method", method);
     }
