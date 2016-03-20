@@ -33,6 +33,7 @@
         <script src="${themeUrl}/assets/js/dataTables.tableTools.min.js"></script>
         <script src="${themeUrl}/assets/js/dataTables.colVis.min.js"></script>
         <script src="${themeUrl}/assets/js/jquery.inputmask.bundle.js"></script>
+        <script src="${themeUrl}/assets/tinymce/tinymce.min.js"></script>
         <script src="${themeUrl}/assets/js/ace-elements.min.js"></script>
         <script src="${themeUrl}/assets/js/ace.min.js"></script>
     </head>
@@ -58,7 +59,7 @@
                 </button>
 
                 <div class="navbar-header pull-left">
-                    <a href="index.html" class="navbar-brand">
+                    <a href="index" class="navbar-brand">
                         <small>
                             <i class="fa fa-leaf"></i>
                             Tunga Restaurant Control panel
@@ -81,7 +82,7 @@
 
                             <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                                 <li>
-                                    <a href="#">
+                                    <a href="index?action=logout">
                                         <i class="ace-icon fa fa-power-off"></i>
                                         Logout
                                     </a>
@@ -101,7 +102,7 @@
                 }
             </script>
 
-            <div id="sidebar" class="sidebar                  responsive">
+            <div id="sidebar" class="sidebar responsive">
                 <script type="text/javascript">
                     try {
                         ace.settings.check('sidebar', 'fixed')

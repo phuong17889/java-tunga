@@ -38,7 +38,7 @@
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Description </label>
 
                     <div class="col-sm-9">
-                        <textarea readonly="readonly" name="description" placeholder="Food's description" class="col-sm-5">${food.description}</textarea>
+                        ${food.description}
                     </div>
                 </div>
                 <div class="form-group">

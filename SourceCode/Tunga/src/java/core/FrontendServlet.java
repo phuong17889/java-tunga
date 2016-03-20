@@ -5,12 +5,14 @@
  */
 package core;
 
+import entity.InvoiceFood;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.MenuModel;
 import utility.Helper;
 
@@ -26,7 +28,14 @@ public class FrontendServlet extends HttpServlet {
         request.setAttribute("title", title);
     }
 
+    public boolean isPost(HttpServletRequest request) {
+        return "POST".equals(request.getMethod());
+    }
+
     public void include(String viewPath, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+        request.setAttribute("cart", cart);
         request.setAttribute("menus", MenuModel.findAll());
         request.setAttribute("themeUrl", Helper.baseUrl() + "/frontend");
         RequestDispatcher rd = request.getRequestDispatcher("frontend/views/" + viewPath);

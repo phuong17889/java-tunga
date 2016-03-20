@@ -10,6 +10,14 @@
         <servlet-name>FrontendMenuServlet</servlet-name>
         <servlet-class>servlet.frontend.MenuServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FrontendFoodServlet</servlet-name>
+        <servlet-class>servlet.frontend.FoodServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FrontendOrderServlet</servlet-name>
+        <servlet-class>servlet.frontend.OrderServlet</servlet-class>
+    </servlet>
     <!--end index servlet-->
     <!--begin admin servlet-->
     <servlet>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>FrontendMenuServlet</servlet-name>
         <url-pattern>/menu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendFoodServlet</servlet-name>
+        <url-pattern>/food</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendOrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
     </servlet-mapping>
     <!--end mapping index-->
     <!--begin mapping admin-->

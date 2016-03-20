@@ -56,7 +56,7 @@
                             <li>
                                 <div><a href="food?id=${food.id}"><img src="${food.imageUrl}" alt=""></a>
                                     <div class="col1 upp"> <a href="food?id=${food.id}">${food.name}</a></div>
-                                    <span> ${food.description}</span>
+                                    <span> ${food.shortDescription}</span>
                                     <div class="price">${helper:currency(food.price)}</div>
                                 </div>
                             </li>

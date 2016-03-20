@@ -69,6 +69,17 @@ public class Food {
         return description;
     }
 
+    public String getShortDescription() {
+        String shortDesc = "";
+        if (description != null && !"".equals(description)) {
+            String[] desc = description.split(" ");
+            for (int i = 0; i < 10; i++) {
+                shortDesc += desc[i] + " ";
+            }
+        }
+        return shortDesc.trim();
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

@@ -52,9 +52,16 @@
                             <div class="cart fleft relative">
                                 <a href="cart" class="relative cart-info">
                                     <i class="fa fa-shopping-cart fa-2x"></i>
-                                    <span class="count">0</span>
-
-                                    <p class="text">Empty cart!</p>
+                                    <c:choose>
+                                        <c:when test="${not empty requestScope.cart && requestScope.cart != null}">
+                                            <span class="count">${cart.totalCount}</span>
+                                            <p class="text">${helper:currency(cart.totalPrice)}</p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="count">0</span>
+                                            <p class="text">Empty cart!</p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </a>
                             </div>
                             <div class="clear"></div>

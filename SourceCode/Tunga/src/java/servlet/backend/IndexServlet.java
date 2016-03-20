@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,7 +30,11 @@ public class IndexServlet extends BackendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if (request.getSession().getAttribute("login") != (Object) 1) {
+        if ("logout".equals(request.getParameter("action"))) {
+            HttpSession session = request.getSession();
+            session.setAttribute("login", 0);
+            response.sendRedirect("login");
+        } else if (request.getSession().getAttribute("login") != (Object) 1) {
             response.sendRedirect("login");
         } else {
             this.include("site/index.jsp", request, response);
