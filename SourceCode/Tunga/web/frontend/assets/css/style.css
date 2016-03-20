@@ -328,7 +328,7 @@ header h1 a img {
     margin-bottom: 19px;
 }
 
-.prev {
+.car_wrap .prev {
     background: url(../images/prevnext.png) 0 bottom no-repeat;
     display: block;
     position: absolute;
@@ -339,11 +339,11 @@ header h1 a img {
     height: 30px;
 }
 
-.prev:hover {
+.car_wrap .prev:hover {
     background-position: 0 0;
 }
 
-.next {
+.car_wrap .next {
     background: url(../images/prevnext.png) right bottom no-repeat;
     display: block;
     z-index: 999;
@@ -354,7 +354,7 @@ header h1 a img {
     height: 30px;
 }
 
-.next:hover {
+.car_wrap .next:hover {
     background-position: right 0;
 }
 

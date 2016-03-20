@@ -25,7 +25,6 @@ public class FoodModel extends EntityModel {
     public static boolean insert(Food f) {
         int result = 0;
         try {
-
             String sql = "INSERT INTO food (menuId, name, description, price, image) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setInt(1, f.getMenuId());

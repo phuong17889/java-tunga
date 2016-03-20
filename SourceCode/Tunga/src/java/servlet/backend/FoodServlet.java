@@ -42,27 +42,31 @@ public class FoodServlet extends BackendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-//        this.checkLogin(request, response);
+        this.checkLogin(request, response);
         String action = request.getParameter("action");
-        switch (action) {
-            case "add":
-                this.actionAdd(request, response);
-                break;
-            case "index":
-                this.actionIndex(request, response);
-                break;
-            case "edit":
-                this.actionEdit(request, response);
-                break;
-            case "view":
-                this.actionView(request, response);
-                break;
-            case "delete":
-                this.actionDelete(request, response);
-                break;
-            default:
-                this.actionIndex(request, response);
-                break;
+        if (action == null) {
+            this.actionIndex(request, response);
+        } else {
+            switch (action) {
+                case "add":
+                    this.actionAdd(request, response);
+                    break;
+                case "index":
+                    this.actionIndex(request, response);
+                    break;
+                case "edit":
+                    this.actionEdit(request, response);
+                    break;
+                case "view":
+                    this.actionView(request, response);
+                    break;
+                case "delete":
+                    this.actionDelete(request, response);
+                    break;
+                default:
+                    this.actionIndex(request, response);
+                    break;
+            }
         }
     }
 

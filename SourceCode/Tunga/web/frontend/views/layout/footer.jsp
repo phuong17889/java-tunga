@@ -11,7 +11,7 @@
 </div>
 <footer>
     <div class="container_12">
-        <div class="grid_12"> Gourmet Traditional Restaurant &copy; 2045 | <a href="#">Privacy Policy</a> | Design by: <a href="http://www.templatemonster.com/">TemplateMonster.com</a> </div>
+        <div class="grid_12"> Tunga Traditional Restaurant &copy; 2016 | Powered by: Group 1 </div>
         <div class="clear"></div>
     </div>
 </footer>

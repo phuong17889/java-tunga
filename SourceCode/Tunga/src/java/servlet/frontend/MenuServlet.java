@@ -3,21 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.backend;
+package servlet.frontend;
 
-import core.BackendServlet;
-import core.EntityModel;
+import core.FrontendServlet;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import model.MenuModel;
 
 /**
  *
  * @author MyPC
  */
-public class LoginServlet extends BackendServlet {
+public class MenuServlet extends FrontendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,11 +30,9 @@ public class LoginServlet extends BackendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if (request.getSession().getAttribute("login") == (Object) 1) {
-            response.sendRedirect("index");
-        } else {
-            this.include("site/login.jsp", request, response);
-        }
+        int id = Integer.parseInt(request.getParameter("id"));
+        request.setAttribute("menu", MenuModel.find(id));
+        this.include("menu/index.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -64,14 +61,6 @@ public class LoginServlet extends BackendServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        HttpSession session = request.getSession(true);
-        if (EntityModel.login(username, password)) {
-            session.setAttribute("login", 1);
-        } else {
-            request.setAttribute("error", "Wrong username or password!");
-        }
         processRequest(request, response);
     }
 

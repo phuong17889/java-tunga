@@ -33,7 +33,7 @@ public class MenuServlet extends BackendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-//        this.checkLogin(request, response);
+        this.checkLogin(request, response);
         String action = request.getParameter("action");
         switch (action) {
             case "add":

@@ -6,6 +6,7 @@
 package entity;
 
 import model.MenuModel;
+import utility.Helper;
 
 /**
  *
@@ -86,6 +87,10 @@ public class Food {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getImageUrl() {
+        return Helper.baseUrl() + "/uploads/" + image;
     }
 
     public Menu getMenu() {

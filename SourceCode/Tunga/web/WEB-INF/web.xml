@@ -6,6 +6,10 @@
         <servlet-name>FrontendIndexServlet</servlet-name>
         <servlet-class>servlet.frontend.IndexServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FrontendMenuServlet</servlet-name>
+        <servlet-class>servlet.frontend.MenuServlet</servlet-class>
+    </servlet>
     <!--end index servlet-->
     <!--begin admin servlet-->
     <servlet>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>FrontendIndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendMenuServlet</servlet-name>
+        <url-pattern>/menu</url-pattern>
     </servlet-mapping>
     <!--end mapping index-->
     <!--begin mapping admin-->

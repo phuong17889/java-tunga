@@ -4,7 +4,6 @@
     Author     : MyPC
 --%>
 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="../layout/header.jsp" %>
 <div class="container">
     <div class="grid_12">
@@ -16,28 +15,28 @@
                     <div>
                         <div class="form-group col-sm-5">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-user fa-2x"></i></span>
-                            <input type="text" class="col-sm-12 form-control-static" placeholder="Your Name">
+                            <input name="name" type="text" class="col-sm-12 form-control-static" placeholder="Your Name">
                         </div>
                         <div class="form-group col-sm-7">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-envelope fa-2x"></i></span>
-                            <input type="text" class="col-sm-12 form-control-static" placeholder="Your E-MAIL">
+                            <input name="email" type="email" class="col-sm-12 form-control-static" placeholder="Your E-MAIL">
                         </div>
                     </div>
                     <div>
                         <div class="form-group col-sm-4">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-phone fa-2x"></i></span>
-                            <input type="text" class="col-sm-12 form-control-static" placeholder="Your Phone">
+                            <input name="phone" type="text" class="col-sm-12 form-control-static number-only" placeholder="Your Phone">
                         </div>
                         <div class="form-group col-sm-4">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-list-ol fa-2x"></i></span>
-                            <input type="text" class="col-sm-12 form-control-static" placeholder="Number of guest">
+                            <input name="number" type="text" class="col-sm-12 form-control-static number-only" placeholder="Number of guest">
                         </div>
                         <div class="form-group col-sm-4">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-calendar fa-2x"></i></span>
-                            <input type="text" class="col-sm-12 form-control-static" placeholder="09-06-2014">
+                            <input name="date" type="text" class="col-sm-12 form-control-static date-picker" placeholder="${today}">
                         </div>
                     </div>
-                    <button class="btn btn-success booknow"> BOOK NOW </button>
+                        <button class="btn btn-success booknow" type="submit"> BOOK NOW </button>
                 </form>
             </div>
         </div>
@@ -55,10 +54,10 @@
                     <ul id="carousel${menu.id}" class="carousel1">
                         <c:forEach var="food" items="${menu.foods}">
                             <li>
-                                <div><a href="food?id=${food.id}"><img src="${food.image}" alt=""></a>
+                                <div><a href="food?id=${food.id}"><img src="${food.imageUrl}" alt=""></a>
                                     <div class="col1 upp"> <a href="food?id=${food.id}">${food.name}</a></div>
                                     <span> ${food.description}</span>
-                                    <div class="price">${food.price}$</div>
+                                    <div class="price">${helper:currency(food.price)}</div>
                                 </div>
                             </li>
                         </c:forEach>
@@ -83,7 +82,7 @@
                     max: 4
                 },
                 height: 'auto',
-                width: 240,
+                width: 240
             },
             responsive: false,
             scroll: 1,
@@ -94,6 +93,20 @@
             }
         });
     </c:forEach>
+    });
+    $(".number-only").keydown(function (e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+            return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    $('.date-picker').datepicker({
+        orientation: "bottom left",
+        format: "M dd, yyyy",
+        autoclose: true,
+        todayHighlight: true
     });
 </script>
 <%@include file="../layout/footer.jsp" %>

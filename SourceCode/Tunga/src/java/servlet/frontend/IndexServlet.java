@@ -6,14 +6,15 @@
 package servlet.frontend;
 
 import core.FrontendServlet;
-import entity.Menu;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.MenuModel;
 
 /**
  *
@@ -33,9 +34,10 @@ public class IndexServlet extends FrontendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            this.include("site/index.jsp", request, response);
-        }
+        Date date = new Date();
+        DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+        request.setAttribute("today", df.format(date));
+        this.include("site/index.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
