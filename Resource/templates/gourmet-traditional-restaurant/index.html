@@ -16,28 +16,10 @@
 <script src="js/tms-0.4.1.js"></script>
 <script>
 $(window).load(function () {
-    $('.slider')._TMS({
-        show: 0,
-        pauseOnHover: false,
-        prevBu: '.prev',
-        nextBu: '.next',
-        playBu: false,
-        duration: 800,
-        preset: 'fade',
-        pagination: true, //'.pagination',true,'<ul></ul>'
-        pagNums: false,
-        slideshow: 8000,
-        numStatus: false,
-        banners: false,
-        waitBannerAnimation: false,
-        progressBar: false
-    })
-});
-$(window).load(function () {
     $('.carousel1').carouFredSel({
         auto: false,
-        prev: '.prev',
-        next: '.next',
+        prev: $(this).parent().find('.prev'),
+        next: $(this).parent().find('.next'),
         width: 960,
         items: {
             visible: {
@@ -117,6 +99,49 @@ $(window).load(function () {
       <div class="clear"></div>
       <div class="grid_12">
         <div class="hor_separator"></div>
+      </div>
+      <div class="grid_12">
+        <div class="car_wrap">
+          <h2>Best Choice</h2>
+          <a href="#" class="prev"></a><a href="#" class="next"></a>
+          <ul class="carousel1">
+            <li>
+              <div><img src="images/page1_img1.jpg" alt="">
+                <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
+                <span> Dorem ipsum dolor amet consectetur</span>
+                <div class="price">45$</div>
+              </div>
+            </li>
+            <li>
+              <div><img src="images/page1_img2.jpg" alt="">
+                <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
+                <span> Dorem ipsum dolor amet consectetur</span>
+                <div class="price">45$</div>
+              </div>
+            </li>
+            <li>
+              <div><img src="images/page1_img3.jpg" alt="">
+                <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
+                <span> Dorem ipsum dolor amet consectetur</span>
+                <div class="price">45$</div>
+              </div>
+            </li>
+            <li>
+              <div><img src="images/page1_img4.jpg" alt="">
+                <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
+                <span> Dorem ipsum dolor amet consectetur</span>
+                <div class="price">45$</div>
+              </div>
+            </li>
+            <li>
+              <div><img src="images/page1_img3.jpg" alt="">
+                <div class="col1 upp"> <a href="#">Lorem ipsum doamet consectet</a></div>
+                <span> Dorem ipsum dolor amet consectetur</span>
+                <div class="price">45$</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="grid_12">
         <div class="car_wrap">

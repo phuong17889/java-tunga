@@ -17,13 +17,6 @@
             <!-- PAGE CONTENT BEGINS -->
             <form class="form-horizontal" method="POST" role="form" action="" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
-
-                    <div class="col-sm-9">
-                        <input readonly="readonly" type="text" name="name" value="${food.name}" placeholder="Food's name" class="col-sm-5" />
-                    </div>
-                </div>
-                <div class="form-group">
 
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Menu </label>
                     <div class="col-sm-9">
@@ -32,6 +25,20 @@
                                 <option value="${menu.id}" <c:if test="${food.menuId == menu.id}">selected</c:if>>${menu.name}</option>
                             </c:forEach>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
+
+                    <div class="col-sm-9">
+                        <input readonly="readonly" type="text" name="name" value="${food.name}" placeholder="Food's name" class="col-sm-5" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Description </label>
+
+                    <div class="col-sm-9">
+                        <textarea readonly="readonly" name="description" placeholder="Food's description" class="col-sm-5">${food.description}</textarea>
                     </div>
                 </div>
                 <div class="form-group">

@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet;
+package servlet.backend;
 
-import entity.Menu;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.MenuModel;
 
 /**
  *
@@ -35,11 +32,12 @@ public class IndexServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            MenuModel mm = new MenuModel();
-            List<Menu> list = mm.findAll();
-            request.setAttribute("menus", list);
-            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-            rd.include(request, response);
+            if (request.getSession().getAttribute("login") != (Object) 1) {
+                response.sendRedirect("login");
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("site/index.jsp");
+                rd.include(request, response);
+            }
         }
     }
 

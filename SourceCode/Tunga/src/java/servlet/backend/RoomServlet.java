@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.admin;
+package servlet.backend;
 
-import core.AdminServlet;
+import core.BackendServlet;
 import entity.Room;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +18,7 @@ import model.RoomModel;
  *
  * @author TuanDo
  */
-public class RoomServlet extends AdminServlet {
+public class RoomServlet extends BackendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -108,7 +108,7 @@ public class RoomServlet extends AdminServlet {
                 request.setAttribute("message", "failed");
             }
         }
-        this.include("views/room/add.jsp", request, response);
+        this.include("room/add.jsp", request, response);
     }
 
     private void actionIndex(HttpServletRequest request, HttpServletResponse response)
@@ -117,7 +117,7 @@ public class RoomServlet extends AdminServlet {
         this.setActiveSidebar(request, "room/index");
         List<Room> list = RoomModel.findAll();
         request.setAttribute("rooms", list);
-        this.include("views/room/index.jsp", request, response);
+        this.include("room/index.jsp", request, response);
     }
 
     private void actionView(HttpServletRequest request, HttpServletResponse response)
@@ -130,7 +130,7 @@ public class RoomServlet extends AdminServlet {
             throw new ServletException("Not found");
         }
         request.setAttribute("room", r);
-        this.include("views/room/view.jsp", request, response);
+        this.include("room/view.jsp", request, response);
     }
 
     private void actionDelete(HttpServletRequest request, HttpServletResponse response)
@@ -163,7 +163,7 @@ public class RoomServlet extends AdminServlet {
             }
         }
         request.setAttribute("room", r);
-        this.include("views/room/edit.jsp", request, response);
+        this.include("room/edit.jsp", request, response);
     }
 
 }

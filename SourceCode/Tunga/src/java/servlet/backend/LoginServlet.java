@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.admin;
+package servlet.backend;
 
-import core.AdminServlet;
+import core.BackendServlet;
 import core.EntityModel;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author MyPC
  */
-public class LoginServlet extends AdminServlet {
+public class LoginServlet extends BackendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,7 +35,7 @@ public class LoginServlet extends AdminServlet {
         if (request.getSession().getAttribute("login") == (Object) 1) {
             response.sendRedirect("index");
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("views/site/login.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("site/login.jsp");
             rd.include(request, response);
         }
     }

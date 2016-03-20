@@ -699,26 +699,28 @@ footer a:hover {
     font-size: 18px;
     height: 50px;
     margin-bottom: 20px;
-    padding: 0 30px;
-    width: 25%;
-}
-#bookonline form input.email {
-    float: right;
-    width: 42%;
-}
-#bookonline form input.name {
-    width: 42%;
-}
-#bookonline form input.to {
-    margin: 0 2.5%;
+    padding: 0 50px;
 }
 button.booknow {
-    background: #ff5a0b none repeat scroll 0 0;
-    border-bottom: 5px solid #c84d29;
     border-radius: 10px;
     color: #fff;
     font-size: 30px;
     font-weight: bold;
     margin-left: 10%;
     width: 80%;
+}
+.menu_block nav{
+    float:left;
+}
+.menu_block .cart{
+    float:left;
+    margin-left:20px;
+}
+#bookonline .form-control-feedback{
+    left: 10px;
+    height: 50px;
+    width: 50px;
+    color: #fff;
+    line-height: 50px;
+    top: 10px;
 }

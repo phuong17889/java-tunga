@@ -1,75 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!--begin servlet-->
-        <!--begin index servlet-->
-        <servlet>
-            <servlet-name>IndexServlet</servlet-name>
-            <servlet-class>servlet.IndexServlet</servlet-class>
-        </servlet>
-        <!--end index servlet-->
-        
-        <!--begin admin servlet-->
-        <servlet>
-            <servlet-name>AdminLoginServlet</servlet-name>
-            <servlet-class>servlet.admin.LoginServlet</servlet-class>
-        </servlet>
-        <servlet>
-            <servlet-name>AdminIndexServlet</servlet-name>
-            <servlet-class>servlet.admin.IndexServlet</servlet-class>
-        </servlet>
-        <servlet>
-            <servlet-name>AdminMenuServlet</servlet-name>
-            <servlet-class>servlet.admin.MenuServlet</servlet-class>
-        </servlet>
-        <servlet>
-            <servlet-name>AdminFoodServlet</servlet-name>
-            <servlet-class>servlet.admin.FoodServlet</servlet-class>
-        </servlet>
-        <servlet>
-            <servlet-name>AdminRoomServlet</servlet-name>
-            <servlet-class>servlet.admin.RoomServlet</servlet-class>
-        </servlet>
-        <servlet>
-            <servlet-name>AdminTableServlet</servlet-name>
-            <servlet-class>servlet.admin.TableServlet</servlet-class>
-        </servlet>
-        <!--end admin servlet-->
+    <!--begin index servlet-->
+    <servlet>
+        <servlet-name>FrontendIndexServlet</servlet-name>
+        <servlet-class>servlet.frontend.IndexServlet</servlet-class>
+    </servlet>
+    <!--end index servlet-->
+    <!--begin admin servlet-->
+    <servlet>
+        <servlet-name>BackendLoginServlet</servlet-name>
+        <servlet-class>servlet.backend.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <servlet-class>servlet.backend.IndexServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendMenuServlet</servlet-name>
+        <servlet-class>servlet.backend.MenuServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendFoodServlet</servlet-name>
+        <servlet-class>servlet.backend.FoodServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendRoomServlet</servlet-name>
+        <servlet-class>servlet.backend.RoomServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendTableServlet</servlet-name>
+        <servlet-class>servlet.backend.TableServlet</servlet-class>
+    </servlet>
+    <!--end admin servlet-->
     <!--end servlet-->
-    
     <!--begin mapping-->
-        <!--begin mapping index-->
-        <servlet-mapping>
-            <servlet-name>IndexServlet</servlet-name>
-            <url-pattern>/index</url-pattern>
-        </servlet-mapping>
-        <!--end mapping index-->
-        
-        <!--begin mapping admin-->
-        <servlet-mapping>
-            <servlet-name>AdminLoginServlet</servlet-name>
-            <url-pattern>/admin/login</url-pattern>
-        </servlet-mapping>
-        <servlet-mapping>
-            <servlet-name>AdminIndexServlet</servlet-name>
-            <url-pattern>/admin/index</url-pattern>
-        </servlet-mapping>
-        <servlet-mapping>
-            <servlet-name>AdminMenuServlet</servlet-name>
-            <url-pattern>/admin/menu</url-pattern>
-        </servlet-mapping>
-        <servlet-mapping>
-            <servlet-name>AdminFoodServlet</servlet-name>
-            <url-pattern>/admin/food</url-pattern>
-        </servlet-mapping>
-        <servlet-mapping>
-            <servlet-name>AdminRoomServlet</servlet-name>
-            <url-pattern>/admin/room</url-pattern>
-        </servlet-mapping>
-        <servlet-mapping>
-            <servlet-name>AdminTableServlet</servlet-name>
-            <url-pattern>/admin/table</url-pattern>
-        </servlet-mapping>
-        <!--end mapping admin-->
+    <!--begin mapping index-->
+    <servlet-mapping>
+        <servlet-name>FrontendIndexServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+    <!--end mapping index-->
+    <!--begin mapping admin-->
+    <servlet-mapping>
+        <servlet-name>BackendLoginServlet</servlet-name>
+        <url-pattern>/admin/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <url-pattern>/admin/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendMenuServlet</servlet-name>
+        <url-pattern>/admin/menu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendFoodServlet</servlet-name>
+        <url-pattern>/admin/food</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendRoomServlet</servlet-name>
+        <url-pattern>/admin/room</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendTableServlet</servlet-name>
+        <url-pattern>/admin/table</url-pattern>
+    </servlet-mapping>
+    <!--end mapping admin-->
     <!--end mapping-->
     <session-config>
         <session-timeout>

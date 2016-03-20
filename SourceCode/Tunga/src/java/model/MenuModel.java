@@ -167,9 +167,10 @@ public class MenuModel extends EntityModel {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                String description = rs.getString("description");
                 float price = rs.getFloat("price");
                 String image = rs.getString("image");
-                Food f = new Food(id, menuId, name, price, image);
+                Food f = new Food(id, menuId, description, name, price, image);
                 list.add(f);
             }
             rs.close();

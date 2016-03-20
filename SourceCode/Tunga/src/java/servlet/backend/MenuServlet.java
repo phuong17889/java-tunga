@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.admin;
+package servlet.backend;
 
-import core.AdminServlet;
+import core.BackendServlet;
 import entity.Menu;
 import java.io.IOException;
 import java.util.List;
@@ -18,8 +18,8 @@ import model.MenuModel;
  *
  * @author MyPC
  */
-//TODO cần phải kế thừa AdminServlet
-public class MenuServlet extends AdminServlet {
+//TODO cần phải kế thừa BackendServlet
+public class MenuServlet extends BackendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,7 +67,7 @@ public class MenuServlet extends AdminServlet {
             throw new ServletException("Not found");
         }
         request.setAttribute("menu", m);
-        this.include("views/menu/view.jsp", request, response);
+        this.include("menu/view.jsp", request, response);
     }
 
     private void actionDelete(HttpServletRequest request, HttpServletResponse response)
@@ -100,7 +100,7 @@ public class MenuServlet extends AdminServlet {
             }
         }
         request.setAttribute("menu", m);
-        this.include("views/menu/edit.jsp", request, response);
+        this.include("menu/edit.jsp", request, response);
     }
 
     private void actionAdd(HttpServletRequest request, HttpServletResponse response)
@@ -117,7 +117,7 @@ public class MenuServlet extends AdminServlet {
                 request.setAttribute("message", "error");
             }
         }
-        this.include("views/menu/add.jsp", request, response);
+        this.include("menu/add.jsp", request, response);
     }
 
     private void actionIndex(HttpServletRequest request, HttpServletResponse response)
@@ -126,7 +126,7 @@ public class MenuServlet extends AdminServlet {
         this.setActiveSidebar(request, "menu/index");
         List<Menu> list = MenuModel.findAll();
         request.setAttribute("menus", list);
-        this.include("views/menu/index.jsp", request, response);
+        this.include("menu/index.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

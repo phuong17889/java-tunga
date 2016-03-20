@@ -3,32 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.admin;
+package servlet.backend;
 
-import core.AdminServlet;
-import entity.Food;
-import entity.Menu;
-import java.io.File;
-import java.io.FileOutputStream;
+import core.BackendServlet;
+import entity.Table;
+import entity.Room;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import model.FoodModel;
-import model.MenuModel;
-import utility.Helper;
+import model.TableModel;
+import model.RoomModel;
 
 /**
  *
  * @author TuanDo
  */
-@MultipartConfig
-public class FoodServlet extends AdminServlet {
+public class TableServlet extends BackendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -105,87 +97,55 @@ public class FoodServlet extends AdminServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String uploadFile(String column, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String path = Helper.appPath() + "uploads";
-        Part imagePart = request.getPart(column);
-        String imageName = getFileName(imagePart);
-        if (imageName != null) {
-            OutputStream out;
-            InputStream fileContent;
-            try {
-                out = new FileOutputStream(new File(path + File.separator + imageName));
-                fileContent = imagePart.getInputStream();
-                int read;
-                byte[] bytes = new byte[1024];
-                while ((read = fileContent.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-            } catch (Exception e) {
-                return null;
-            }
-        }
-        return imageName;
-    }
-
-    private String getFileName(Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
-    }
-
     private void actionAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.setTitle(request, "Add a new food");
-        this.setActiveSidebar(request, "food/add");
+        this.setTitle(request, "Add a new table");
+        this.setActiveSidebar(request, "table/add");
         if (this.isPost(request)) {
-            int menuId = Integer.parseInt(request.getParameter("menuId"));
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
             String name = request.getParameter("name");
+            int type = Integer.parseInt(request.getParameter("type"));
             float price = Float.parseFloat(request.getParameter("price"));
-            String imageName = this.uploadFile("image", request, response);
-            Food f = new Food(menuId, name, price, imageName);
-            if (FoodModel.insert(f)) {
+            Table t = new Table(roomId, name, type, price);
+            if (TableModel.insert(t)) {
                 request.setAttribute("message", "success");
             } else {
                 request.setAttribute("message", "failed");
             }
         }
-        List<Menu> list = MenuModel.findAll();
-        request.setAttribute("menus", list);
-        this.include("views/food/add.jsp", request, response);
+        List<Room> list = RoomModel.findAll();
+        request.setAttribute("rooms", list);
+        this.include("table/add.jsp", request, response);
     }
 
     private void actionIndex(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        this.setTitle(request, "List Food");
-        this.setActiveSidebar(request, "food/index");
-        List<Food> list = FoodModel.findAll();
-        request.setAttribute("foods", list);
-        this.include("views/food/index.jsp", request, response);
+        this.setTitle(request, "List Table");
+        this.setActiveSidebar(request, "table/index");
+        List<Table> list = TableModel.findAll();
+        request.setAttribute("tables", list);
+        this.include("table/index.jsp", request, response);
     }
 
     private void actionView(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        this.setTitle(request, "View an existing food");
-        this.setActiveSidebar(request, "food/index");
+        this.setTitle(request, "View an existing table");
+        this.setActiveSidebar(request, "table/index");
         int id = Integer.parseInt(request.getParameter("id"));
-        Food f = FoodModel.find(id);
-        if (f == null) {
+        Table t = TableModel.find(id);
+        if (t == null) {
             throw new ServletException("Not found");
         }
-        List<Menu> list = MenuModel.findAll();
-        request.setAttribute("menus", list);
-        request.setAttribute("food", f);
-        this.include("views/food/view.jsp", request, response);
+        List<Room> list = RoomModel.findAll();
+        request.setAttribute("rooms", list);
+        request.setAttribute("table", t);
+        this.include("table/view.jsp", request, response);
     }
 
     private void actionDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Food f = FoodModel.find(id);
-        if (f != null && FoodModel.delete(id)) {
+        Table t = TableModel.find(id);
+        if (t != null && TableModel.delete(id)) {
             request.setAttribute("message", "success");
         } else {
             request.setAttribute("message", "error");
@@ -195,31 +155,29 @@ public class FoodServlet extends AdminServlet {
 
     private void actionEdit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        this.setTitle(request, "Edit a food");
-        this.setActiveSidebar(request, "food/index");
+        this.setTitle(request, "Edit a table");
+        this.setActiveSidebar(request, "table/index");
         int id = Integer.parseInt(request.getParameter("id"));
-        Food f = FoodModel.find(id);
-        if (this.isPost(request) && f != null) {
-            int menuId = Integer.parseInt(request.getParameter("menuId"));
+        Table t = TableModel.find(id);
+        if (this.isPost(request) && t != null) {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
             String name = request.getParameter("name");
+            int type = Integer.parseInt(request.getParameter("type"));
             float price = Float.parseFloat(request.getParameter("price"));
-            String imageName = this.uploadFile("image", request, response);
-            f.setName(name);
-            f.setMenuId(menuId);
-            f.setPrice(price);
-            if (imageName != null) {
-                f.setImage(imageName);
-            }
-            if (FoodModel.update(id, f)) {
+            t.setName(name);
+            t.setRoomId(roomId);
+            t.setType(type);
+            t.setPrice(price);
+            if (TableModel.update(id, t)) {
                 request.setAttribute("message", "success");
             } else {
                 request.setAttribute("message", "error");
             }
         }
-        List<Menu> list = MenuModel.findAll();
-        request.setAttribute("menus", list);
-        request.setAttribute("food", f);
-        this.include("views/food/edit.jsp", request, response);
+        List<Room> list = RoomModel.findAll();
+        request.setAttribute("rooms", list);
+        request.setAttribute("table", t);
+        this.include("table/edit.jsp", request, response);
     }
 
 }

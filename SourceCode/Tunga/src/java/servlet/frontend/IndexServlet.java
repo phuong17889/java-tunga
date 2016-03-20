@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.admin;
+package servlet.frontend;
 
+import core.FrontendServlet;
+import entity.Menu;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.MenuModel;
 
 /**
  *
  * @author MyPC
  */
-public class IndexServlet extends HttpServlet {
+public class IndexServlet extends FrontendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,12 +34,7 @@ public class IndexServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            if (request.getSession().getAttribute("login") != (Object) 1) {
-                response.sendRedirect("login");
-            } else {
-                RequestDispatcher rd = request.getRequestDispatcher("views/site/index.jsp");
-                rd.include(request, response);
-            }
+            this.include("site/index.jsp", request, response);
         }
     }
 

@@ -18,13 +18,26 @@ public class Food {
     private String name;
     private float price;
     private String image;
+    private String description;
 
-    public Food(int id, int menuId, String name, float price, String image) {
+    public Food(int id, int menuId, String name, String description, float price, String image) {
         this.id = id;
         this.menuId = menuId;
+        this.description = description;
         this.name = name;
         this.price = price;
         this.image = image;
+    }
+
+    public Food(int menuId, String name, String description, float price, String image) {
+        this.menuId = menuId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+    }
+
+    public Food() {
     }
 
     public int getId() {
@@ -51,6 +64,14 @@ public class Food {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public float getPrice() {
         return price;
     }
@@ -67,17 +88,7 @@ public class Food {
         this.image = image;
     }
 
-    public Food(int menuId, String name, float price, String image) {
-        this.menuId = menuId;
-        this.name = name;
-        this.price = price;
-        this.image = image;
-    }
-
-    public Food() {
-    }
-    
-    public Menu getMenu(){
+    public Menu getMenu() {
         return MenuModel.find(this.menuId);
     }
 }

@@ -13,28 +13,28 @@
         <title>${requestScope.title} | Tunga Restaurant</title>
         <meta name="description" content="Common form elements and layouts" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="assets/font-awesome/4.2.0/css/font-awesome.min.css" />
-        <link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
-        <link rel="stylesheet" href="assets/fonts/fonts.googleapis.com.css" />
-        <link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
-        <link rel="stylesheet" href="assets/css/style.css"/>
-        <script src="assets/js/ace-extra.min.js"></script>
+        <link rel="stylesheet" href="${themeUrl}/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="${themeUrl}/assets/font-awesome/4.2.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="${themeUrl}/assets/css/jquery-ui.custom.min.css" />
+        <link rel="stylesheet" href="${themeUrl}/assets/fonts/fonts.googleapis.com.css" />
+        <link rel="stylesheet" href="${themeUrl}/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+        <link rel="stylesheet" href="${themeUrl}/assets/css/style.css"/>
+        <script src="${themeUrl}/assets/js/ace-extra.min.js"></script>
         <script type="text/javascript">
             if ('ontouchstart' in document.documentElement)
-                document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+                document.write("<script src='${themeUrl}/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
         </script>
-        <script src="assets/js/jquery.2.1.1.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-        <script src="assets/js/jquery-ui.custom.min.js"></script>
-        <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
-        <script src="assets/js/jquery.dataTables.min.js"></script>
-        <script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
-        <script src="assets/js/dataTables.tableTools.min.js"></script>
-        <script src="assets/js/dataTables.colVis.min.js"></script>
-        <script src="assets/js/jquery.inputmask.bundle.js"></script>
-        <script src="assets/js/ace-elements.min.js"></script>
-        <script src="assets/js/ace.min.js"></script>
+        <script src="${themeUrl}/assets/js/jquery.2.1.1.min.js"></script>
+        <script src="${themeUrl}/assets/js/bootstrap.min.js"></script>
+        <script src="${themeUrl}/assets/js/jquery-ui.custom.min.js"></script>
+        <script src="${themeUrl}/assets/js/jquery.ui.touch-punch.min.js"></script>
+        <script src="${themeUrl}/assets/js/jquery.dataTables.min.js"></script>
+        <script src="${themeUrl}/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+        <script src="${themeUrl}/assets/js/dataTables.tableTools.min.js"></script>
+        <script src="${themeUrl}/assets/js/dataTables.colVis.min.js"></script>
+        <script src="${themeUrl}/assets/js/jquery.inputmask.bundle.js"></script>
+        <script src="${themeUrl}/assets/js/ace-elements.min.js"></script>
+        <script src="${themeUrl}/assets/js/ace.min.js"></script>
     </head>
 
     <body class="no-skin">
@@ -70,7 +70,7 @@
                     <ul class="nav ace-nav">
                         <li class="light-blue">
                             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
+                                <img class="nav-user-photo" src="${themeUrl}/assets/avatars/user.jpg" alt="Jason's Photo" />
                                 <span class="user-info">
                                     <small>Welcome,</small>
                                     Admin

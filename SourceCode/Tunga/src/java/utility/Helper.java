@@ -5,7 +5,6 @@
  */
 package utility;
 
-import core.EntityModel;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

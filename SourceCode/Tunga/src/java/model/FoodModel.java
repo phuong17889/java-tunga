@@ -26,12 +26,13 @@ public class FoodModel extends EntityModel {
         int result = 0;
         try {
 
-            String sql = "INSERT INTO food (menuId, name, price, image) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO food (menuId, name, description, price, image) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setInt(1, f.getMenuId());
             prst.setString(2, f.getName());
-            prst.setFloat(3, f.getPrice());
-            prst.setString(4, f.getImage());
+            prst.setString(3, f.getDescription());
+            prst.setFloat(4, f.getPrice());
+            prst.setString(5, f.getImage());
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -42,14 +43,15 @@ public class FoodModel extends EntityModel {
 
     public static boolean update(int id, Food f) {
         int result = 0;
-        String sql = "UPDATE food SET menuId = ?, name = ?, price = ?, image= ? WHERE id = ?";
+        String sql = "UPDATE food SET menuId = ?, name = ?, description = ?, price = ?, image= ? WHERE id = ?";
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setInt(1, f.getMenuId());
             prst.setString(2, f.getName());
-            prst.setFloat(3, f.getPrice());
-            prst.setString(4, f.getImage());
-            prst.setInt(5, id);
+            prst.setString(3, f.getDescription());
+            prst.setFloat(4, f.getPrice());
+            prst.setString(5, f.getImage());
+            prst.setInt(6, id);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -68,9 +70,10 @@ public class FoodModel extends EntityModel {
                 int id = rs.getInt("id");
                 int menuId = rs.getInt("menuId");
                 String name = rs.getString("name");
+                String description = rs.getString("description");
                 float price = rs.getInt("price");
                 String image = rs.getString("image");
-                Food f = new Food(id, menuId, name, price, image);
+                Food f = new Food(id, menuId, name, description, price, image);
                 list.add(f);
             }
             rs.close();
@@ -91,9 +94,10 @@ public class FoodModel extends EntityModel {
                 int id = rs.getInt("id");
                 int menuId = rs.getInt("menuId");
                 String name = rs.getString("name");
+                String description = rs.getString("description");
                 float price = rs.getFloat("price");
                 String image = rs.getString("image");
-                Food f = new Food(id, menuId, name, price, image);
+                Food f = new Food(id, menuId, name, description, price, image);
                 list.add(f);
             }
             rs.close();
@@ -111,7 +115,7 @@ public class FoodModel extends EntityModel {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                f = new Food(rs.getInt("id"), rs.getInt("menuId"), rs.getString("name"), rs.getFloat("price"), rs.getString("image"));
+                f = new Food(rs.getInt("id"), rs.getInt("menuId"), rs.getString("name"), rs.getString("description"), rs.getFloat("price"), rs.getString("image"));
             }
             rs.close();
             st.close();
@@ -128,7 +132,7 @@ public class FoodModel extends EntityModel {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                f = new Food(rs.getInt("id"), rs.getInt("menuId"), rs.getString("name"), rs.getFloat("price"), rs.getString("image"));
+                f = new Food(rs.getInt("id"), rs.getInt("menuId"), rs.getString("name"), rs.getString("description"), rs.getFloat("price"), rs.getString("image"));
             }
             rs.close();
             st.close();
