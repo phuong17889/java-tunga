@@ -25,16 +25,15 @@ public class InvoiceModel extends EntityModel {
     public static boolean insert(Invoice in) {
         int result = 0;
         try {
-            String sql = "INSERT INTO invoice (fullName, address, phone, tax, total, token, status, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO invoice (fullName, email, address, phone, total, token, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setString(1, in.getFullName());
-            prst.setString(2, in.getAddress());
-            prst.setString(3, in.getPhone());
-            prst.setFloat(4, in.getTax());
+            prst.setString(2, in.getEmail());
+            prst.setString(3, in.getAddress());
+            prst.setString(4, in.getPhone());
             prst.setFloat(5, in.getTotal());
             prst.setString(6, in.getToken());
-            prst.setInt(7, in.getStatus() ? 1 : 0);
-            prst.setString(8, in.getCreateAt());
+            prst.setInt(7, in.getStatus());
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -45,17 +44,16 @@ public class InvoiceModel extends EntityModel {
 
     public static boolean update(int id, Invoice in) {
         int result = 0;
-        String sql = "UPDATE invoice SET fullName = ?, address = ?, phone = ?, tax = ?, total= ?, status= ?, createdAt= ? WHERE id = ?";
+        String sql = "UPDATE invoice SET fullName = ?, email = ?, address = ?, phone = ?, total = ?, status = ? WHERE id = ?";
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setString(1, in.getFullName());
-            prst.setString(2, in.getAddress());
-            prst.setString(3, in.getPhone());
-            prst.setFloat(4, in.getTax());
+            prst.setString(1, in.getEmail());
+            prst.setString(3, in.getAddress());
+            prst.setString(4, in.getPhone());
             prst.setFloat(5, in.getTotal());
-            prst.setInt(7, in.getStatus() ? 1 : 0);
-            prst.setString(7, in.getCreateAt());
-            prst.setInt(8, id);
+            prst.setInt(6, in.getStatus());
+            prst.setInt(7, id);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -73,14 +71,14 @@ public class InvoiceModel extends EntityModel {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
-                float tax = rs.getFloat("tax");
                 float total = rs.getFloat("total");
                 String token = rs.getString("token");
-                Boolean status = (rs.getInt("status") == 1);
+                int status = rs.getInt("status");
                 String createdAt = rs.getString("createdAt");
-                Invoice in = new Invoice(id, fullName, address, phone, tax, total, token, status, createdAt);
+                Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
                 list.add(in);
             }
             rs.close();
@@ -100,14 +98,14 @@ public class InvoiceModel extends EntityModel {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
                 String address = rs.getString("address");
                 String phone = rs.getString("phone");
-                float tax = rs.getFloat("tax");
                 float total = rs.getFloat("total");
                 String token = rs.getString("token");
-                Boolean status = (rs.getInt("status") == 1);
+                int status = rs.getInt("status");
                 String createdAt = rs.getString("createdAt");
-                Invoice in = new Invoice(id, fullName, address, phone, tax, total, token, status, createdAt);
+                Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
                 list.add(in);
             }
             rs.close();
@@ -125,7 +123,15 @@ public class InvoiceModel extends EntityModel {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                in = new Invoice(rs.getInt("id"), rs.getString("fullName"), rs.getString("address"), rs.getString("phone"), rs.getFloat("tax"), rs.getFloat("total"), rs.getString("token"), (rs.getInt("status") == 1), rs.getString("created_at"));
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                float total = rs.getFloat("total");
+                String token = rs.getString("token");
+                int status = rs.getInt("status");
+                String createdAt = rs.getString("createdAt");
+                in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
             }
             rs.close();
             st.close();
@@ -142,7 +148,16 @@ public class InvoiceModel extends EntityModel {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                in = new Invoice(rs.getInt("id"), rs.getString("fullName"), rs.getString("address"), rs.getString("phone"), rs.getFloat("tax"), rs.getFloat("total"), rs.getString("token"), (rs.getInt("status") == 1), rs.getString("created_at"));
+                int id = rs.getInt("id");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                float total = rs.getFloat("total");
+                String token = rs.getString("token");
+                int status = rs.getInt("status");
+                String createdAt = rs.getString("createdAt");
+                in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
             }
             rs.close();
             st.close();

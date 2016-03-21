@@ -5,9 +5,10 @@
  */
 package entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import model.FoodModel;
 
 /**
@@ -45,6 +46,12 @@ public class InvoiceFood {
             cartFood.remove(id);
         }
         cartFood.put(id, quantity);
+    }
+    
+    public void deleteCartFood(int id){
+        if (cartFood.containsKey(id)) {
+            cartFood.remove(id);
+        }
     }
 
     public float getTotalPrice() {
@@ -99,5 +106,25 @@ public class InvoiceFood {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public List<Food> getCartContent() {
+        List<Food> list = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : cartFood.entrySet()) {
+            int key = entry.getKey();
+            Food f = FoodModel.find(key);
+            list.add(f);
+        }
+        return list;
+    }
+
+    public int getCartQuantity(int id) {
+        int quantityCart = 0;
+        for (Map.Entry<Integer, Integer> entry : cartFood.entrySet()) {
+            if (id == entry.getKey()) {
+                return entry.getValue();
+            }
+        }
+        return quantityCart;
     }
 }

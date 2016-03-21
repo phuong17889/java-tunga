@@ -34,6 +34,7 @@ public class FoodServlet extends FrontendServlet {
         response.setContentType("text/html;charset=UTF-8");
         int id = Integer.parseInt(request.getParameter("id"));
         Food food = FoodModel.find(id);
+        this.setTitle(request, food.getName());
         request.setAttribute("food", food);
         request.setAttribute("foods", MenuModel.find(food.getMenuId()).getFoods());
         this.include("food/index.jsp", request, response);

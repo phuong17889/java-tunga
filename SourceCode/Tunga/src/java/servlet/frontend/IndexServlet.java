@@ -34,6 +34,7 @@ public class IndexServlet extends FrontendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        this.setTitle(request, "Home");
         Date date = new Date();
         DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
         request.setAttribute("today", df.format(date));

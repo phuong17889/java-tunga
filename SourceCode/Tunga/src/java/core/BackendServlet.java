@@ -27,7 +27,7 @@ public class BackendServlet extends HttpServlet {
 
     public void checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getSession().getAttribute("login") != (Object) 1) {
-            response.sendRedirect("login");
+            response.sendRedirect(Helper.baseUrl() + "/admin/login");
         }
     }
 

@@ -6,18 +6,19 @@
 package servlet.backend;
 
 import core.BackendServlet;
+import entity.Invoice;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import utility.Helper;
+import model.InvoiceModel;
 
 /**
  *
- * @author MyPC
+ * @author Hoangha.FPT
  */
-public class IndexServlet extends BackendServlet {
+public class OrderServlet extends BackendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,15 +32,58 @@ public class IndexServlet extends BackendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if ("logout".equals(request.getParameter("action"))) {
-            HttpSession session = request.getSession();
-            session.setAttribute("login", 0);
-            response.sendRedirect(Helper.baseUrl() + "/admin/login");
-        } else if (request.getSession().getAttribute("login") != (Object) 1) {
-            response.sendRedirect(Helper.baseUrl() + "/admin/login");
-        } else {
-            this.include("site/index.jsp", request, response);
+
+        this.checkLogin(request, response);
+        String action = request.getParameter("action");
+        switch (action) {
+            case "index":
+                this.actionIndex(request, response);
+                break;
+            case "view":
+                this.actionView(request, response);
+                break;
+            case "delete":
+                this.actionDelete(request, response);
+                break;
+            default:
+                this.actionIndex(request, response);
+                break;
         }
+    }
+
+    private void actionView(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.setTitle(request, "View an existing order");
+        this.setActiveSidebar(request, "order/index");
+        int id = Integer.parseInt(request.getParameter("id"));
+        Invoice m = InvoiceModel.find(id);
+        if (m == null) {
+            throw new ServletException("Not found");
+        }
+        request.setAttribute("order", m);
+        this.include("order/view.jsp", request, response);
+    }
+
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Invoice m = InvoiceModel.find(id);
+        if (m != null && InvoiceModel.delete(id)) {
+            request.setAttribute("message", "success");
+        } else {
+            request.setAttribute("message", "error");
+        }
+        this.actionIndex(request, response);
+    }
+
+    private void actionIndex(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.setTitle(request, "List order");
+        this.setActiveSidebar(request, "order/index");
+        List<Invoice> list = InvoiceModel.findAll();
+        request.setAttribute("invoices", list);
+        this.include("order/index.jsp", request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

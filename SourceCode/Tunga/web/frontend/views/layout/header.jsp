@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Tunga Traditional Restaurant</title>
+        <title>${title} | Tunga Traditional Restaurant</title>
         <meta charset="utf-8">
         <link rel="icon" href="${themeUrl}/assets/images/favicon.ico">
         <link rel="shortcut icon" href="${themeUrl}/assets/images/favicon.ico">
@@ -50,7 +50,7 @@
                                 </ul>
                             </nav>
                             <div class="cart fleft relative">
-                                <a href="cart" class="relative cart-info">
+                                <a href="cart?action=view" class="relative cart-info">
                                     <i class="fa fa-shopping-cart fa-2x"></i>
                                     <c:choose>
                                         <c:when test="${not empty requestScope.cart && requestScope.cart != null}">

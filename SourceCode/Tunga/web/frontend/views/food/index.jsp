@@ -40,11 +40,11 @@
 </div>
 <div class="clear"></div>
 <script>
-    $(document).on("click", ".btn-add-to-cart", function () {
+    $(document).on("click", ".btn-add-to-cart:not(.loading)", function () {
         var th = $(this);
         var id = th.attr("id");
         var quantity = $("input[name='quantity']").val();
-        th.html('<i class="fa fa-spin fa-spinner fa-2x"></i>');
+        th.addClass("loading").html('<i class="fa fa-spin fa-spinner fa-2x"></i>');
         $.ajax({
             type: "POST",
             cache: false,
@@ -52,15 +52,43 @@
             data: "id=" + id + "&quantity=" + quantity,
             dataType: "json",
             success: function (response) {
+                var itemImg = th.closest(".food").find('.image img').eq(0);
+                flyToElement($(itemImg), $('.cart.fleft.relative'));
                 $(".cart .count").text(response.count);
                 $(".cart .text").text(response.total);
-                th.html("Add to cart");
+                th.removeClass("loading").html("Add to cart");
             },
             error: function () {
                 alert("Something went wrong!");
-                th.html("Add to cart");
+                th.removeClass("loading").html("Add to cart");
             }
         });
     });
+    function flyToElement(flyer, flyingTo) {
+        console.log(flyer);
+        var $func = $(this);
+        var divider = 3;
+        var flyerClone = $(flyer).clone();
+        $(flyerClone).css({position: 'absolute', top: $(flyer).offset().top + "px", left: $(flyer).offset().left + "px", opacity: 1, 'z-index': 1000});
+        $('body').append($(flyerClone));
+        var gotoX = $(flyingTo).offset().left + ($(flyingTo).width() / 2) - ($(flyer).width() / divider) / 2;
+        var gotoY = $(flyingTo).offset().top + ($(flyingTo).height() / 2) - ($(flyer).height() / divider) / 2;
+
+        $(flyerClone).animate({
+            opacity: 0.4,
+            left: gotoX,
+            top: gotoY,
+            width: $(flyer).width() / divider,
+            height: $(flyer).height() / divider
+        }, 1000, function () {
+            $(flyingTo).fadeOut('fast', function () {
+                $(flyingTo).fadeIn('fast', function () {
+                    $(flyerClone).fadeOut('fast', function () {
+                        $(flyerClone).remove();
+                    });
+                });
+            });
+        });
+    }
 </script>
 <%@include file="../layout/footer.jsp" %>

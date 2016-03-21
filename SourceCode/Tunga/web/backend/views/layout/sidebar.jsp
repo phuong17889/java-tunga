@@ -10,7 +10,7 @@
 
 <li class="<c:if test="${requestScope.servlet == 'menu'}">active</c:if>">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-desktop"></i>
+        <i class="menu-icon fa fa-bars"></i>
         <span class="menu-text">
             Menu
         </span>
@@ -36,7 +36,7 @@
 </li>
 <li class="<c:if test="${requestScope.servlet == 'food'}">active</c:if>">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-desktop"></i>
+        <i class="menu-icon fa fa-cutlery"></i>
         <span class="menu-text">
             Food
         </span>
@@ -62,7 +62,7 @@
 </li>
 <li class="<c:if test="${requestScope.servlet == 'room'}">active</c:if>">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-desktop"></i>
+        <i class="menu-icon fa fa-bank"></i>
         <span class="menu-text">
             Room
         </span>
@@ -88,7 +88,7 @@
 </li>
 <li class="<c:if test="${requestScope.servlet == 'table'}">active</c:if>">
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fa fa-desktop"></i>
+        <i class="menu-icon fa fa-table"></i>
         <span class="menu-text">
             Table
         </span>
@@ -107,6 +107,25 @@
         <a href="table?action=index">
             <i class="menu-icon fa fa-caret-right"></i>
             List table
+        </a>
+        <b class="arrow"></b>
+        </li>
+    </ul>
+</li>
+<li class="<c:if test="${requestScope.servlet == 'order'}">active</c:if>">
+    <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-money"></i>
+        <span class="menu-text">
+            Order
+        </span>
+        <b class="arrow fa fa-angle-down"></b>
+    </a>
+    <b class="arrow"></b>
+    <ul class="submenu">
+        <li class="<c:if test="${requestScope.route == 'order/index'}">active</c:if>">
+        <a href="order?action=index">
+            <i class="menu-icon fa fa-caret-right"></i>
+            List order
         </a>
         <b class="arrow"></b>
         </li>

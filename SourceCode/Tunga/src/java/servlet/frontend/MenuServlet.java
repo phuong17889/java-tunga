@@ -6,6 +6,7 @@
 package servlet.frontend;
 
 import core.FrontendServlet;
+import entity.Menu;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,9 @@ public class MenuServlet extends FrontendServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         int id = Integer.parseInt(request.getParameter("id"));
-        request.setAttribute("menu", MenuModel.find(id));
+        Menu menu = MenuModel.find(id);
+        this.setTitle(request, menu.getName());
+        request.setAttribute("menu", menu);
         this.include("menu/index.jsp", request, response);
     }
 

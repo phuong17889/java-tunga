@@ -13,20 +13,25 @@ public class Invoice {
 
     private int id;
     private String fullName;
+    private String email;
     private String address;
     private String phone;
-    private float tax;
     private float total;
     private String token;
-    private boolean status;
+    private int status;
     private String createdAt;
 
-    public Invoice(int id, String fullName, String address, String phone, float tax, float total, String token, boolean status, String createdAt) {
+    public final static int STATUS_CANCELED = 0;
+    public final static int STATUS_PENDING = 1;
+    public final static int STATUS_SHIPPED = 2;
+    public final static int STATUS_DELIVERED = 3;
+
+    public Invoice(int id, String fullName, String email, String address, String phone, float total, String token, int status, String createdAt) {
         this.id = id;
         this.fullName = fullName;
+        this.email = email;
         this.address = address;
         this.phone = phone;
-        this.tax = tax;
         this.total = total;
         this.token = token;
         this.status = status;
@@ -65,14 +70,6 @@ public class Invoice {
         this.phone = phone;
     }
 
-    public float getTax() {
-        return tax;
-    }
-
-    public void setTax(float tax) {
-        this.tax = tax;
-    }
-
     public float getTotal() {
         return total;
     }
@@ -89,30 +86,46 @@ public class Invoice {
         this.token = token;
     }
 
-    public boolean getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getCreateAt() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreateAt(String createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Invoice(int id, String fullName, String address, String phone, float tax, float total, boolean status, String createdAt) {
-        this.id = id;
-        this.fullName = fullName;
-        this.address = address;
-        this.phone = phone;
-        this.tax = tax;
-        this.total = total;
-        this.status = status;
-        this.createdAt = createdAt;
+    public String getStatusText() {
+        String text = "Pending";
+        switch (this.status) {
+            case 0:
+                text = "Canceled";
+                break;
+            case 1:
+                text = "Pending";
+                break;
+            case 2:
+                text = "Shipped";
+                break;
+            case 3:
+                text = "Delivered";
+                break;
+        }
+        return text;
     }
 }

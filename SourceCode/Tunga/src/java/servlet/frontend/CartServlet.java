@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.backend;
+package servlet.frontend;
 
-import core.BackendServlet;
+import core.FrontendServlet;
+import entity.InvoiceFood;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +17,9 @@ import utility.Helper;
 
 /**
  *
- * @author MyPC
+ * @author Hoangha.FPT
  */
-public class IndexServlet extends BackendServlet {
+public class CartServlet extends FrontendServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,15 +33,23 @@ public class IndexServlet extends BackendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if ("logout".equals(request.getParameter("action"))) {
-            HttpSession session = request.getSession();
-            session.setAttribute("login", 0);
-            response.sendRedirect(Helper.baseUrl() + "/admin/login");
-        } else if (request.getSession().getAttribute("login") != (Object) 1) {
-            response.sendRedirect(Helper.baseUrl() + "/admin/login");
-        } else {
-            this.include("site/index.jsp", request, response);
+        String action = request.getParameter("action");
+        switch (action) {
+            case "view":
+                this.actionView(request, response);
+                break;
+            case "delete":
+                this.actionDelete(request, response);
+                break;
         }
+    }
+
+    private void actionView(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.setTitle(request, "Your shopping cart");
+        HttpSession session = request.getSession();
+        request.setAttribute("cart", session.getAttribute("cart"));
+        this.include("cart/view.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -81,4 +91,22 @@ public class IndexServlet extends BackendServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (this.isPost(request)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            HttpSession session = request.getSession();
+            InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+            cart.deleteCartFood(id);
+            if (cart.getCartFood().isEmpty()) {
+                session.removeAttribute("cart");
+            } else {
+                session.setAttribute("cart", cart);
+            }
+            response.setContentType("application/json");
+            try (PrintWriter out = response.getWriter()) {
+                out.print("{\"isEmpty\": \"" + cart.getCartFood().isEmpty() + "\", \"count\": \"" + cart.getTotalCount() + "\", \"totalText\": \"" + Helper.currency(cart.getTotalPrice()) + "\", \"total\": \"" + cart.getTotalPrice() + "\"}");
+            }
+        }
+    }
 }

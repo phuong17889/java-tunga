@@ -18,6 +18,10 @@
         <servlet-name>FrontendOrderServlet</servlet-name>
         <servlet-class>servlet.frontend.OrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FrontendCartServlet</servlet-name>
+        <servlet-class>servlet.frontend.CartServlet</servlet-class>
+    </servlet>
     <!--end index servlet-->
     <!--begin admin servlet-->
     <servlet>
@@ -44,6 +48,10 @@
         <servlet-name>BackendTableServlet</servlet-name>
         <servlet-class>servlet.backend.TableServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BackendOrderServlet</servlet-name>
+        <servlet-class>servlet.backend.OrderServlet</servlet-class>
+    </servlet>
     <!--end admin servlet-->
     <!--end servlet-->
     <!--begin mapping-->
@@ -64,6 +72,10 @@
         <servlet-name>FrontendOrderServlet</servlet-name>
         <url-pattern>/order</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendCartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
     <!--end mapping index-->
     <!--begin mapping admin-->
     <servlet-mapping>
@@ -73,6 +85,14 @@
     <servlet-mapping>
         <servlet-name>BackendIndexServlet</servlet-name>
         <url-pattern>/admin/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <url-pattern>/admin/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BackendMenuServlet</servlet-name>
@@ -89,6 +109,10 @@
     <servlet-mapping>
         <servlet-name>BackendTableServlet</servlet-name>
         <url-pattern>/admin/table</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendOrderServlet</servlet-name>
+        <url-pattern>/admin/order</url-pattern>
     </servlet-mapping>
     <!--end mapping admin-->
     <!--end mapping-->
