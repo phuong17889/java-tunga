@@ -24,6 +24,7 @@
     </div>
     <div class="clearfix"></div>
     <div class="row">
+        <h2 class="head2">Description</h2>
         <div class="col-sm-12">
             ${food.description}
         </div>
@@ -54,9 +55,11 @@
             success: function (response) {
                 var itemImg = th.closest(".food").find('.image img').eq(0);
                 flyToElement($(itemImg), $('.cart.fleft.relative'));
-                $(".cart .count").text(response.count);
-                $(".cart .text").text(response.total);
-                th.removeClass("loading").html("Add to cart");
+                setTimeout(function () {
+                    $(".cart .count").text(response.count);
+                    $(".cart .text").text(response.total);
+                    th.removeClass("loading").html("Add to cart");
+                }, 1000);
             },
             error: function () {
                 alert("Something went wrong!");
@@ -65,7 +68,6 @@
         });
     });
     function flyToElement(flyer, flyingTo) {
-        console.log(flyer);
         var $func = $(this);
         var divider = 3;
         var flyerClone = $(flyer).clone();
@@ -80,7 +82,7 @@
             top: gotoY,
             width: $(flyer).width() / divider,
             height: $(flyer).height() / divider
-        }, 1000, function () {
+        }, 800, function () {
             $(flyingTo).fadeOut('fast', function () {
                 $(flyingTo).fadeIn('fast', function () {
                     $(flyerClone).fadeOut('fast', function () {
@@ -89,6 +91,7 @@
                 });
             });
         });
+        return true;
     }
 </script>
 <%@include file="../layout/footer.jsp" %>
