@@ -6,13 +6,19 @@
 package servlet.frontend;
 
 import core.FrontendServlet;
+import entity.Food;
+import entity.Invoice;
 import entity.InvoiceFood;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.FoodModel;
+import model.InvoiceFoodModel;
+import model.InvoiceModel;
 import utility.Helper;
 
 /**
@@ -35,6 +41,9 @@ public class CartServlet extends FrontendServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         switch (action) {
+            case "submit":
+                this.actionSubmit(request, response);
+                break;
             case "view":
                 this.actionView(request, response);
                 break;
@@ -106,6 +115,36 @@ public class CartServlet extends FrontendServlet {
             response.setContentType("application/json");
             try (PrintWriter out = response.getWriter()) {
                 out.print("{\"isEmpty\": \"" + cart.getCartFood().isEmpty() + "\", \"count\": \"" + cart.getTotalCount() + "\", \"totalText\": \"" + Helper.currency(cart.getTotalPrice()) + "\", \"total\": \"" + cart.getTotalPrice() + "\"}");
+            }
+        }
+    }
+
+    private void actionSubmit(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (this.isPost(request)) {
+            HttpSession session = request.getSession();
+            InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+            String fullName = request.getParameter("fullName");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+            String phone = request.getParameter("phone");
+            String token = Helper.random();
+            float total = cart.getTotalPrice();
+            int status = Invoice.STATUS_PENDING;
+            Invoice in = new Invoice(fullName, email, address, phone, total, token, status);
+            if (InvoiceModel.insert(in)) {
+                for (Map.Entry<Integer, Integer> entry : cart.getCartFood().entrySet()) {
+                    int key = entry.getKey();
+                    Food f = FoodModel.find(key);
+                    int quantity = entry.getValue();
+                    InvoiceFood ifd = new InvoiceFood(in.getId(), f.getId(), quantity);
+                    InvoiceFoodModel.insert(ifd);
+                }
+                session.removeAttribute("cart");
+                response.sendRedirect("order?action=view&token=" + token);
+            } else {
+                session.setAttribute("error", "Something went wrong!");
+                response.sendRedirect("cart?action=view");
             }
         }
     }

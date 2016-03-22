@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="phone">Phone: </label>
                             <div class="input-group col-sm-7">
-                                <input id="phone" type="text" name="phone" class="form-control">
+                                <input id="phone" type="text" name="phone" class="form-control number-only">
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4 col-sm-offset-7">
-                            <button class="btn btn-success btn-submit">Place an order</button>
+                            <button class="btn btn-success btn-submit" type="submit">Place an order</button>
                             <button class="btn btn-danger btn-cancel">Cancel your order</button>
                         </div>
                     </div>
@@ -97,6 +97,12 @@
     </c:otherwise>
 </c:choose>
 <script>
+    $(document).on("click", ".btn-submit", function () {
+        if(!isEmail($("input#email").val())){
+            alert("Please input exactly yout email!");
+            return false;
+        }
+    });
     $(document).on("click", ".btn-checkout", function () {
         $(".shopping-cart").slideUp('normal', function () {
             $(".checkout").slideDown();
@@ -132,6 +138,18 @@
             });
         }
     });
+    $(".number-only").keydown(function (e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+            return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
 </script>
 <%@include file="../layout/footer.jsp" %>
 

@@ -35,7 +35,7 @@ public class MenuServlet extends FrontendServlet {
         Menu menu = MenuModel.find(id);
         this.setTitle(request, menu.getName());
         request.setAttribute("menu", menu);
-        this.include("menu/index.jsp", request, response);
+        this.include("menu/view.jsp", request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

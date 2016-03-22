@@ -37,7 +37,7 @@ public class FoodServlet extends FrontendServlet {
         this.setTitle(request, food.getName());
         request.setAttribute("food", food);
         request.setAttribute("foods", MenuModel.find(food.getMenuId()).getFoods());
-        this.include("food/index.jsp", request, response);
+        this.include("food/view.jsp", request, response);
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

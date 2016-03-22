@@ -26,12 +26,16 @@ public class TableModel extends EntityModel {
         int result = 0;
         try {
             String sql = "INSERT INTO [tunga].[dbo].[table] (roomId, name, type, price) VALUES (?, ?, ?, ?)";
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prst.setInt(1, t.getRoomId());
             prst.setString(2, t.getName());
             prst.setInt(3, t.getType());
             prst.setFloat(4, t.getPrice());
             result = prst.executeUpdate();
+            ResultSet rs = prst.getGeneratedKeys();
+            if (rs.next()) {
+                t.setId(rs.getInt(1));
+            }
             prst.close();
         } catch (SQLException ex) {
             Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);

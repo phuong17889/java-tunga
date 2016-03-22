@@ -76,6 +76,12 @@ public class InvoiceFood {
         this.quantity = quantity;
     }
 
+    public InvoiceFood(int invoiceId, int foodId, int quantity) {
+        this.invoiceId = invoiceId;
+        this.foodId = foodId;
+        this.quantity = quantity;
+    }
+
     public int getId() {
         return id;
     }
@@ -126,5 +132,9 @@ public class InvoiceFood {
             }
         }
         return quantityCart;
+    }
+    
+    public Food getFood(){
+        return FoodModel.find(this.foodId);
     }
 }

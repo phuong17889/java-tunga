@@ -5,6 +5,9 @@
  */
 package entity;
 
+import java.util.List;
+import model.InvoiceFoodModel;
+
 /**
  *
  * @author Hoangha.FPT
@@ -36,6 +39,16 @@ public class Invoice {
         this.token = token;
         this.status = status;
         this.createdAt = createdAt;
+    }
+
+    public Invoice(String fullName, String email, String address, String phone, float total, String token, int status) {
+        this.fullName = fullName;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+        this.total = total;
+        this.token = token;
+        this.status = status;
     }
 
     public int getId() {
@@ -127,5 +140,9 @@ public class Invoice {
                 break;
         }
         return text;
+    }
+
+    public List<InvoiceFood> getInvoiceFoods() {
+        return InvoiceFoodModel.findAll("invoiceId = " + this.id);
     }
 }

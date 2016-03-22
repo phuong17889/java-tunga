@@ -28,10 +28,14 @@ public class MenuModel extends EntityModel {
 
         try {
             String sql = "INSERT INTO menu (name, [order]) VALUES(?, ?)";
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prst.setString(1, m.getName());
             prst.setInt(2, m.getOrder());
             result = prst.executeUpdate();
+            ResultSet rs = prst.getGeneratedKeys();
+            if (rs.next()) {
+                m.setId(rs.getInt(1));
+            }
             prst.close();
         } catch (SQLException ex) {
             Logger.getLogger(MenuModel.class.getName()).log(Level.SEVERE, null, ex);

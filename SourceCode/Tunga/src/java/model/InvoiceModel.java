@@ -26,7 +26,7 @@ public class InvoiceModel extends EntityModel {
         int result = 0;
         try {
             String sql = "INSERT INTO invoice (fullName, email, address, phone, total, token, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prst.setString(1, in.getFullName());
             prst.setString(2, in.getEmail());
             prst.setString(3, in.getAddress());
@@ -35,6 +35,10 @@ public class InvoiceModel extends EntityModel {
             prst.setString(6, in.getToken());
             prst.setInt(7, in.getStatus());
             result = prst.executeUpdate();
+            ResultSet rs = prst.getGeneratedKeys();
+            if (rs.next()) {
+                in.setId(rs.getInt(1));
+            }
             prst.close();
         } catch (SQLException ex) {
             Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);

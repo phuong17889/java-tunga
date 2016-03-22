@@ -759,3 +759,9 @@ button.booknow {
     line-height: 30px;
     font-weight: bold;
 }
+.order-number span{
+    display: block;
+    height: 50px;
+    font-size: 25pt;
+    letter-spacing: 20px;
+}

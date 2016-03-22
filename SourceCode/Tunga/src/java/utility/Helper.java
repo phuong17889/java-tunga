@@ -11,9 +11,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import model.InvoiceModel;
 import org.ini4j.Ini;
 import org.ini4j.IniPreferences;
 
@@ -58,5 +60,17 @@ public class Helper {
             Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return reponsePath;
+    }
+
+    public static String random() {
+        Random randomGenerator = new Random();
+        String token = "";
+        for (int i = 0; i < 8; i++) {
+            token += "" + randomGenerator.nextInt(10);
+        }
+        if (InvoiceModel.find("token = '" + token + "'") != null) {
+            token = random();
+        }
+        return token;
     }
 }

@@ -26,10 +26,14 @@ public class RoomModel extends EntityModel {
         int result = 0;
         try {
             String sql = "INSERT INTO room (name, type) VALUES (?, ?)";
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prst.setString(1, r.getName());
             prst.setInt(2, r.getType() ? 1 : 0);
             result = prst.executeUpdate();
+            ResultSet rs = prst.getGeneratedKeys();
+            if (rs.next()) {
+                r.setId(rs.getInt(1));
+            }
             prst.close();
         } catch (SQLException ex) {
             Logger.getLogger(RoomModel.class.getName()).log(Level.SEVERE, null, ex);

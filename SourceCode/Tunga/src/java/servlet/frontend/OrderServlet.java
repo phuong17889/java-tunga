@@ -6,6 +6,7 @@
 package servlet.frontend;
 
 import core.FrontendServlet;
+import entity.Invoice;
 import entity.InvoiceFood;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.InvoiceModel;
 import utility.Helper;
 
 /**
@@ -34,8 +36,13 @@ public class OrderServlet extends FrontendServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        if ("food".equals(action)) {
-            this.actionFood(request, response);
+        switch (action) {
+            case "food":
+                this.actionFood(request, response);
+                break;
+            case "view":
+                this.actionView(request, response);
+                break;
         }
     }
 
@@ -53,7 +60,7 @@ public class OrderServlet extends FrontendServlet {
                 }
                 cart.addCartFood(id, quantity);
                 session.setAttribute("cart", cart);
-                out.print("{\"count\": \""+cart.getTotalCount()+"\", \"total\": \"" + Helper.currency(cart.getTotalPrice())+ "\"}");
+                out.print("{\"count\": \"" + cart.getTotalCount() + "\", \"total\": \"" + Helper.currency(cart.getTotalPrice()) + "\"}");
             }
         }
     }
@@ -97,4 +104,11 @@ public class OrderServlet extends FrontendServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void actionView(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String token = request.getParameter("token");
+        Invoice i = InvoiceModel.find("token = '" + token + "'");
+        request.setAttribute("invoice", i);
+        this.include("order/view.jsp", request, response);
+    }
 }

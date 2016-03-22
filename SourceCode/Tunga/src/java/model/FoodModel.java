@@ -26,13 +26,17 @@ public class FoodModel extends EntityModel {
         int result = 0;
         try {
             String sql = "INSERT INTO food (menuId, name, description, price, image) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+            PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prst.setInt(1, f.getMenuId());
             prst.setString(2, f.getName());
             prst.setString(3, f.getDescription());
             prst.setFloat(4, f.getPrice());
             prst.setString(5, f.getImage());
             result = prst.executeUpdate();
+            ResultSet rs = prst.getGeneratedKeys();
+            if (rs.next()) {
+                f.setId(rs.getInt(1));
+            }
             prst.close();
         } catch (SQLException ex) {
             Logger.getLogger(FoodModel.class.getName()).log(Level.SEVERE, null, ex);
