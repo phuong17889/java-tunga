@@ -101,7 +101,7 @@ public class Food {
     }
 
     public String getImageUrl() {
-        return Helper.baseUrl() + "/uploads/" + image;
+        return Helper.baseUrl() + "/uploads/foods/" + image;
     }
 
     public Menu getMenu() {

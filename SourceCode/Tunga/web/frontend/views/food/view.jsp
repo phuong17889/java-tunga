@@ -54,7 +54,7 @@
             dataType: "json",
             success: function (response) {
                 var itemImg = th.closest(".food").find('.image img').eq(0);
-                flyToElement($(itemImg), $('.cart.fleft.relative'));
+                flyToElement($(itemImg), $('.cart.fleft.relative i'));
                 setTimeout(function () {
                     $(".cart .count").text(response.count);
                     $(".cart .text").text(response.total);

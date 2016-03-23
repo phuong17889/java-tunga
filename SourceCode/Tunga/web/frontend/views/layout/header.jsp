@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="${themeUrl}/assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="${themeUrl}/assets/css/font-awesome.css">
         <link rel="stylesheet" href="${themeUrl}/assets/css/bootstrap-datepicker3.css">
+        <link rel="stylesheet" href="${themeUrl}/assets/css/timepicker.less">
         <link rel="stylesheet" href="${themeUrl}/assets/css/style.css">
         <link rel="stylesheet" href="${themeUrl}/assets/css/slider.css">
         <script src="${themeUrl}/assets/js/jquery.js"></script>
@@ -26,6 +27,7 @@
         <script src="${themeUrl}/assets/js/sForm.js"></script>
         <script src="${themeUrl}/assets/js/jquery.carouFredSel-6.2.1-packed.js"></script>
         <script src="${themeUrl}/assets/js/bootstrap-datepicker.js"></script>
+        <script src="${themeUrl}/assets/js/bootstrap-timepicker.js"></script>
         <script src="${themeUrl}/assets/js/tms-0.4.1.js"></script>
     </head>
     <body>

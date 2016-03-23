@@ -6,6 +6,7 @@
 package entity;
 
 import model.RoomModel;
+import utility.Helper;
 
 /**
  *
@@ -16,13 +17,17 @@ public class Table {
     private int id;
     private int roomId;
     private String name;
+    private String description;
+    private String image;
     private int type;
     private float price;
 
-    public Table(int id, int roomId, String name, int type, float price) {
+    public Table(int id, int roomId, String name, String description, String image, int type, float price) {
         this.id = id;
         this.roomId = roomId;
         this.name = name;
+        this.description = description;
+        this.image = image;
         this.type = type;
         this.price = price;
     }
@@ -30,9 +35,11 @@ public class Table {
     public Table() {
     }
 
-    public Table(int roomId, String name, int type, float price) {
+    public Table(int roomId, String name, String description, String image, int type, float price) {
         this.roomId = roomId;
         this.name = name;
+        this.description = description;
+        this.image = image;
         this.type = type;
         this.price = price;
     }
@@ -75,6 +82,26 @@ public class Table {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getImageUrl() {
+        return Helper.baseUrl() + "/uploads/tables/" + image;
     }
 
     public Room getRoom() {

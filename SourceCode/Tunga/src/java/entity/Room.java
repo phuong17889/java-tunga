@@ -56,4 +56,9 @@ public class Room {
     public List<Table> getTables() {
         return TableModel.findAll("roomId = " + this.id);
     }
+    
+    public List<Table> getFreeTables(String datetime){
+        return TableModel.findAll();
+        //TODO cần thực hiện việc join bảng và search trong vòng 6 tiếng
+    }
 }

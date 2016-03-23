@@ -25,12 +25,14 @@ public class TableModel extends EntityModel {
     public static boolean insert(Table t) {
         int result = 0;
         try {
-            String sql = "INSERT INTO [tunga].[dbo].[table] (roomId, name, type, price) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO [tunga].[dbo].[table] (roomId, name, type, price, description, image) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prst.setInt(1, t.getRoomId());
             prst.setString(2, t.getName());
             prst.setInt(3, t.getType());
             prst.setFloat(4, t.getPrice());
+            prst.setString(5, t.getDescription());
+            prst.setString(6, t.getImage());
             result = prst.executeUpdate();
             ResultSet rs = prst.getGeneratedKeys();
             if (rs.next()) {
@@ -45,14 +47,16 @@ public class TableModel extends EntityModel {
 
     public static boolean update(int id, Table t) {
         int result = 0;
-        String sql = "UPDATE [tunga].[dbo].[table] set roomId = ?, name = ?, type = ?, price = ? where id = ?";
+        String sql = "UPDATE [tunga].[dbo].[table] SET roomId = ?, name = ?, type = ?, price = ?, description = ?, image = ? WHERE id = ?";
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setInt(1, t.getRoomId());
             prst.setString(2, t.getName());
             prst.setInt(3, t.getType());
             prst.setFloat(4, t.getPrice());
-            prst.setInt(5, id);
+            prst.setString(5, t.getDescription());
+            prst.setString(6, t.getImage());
+            prst.setInt(7, id);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -73,7 +77,9 @@ public class TableModel extends EntityModel {
                 String name = rs.getString("name");
                 int type = rs.getInt("type");
                 float price = rs.getFloat("price");
-                Table t = new Table(id, roomId, name, type, price);
+                String description = rs.getString("description");
+                String image = rs.getString("image");
+                Table t = new Table(id, roomId, name, description, image, type, price);
                 list.add(t);
             }
             rs.close();
@@ -96,7 +102,9 @@ public class TableModel extends EntityModel {
                 String name = rs.getString("name");
                 int type = rs.getInt("type");
                 float price = rs.getFloat("price");
-                Table t = new Table(id, roomId, name, type, price);
+                String description = rs.getString("description");
+                String image = rs.getString("image");
+                Table t = new Table(id, roomId, name, description, image, type, price);
                 list.add(t);
             }
             rs.close();
@@ -114,7 +122,7 @@ public class TableModel extends EntityModel {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                t = new Table(rs.getInt("id"), rs.getInt("roomId"), rs.getString("name"), rs.getInt("type"), rs.getFloat("price"));
+                t = new Table(rs.getInt("id"), rs.getInt("roomId"), rs.getString("name"), rs.getString("description"), rs.getString("image"), rs.getInt("type"), rs.getFloat("price"));
             }
             rs.close();
             st.close();
@@ -131,7 +139,7 @@ public class TableModel extends EntityModel {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                t = new Table(rs.getInt("id"), rs.getInt("roomId"), rs.getString("name"), rs.getInt("type"), rs.getFloat("price"));
+                t = new Table(rs.getInt("id"), rs.getInt("roomId"), rs.getString("name"), rs.getString("description"), rs.getString("image"), rs.getInt("type"), rs.getFloat("price"));
             }
             rs.close();
             st.close();

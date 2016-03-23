@@ -109,9 +109,9 @@ public class FoodServlet extends BackendServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String uploadFile(String column, HttpServletRequest request, HttpServletResponse response)
+    private String uploadFile(String column, HttpServletRequest request)
             throws ServletException, IOException {
-        String path = Helper.appPath() + "uploads";
+        String path = Helper.appPath() + "uploads/foods";
         Part imagePart = request.getPart(column);
         String imageName = getFileName(imagePart);
         if (imageName != null) {
@@ -149,7 +149,7 @@ public class FoodServlet extends BackendServlet {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             float price = Float.parseFloat(request.getParameter("price"));
-            String imageName = this.uploadFile("image", request, response);
+            String imageName = this.uploadFile("image", request);
             Food f = new Food(menuId, name, description, price, imageName);
             if (FoodModel.insert(f)) {
                 request.setAttribute("message", "success");
@@ -209,7 +209,7 @@ public class FoodServlet extends BackendServlet {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             float price = Float.parseFloat(request.getParameter("price"));
-            String imageName = this.uploadFile("image", request, response);
+            String imageName = this.uploadFile("image", request);
             f.setName(name);
             f.setDescription(description);
             f.setMenuId(menuId);

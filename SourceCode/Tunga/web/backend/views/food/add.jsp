@@ -50,8 +50,8 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Image </label>
                     <div class="col-sm-3">
-                        <input type="file" id="menu_image" name="image" value="${food.image}" class="file-picker"/>
-                        <img src="" style="width: 100px;" id="menu_image_preview">
+                        <input type="file" id="food_image" name="image" value="${food.image}" class="file-picker"/>
+                        <img src="" style="width: 100px;" id="food_image_preview">
                     </div>
                 </div>
 
@@ -78,13 +78,13 @@
     <c:if test="${not empty requestScope.message}">
     alert("<c:out value="${requestScope.message}"/>");
     </c:if>
-    $("#menu_image").change(function () {
+    $("#food_image").change(function () {
         var reader = new FileReader();
         reader.onload = imageIsLoaded;
         reader.readAsDataURL(this.files[0]);
     });
     function imageIsLoaded(e) {
-        $('#menu_image_preview').attr('src', e.target.result).attr('width', '100px');
+        $('#food_image_preview').attr('src', e.target.result).attr('width', '100px');
     }
     $('.file-picker').ace_file_input({
         no_file: 'No File ...',

@@ -8,13 +8,19 @@ package servlet.backend;
 import core.BackendServlet;
 import entity.Table;
 import entity.Room;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import model.TableModel;
 import model.RoomModel;
+import utility.Helper;
 
 /**
  *
@@ -97,6 +103,38 @@ public class TableServlet extends BackendServlet {
         return "Short description";
     }// </editor-fold>
 
+    private String uploadFile(String column, HttpServletRequest request)
+            throws ServletException, IOException {
+        String path = Helper.appPath() + "uploads/tables";
+        Part imagePart = request.getPart(column);
+        String imageName = getFileName(imagePart);
+        if (imageName != null) {
+            OutputStream out;
+            InputStream fileContent;
+            try {
+                out = new FileOutputStream(new File(path + File.separator + imageName));
+                fileContent = imagePart.getInputStream();
+                int read;
+                byte[] bytes = new byte[1024];
+                while ((read = fileContent.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return imageName;
+    }
+    
+    private String getFileName(Part part) {
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
+    
     private void actionAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.setTitle(request, "Add a new table");
         this.setActiveSidebar(request, "table/add");
@@ -105,7 +143,9 @@ public class TableServlet extends BackendServlet {
             String name = request.getParameter("name");
             int type = Integer.parseInt(request.getParameter("type"));
             float price = Float.parseFloat(request.getParameter("price"));
-            Table t = new Table(roomId, name, type, price);
+            String description = request.getParameter("description");
+            String imageName = this.uploadFile("image", request);
+            Table t = new Table(roomId, name, description, imageName, type, price);
             if (TableModel.insert(t)) {
                 request.setAttribute("message", "success");
             } else {
@@ -116,7 +156,7 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("rooms", list);
         this.include("table/add.jsp", request, response);
     }
-
+    
     private void actionIndex(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.setTitle(request, "List Table");
@@ -125,7 +165,7 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("tables", list);
         this.include("table/index.jsp", request, response);
     }
-
+    
     private void actionView(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.setTitle(request, "View an existing table");
@@ -140,7 +180,7 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("table", t);
         this.include("table/view.jsp", request, response);
     }
-
+    
     private void actionDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -152,7 +192,7 @@ public class TableServlet extends BackendServlet {
         }
         this.actionIndex(request, response);
     }
-
+    
     private void actionEdit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.setTitle(request, "Edit a table");
@@ -164,10 +204,14 @@ public class TableServlet extends BackendServlet {
             String name = request.getParameter("name");
             int type = Integer.parseInt(request.getParameter("type"));
             float price = Float.parseFloat(request.getParameter("price"));
+            String description = request.getParameter("description");
+            String imageName = this.uploadFile("image", request);
             t.setName(name);
             t.setRoomId(roomId);
             t.setType(type);
             t.setPrice(price);
+            t.setDescription(description);
+            t.setImage(imageName);
             if (TableModel.update(id, t)) {
                 request.setAttribute("message", "success");
             } else {
@@ -179,5 +223,5 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("table", t);
         this.include("table/edit.jsp", request, response);
     }
-
+    
 }

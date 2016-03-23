@@ -15,28 +15,32 @@
                     <div>
                         <div class="form-group col-sm-5">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-user fa-2x"></i></span>
-                            <input name="name" type="text" class="col-sm-12 form-control-static" placeholder="Your Name">
+                            <input name="name" required type="text" class="col-sm-12 form-control-static" placeholder="Your Name">
                         </div>
                         <div class="form-group col-sm-7">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-envelope fa-2x"></i></span>
-                            <input name="email" type="email" class="col-sm-12 form-control-static" placeholder="Your E-MAIL">
+                            <input name="email" required type="email" class="col-sm-12 form-control-static" placeholder="Your E-MAIL">
                         </div>
                     </div>
                     <div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-3">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-phone fa-2x"></i></span>
-                            <input name="phone" type="text" class="col-sm-12 form-control-static number-only" placeholder="Your Phone">
+                            <input name="phone" required type="text" class="col-sm-12 form-control-static number-only" placeholder="Your Phone">
                         </div>
                         <div class="form-group col-sm-4">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-list-ol fa-2x"></i></span>
-                            <input name="number" type="text" class="col-sm-12 form-control-static number-only" placeholder="Number of guest">
+                            <input name="number" required type="text" class="col-sm-12 form-control-static number-only" placeholder="Guest number">
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-3">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-calendar fa-2x"></i></span>
-                            <input name="date" type="text" class="col-sm-12 form-control-static date-picker" placeholder="${today}">
+                            <input name="date" required type="text" class="col-sm-12 form-control-static date-picker" placeholder="${today}">
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-clock-o fa-2x"></i></span>
+                            <input maxlength="4" name="time" required type="text" class="col-sm-12 form-control-static time-picker" placeholder="12:00">
                         </div>
                     </div>
-                        <button class="btn btn-success booknow" type="submit"> BOOK NOW </button>
+                    <button class="btn btn-success booknow" type="submit"> BOOK NOW </button>
                 </form>
             </div>
         </div>
@@ -107,6 +111,12 @@
         format: "M dd, yyyy",
         autoclose: true,
         todayHighlight: true
+    });
+    $('.time-picker').timepicker({
+        minuteStep: 1,
+        showSeconds: false,
+        showMeridian: false,
+        defaultTime: false
     });
 </script>
 <%@include file="../layout/footer.jsp" %>

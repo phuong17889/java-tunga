@@ -6,15 +6,19 @@
 package servlet.frontend;
 
 import core.FrontendServlet;
+import entity.Book;
 import entity.Invoice;
 import entity.InvoiceFood;
+import entity.Room;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.InvoiceModel;
+import model.RoomModel;
 import utility.Helper;
 
 /**
@@ -43,6 +47,8 @@ public class OrderServlet extends FrontendServlet {
             case "view":
                 this.actionView(request, response);
                 break;
+            case "book":
+                this.actionBook(request, response);
         }
     }
 
@@ -110,5 +116,29 @@ public class OrderServlet extends FrontendServlet {
         Invoice i = InvoiceModel.find("token = '" + token + "'");
         request.setAttribute("invoice", i);
         this.include("order/view.jsp", request, response);
+    }
+
+    private void actionBook(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        this.setTitle(request, "Table booking");
+        if (this.isPost(request)) {
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            int number = Integer.parseInt(request.getParameter("number"));
+            String date = request.getParameter("date");
+            String time = request.getParameter("time");
+            Book book = new Book(name, email, phone, number, date, time);
+            session.setAttribute("book", book);
+            response.sendRedirect("order?action=book");
+        }
+        if (session.getAttribute("book") != null) {
+            List<Room> rooms = RoomModel.findAll();
+            request.setAttribute("rooms", rooms);
+            this.include("order/book.jsp", request, response);
+        } else {
+            response.sendRedirect("index");
+        }
     }
 }
