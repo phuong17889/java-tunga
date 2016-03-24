@@ -5,7 +5,13 @@
  */
 package entity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import model.TableModel;
 
 /**
@@ -56,8 +62,12 @@ public class Room {
     public List<Table> getTables() {
         return TableModel.findAll("roomId = " + this.id);
     }
-    
-    public List<Table> getFreeTables(String datetime){
+
+    public List<Table> getFreeTables(Book book) throws ParseException {
+        String datetime = book.getDate() + " " + book.getTime();
+        DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+        Date date = df.parse(datetime);
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return TableModel.findAll();
         //TODO cần thực hiện việc join bảng và search trong vòng 6 tiếng
     }
