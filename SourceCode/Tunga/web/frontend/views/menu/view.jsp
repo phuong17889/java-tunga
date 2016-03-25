@@ -9,8 +9,10 @@
     <div class="menu">
         <c:forEach var="food" items="${menu.foods}">
             <div class="grid_3 alpha"> 
-                <a href="food?id=${food.id}"><img src="${food.imageUrl}" alt="" class="img_inner"></a>
-                <h3><a href="food?id=${food.id}">${food.name}</a></h3>
+                <a href="food?id=${food.id}"><img src="${food.imageUrl}" alt=""></a>
+                <div class="col1 upp"> <a href="food?id=${food.id}">${food.name}</a></div>
+                <span> ${food.shortDescription}</span>
+                <div class="price">${helper:currency(food.price)}</div>
             </div>
         </c:forEach>
     </div>
@@ -21,7 +23,7 @@
     <ul class="list l1">
         <c:forEach var="menu" items="${menus}">
             <li><a href="menu?id=${menu.id}"> ${menu.name}</a></li>
-        </c:forEach>
+            </c:forEach>
     </ul>
 </div>
 <div class="clear"></div>

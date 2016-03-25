@@ -13,7 +13,7 @@
                         <div class="col-sm-12">
                             <h2 class="head2">${room.name} (${room.type ? "VIP" : "Normal"})</h2>
                             <c:forEach var="table" items="${room.getFreeTables(sessionScope.book)}">
-                                <div class="news"> 
+                                <div class="news row"> 
                                     <img src="${table.imageUrl}" alt="" class="img_inner fleft table-image">
                                     <div class="extra_wrapper">
                                         <div class="col1">${table.name}</div>

@@ -20,6 +20,12 @@ public class Book implements Serializable {
     private String date;
     private String time;
 
+    public Book(int number, String date, String time) {
+        this.number = number;
+        this.date = date;
+        this.time = time;
+    }
+
     public Book(String name, String email, String phone, int number, String date, String time) {
         this.name = name;
         this.email = email;

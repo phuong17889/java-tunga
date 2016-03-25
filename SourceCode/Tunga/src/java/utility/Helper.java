@@ -10,11 +10,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import model.InvoiceModel;
 import org.ini4j.Ini;
 import org.ini4j.IniPreferences;
@@ -72,5 +76,10 @@ public class Helper {
             token = random();
         }
         return token;
+    }
+
+    public static String implode(String delimiter, String... data) {
+        Predicate<String> IS_NOT_SPACES_ONLY = Pattern.compile("^\\s*$").asPredicate().negate();
+        return Arrays.stream(data).filter(IS_NOT_SPACES_ONLY).collect(Collectors.joining(delimiter));
     }
 }

@@ -14,33 +14,19 @@
                     <input type="hidden" name="action" value="book">
                     <div>
                         <div class="form-group col-sm-5">
-                            <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-user fa-2x"></i></span>
-                            <input name="name" required type="text" class="col-sm-12 form-control-static" placeholder="Your Name">
-                        </div>
-                        <div class="form-group col-sm-7">
-                            <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-envelope fa-2x"></i></span>
-                            <input name="email" required type="email" class="col-sm-12 form-control-static" placeholder="Your E-MAIL">
-                        </div>
-                    </div>
-                    <div>
-                        <div class="form-group col-sm-3">
-                            <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-phone fa-2x"></i></span>
-                            <input name="phone" required type="text" class="col-sm-12 form-control-static number-only" placeholder="Your Phone">
-                        </div>
-                        <div class="form-group col-sm-4">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-list-ol fa-2x"></i></span>
                             <input name="number" required type="text" class="col-sm-12 form-control-static number-only" placeholder="Guest number">
                         </div>
-                        <div class="form-group col-sm-3">
+                        <div class="form-group col-sm-4">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-calendar fa-2x"></i></span>
                             <input name="date" required type="text" class="col-sm-12 form-control-static date-picker" placeholder="${today}">
                         </div>
-                        <div class="form-group col-sm-2">
+                        <div class="form-group col-sm-3">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-clock-o fa-2x"></i></span>
                             <input maxlength="4" name="time" required type="text" class="col-sm-12 form-control-static time-picker" placeholder="12:00">
                         </div>
                     </div>
-                    <button class="btn btn-success booknow" type="submit"> BOOK NOW </button>
+                    <button class="btn btn-success booknow" type="submit"> choose a table now </button>
                 </form>
             </div>
         </div>

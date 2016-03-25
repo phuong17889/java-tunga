@@ -123,13 +123,10 @@ public class OrderServlet extends FrontendServlet {
         HttpSession session = request.getSession();
         this.setTitle(request, "Table booking");
         if (this.isPost(request)) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String phone = request.getParameter("phone");
             int number = Integer.parseInt(request.getParameter("number"));
             String date = request.getParameter("date");
             String time = request.getParameter("time");
-            Book book = new Book(name, email, phone, number, date, time);
+            Book book = new Book(number, date, time);
             session.setAttribute("book", book);
             response.sendRedirect("order?action=book");
         }

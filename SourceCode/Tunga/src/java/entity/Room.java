@@ -11,7 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import model.InvoiceTableModel;
 import model.TableModel;
+import utility.Helper;
 
 /**
  *
@@ -67,7 +69,15 @@ public class Room {
         DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
         Date date = df.parse(datetime);
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return TableModel.findAll("roomId = " + this.id);
-        //TODO cần thực hiện việc join bảng và search trong vòng 6 tiếng
+        List<InvoiceTable> listInvoiceTable = InvoiceTableModel.findAll("fromTime >= '" + dt.format(date) + "' AND toTime <= '" + dt.format(date) + "'");
+        if (listInvoiceTable != null) {
+            String[] tableId = new String[listInvoiceTable.size()];
+            for (int i = 0; i < tableId.length; i++) {
+                tableId[i] = listInvoiceTable.get(i).getTableId() + "";
+            }
+            return TableModel.findAll("roomId = " + this.id + " AND id NOT IN (" + Helper.implode(",", tableId) + ")");
+        } else {
+            return TableModel.findAll();
+        }
     }
 }

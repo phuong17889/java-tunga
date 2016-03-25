@@ -65,5 +65,4 @@ public class InvoiceFoodModel extends EntityModel {
         }
         return list.size() > 0 ? list : null;
     }
-
 }
