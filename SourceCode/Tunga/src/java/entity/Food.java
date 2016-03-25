@@ -71,10 +71,14 @@ public class Food {
 
     public String getShortDescription() {
         String shortDesc = "";
-        if (description != null && !"".equals(description)) {
-            String[] desc = description.split(" ");
+        if (this.description != null && !"".equals(this.description)) {
+            String[] desc = this.description.split(" ");
             for (int i = 0; i < 10; i++) {
-                shortDesc += desc[i] + " ";
+                try {
+                    shortDesc += desc[i] + " ";
+                } catch (Exception e) {
+                    return "";
+                }
             }
         }
         return shortDesc.trim();

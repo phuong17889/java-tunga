@@ -34,7 +34,7 @@
                                 <td>${food.id}</td>
                                 <td>${food.menu.name}</td>
                                 <td>${food.name}</td>
-                                <td><img src="${helper:baseUrl()}/uploads/${food.image}"></td>
+                                <td><img src="${food.imageUrl}"></td>
                                 <td>${helper:currency(food.price)}</td>
                                 <td class="col-sm-2">
                                     <div class="action-buttons">

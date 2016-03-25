@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
-            <form class="form-horizontal" method="POST" role="form" action="">
+            <form class="form-horizontal" method="POST" role="form" action="" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="add">
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
@@ -55,8 +55,8 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Image </label>
                     <div class="col-sm-3">
-                        <input type="file" id="table_image" name="image" value="${food.image}" class="file-picker"/>
-                        <img src="" style="width: 100px;" id="menu_image_preview">
+                        <input type="file" id="table_image" name="image" value="${table.image}" class="file-picker"/>
+                        <img src="" style="width: 100px;" id="table_image_preview">
                     </div>
                 </div>
                 <div class="clearfix form-actions">

@@ -23,6 +23,7 @@
                             <th class="col-sm-1">Table ID</th>
                             <th class="col-sm-3">Room's name</th>
                             <th>Table's name</th>
+                            <th>Table's image</th>
                             <th class="col-sm-1">Number holders</th>
                             <th class="col-sm-2">Price</th>
                             <th class="col-sm-2"></th>
@@ -34,6 +35,7 @@
                                 <td>${table.id}</td>
                                 <td>${table.room.name}</td>
                                 <td>${table.name}</td>
+                                <td><img src="${table.imageUrl}"></td>
                                 <td>${table.type}</td>
                                 <td>${helper:currency(table.price)}</td>
                                 <td class="col-sm-2">

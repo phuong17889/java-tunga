@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -26,6 +27,7 @@ import utility.Helper;
  *
  * @author TuanDo
  */
+@MultipartConfig
 public class TableServlet extends BackendServlet {
 
     /**
@@ -42,25 +44,29 @@ public class TableServlet extends BackendServlet {
         response.setContentType("text/html;charset=UTF-8");
         this.checkLogin(request, response);
         String action = request.getParameter("action");
-        switch (action) {
-            case "add":
-                this.actionAdd(request, response);
-                break;
-            case "index":
-                this.actionIndex(request, response);
-                break;
-            case "edit":
-                this.actionEdit(request, response);
-                break;
-            case "view":
-                this.actionView(request, response);
-                break;
-            case "delete":
-                this.actionDelete(request, response);
-                break;
-            default:
-                this.actionIndex(request, response);
-                break;
+        if (action == null) {
+            this.actionIndex(request, response);
+        } else {
+            switch (action) {
+                case "add":
+                    this.actionAdd(request, response);
+                    break;
+                case "index":
+                    this.actionIndex(request, response);
+                    break;
+                case "edit":
+                    this.actionEdit(request, response);
+                    break;
+                case "view":
+                    this.actionView(request, response);
+                    break;
+                case "delete":
+                    this.actionDelete(request, response);
+                    break;
+                default:
+                    this.actionIndex(request, response);
+                    break;
+            }
         }
     }
 
@@ -125,7 +131,7 @@ public class TableServlet extends BackendServlet {
         }
         return imageName;
     }
-    
+
     private String getFileName(Part part) {
         for (String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
@@ -134,7 +140,7 @@ public class TableServlet extends BackendServlet {
         }
         return null;
     }
-    
+
     private void actionAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.setTitle(request, "Add a new table");
         this.setActiveSidebar(request, "table/add");
@@ -156,7 +162,7 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("rooms", list);
         this.include("table/add.jsp", request, response);
     }
-    
+
     private void actionIndex(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.setTitle(request, "List Table");
@@ -165,7 +171,7 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("tables", list);
         this.include("table/index.jsp", request, response);
     }
-    
+
     private void actionView(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.setTitle(request, "View an existing table");
@@ -180,7 +186,7 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("table", t);
         this.include("table/view.jsp", request, response);
     }
-    
+
     private void actionDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -192,7 +198,7 @@ public class TableServlet extends BackendServlet {
         }
         this.actionIndex(request, response);
     }
-    
+
     private void actionEdit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.setTitle(request, "Edit a table");
@@ -223,5 +229,5 @@ public class TableServlet extends BackendServlet {
         request.setAttribute("table", t);
         this.include("table/edit.jsp", request, response);
     }
-    
+
 }

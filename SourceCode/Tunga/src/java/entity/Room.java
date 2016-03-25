@@ -8,7 +8,6 @@ package entity;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -68,7 +67,7 @@ public class Room {
         DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
         Date date = df.parse(datetime);
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return TableModel.findAll();
+        return TableModel.findAll("roomId = " + this.id);
         //TODO cần thực hiện việc join bảng và search trong vòng 6 tiếng
     }
 }

@@ -19,12 +19,8 @@
                 <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th class="col-sm-1">Menu ID</th>
-                            <th class="col-sm-2">Menu Name</th>
-                            <th class="col-sm-2">Name</th>
-                             <th class="col-sm-3">Address</th>
-                             <th class="col-sm-3">Date Time</th>
-                            <th class="col-sm-3">Order</th>
+                            <th class="col-sm-1">Order ID</th>
+                            <th class="col-sm-2">Order token</th>
                            
                         </tr>
                     </thead>
@@ -34,23 +30,7 @@
                                 <td class="col-sm-1">
                                     ${order.id}
                                 </td>
-                                <td>${order.name}</td>
-                                <td class="col-sm-3">${menu.order}</td>
-                                <td class="col-sm-2">
-                                    <div class="action-buttons">
-                                        <a class="blue" href="order?action=view&id=${order.id}">
-                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                                        </a>
-
-                                        <a class="green" href="order?action=edit&id=${order.id}">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                        </a>
-
-                                        <a class="red" href="order?action=delete&id=${order.id}">
-                                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                        </a>
-                                    </div>
-                                </td>
+                                <td>${order.token}</td>
                             </tr>
                         </c:forEach>
                     </tbody>

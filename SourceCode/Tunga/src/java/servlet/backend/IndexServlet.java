@@ -38,6 +38,7 @@ public class IndexServlet extends BackendServlet {
         } else if (request.getSession().getAttribute("login") != (Object) 1) {
             response.sendRedirect(Helper.baseUrl() + "/admin/login");
         } else {
+            this.setTitle(request, "Dashboard");
             this.include("site/index.jsp", request, response);
         }
     }
