@@ -56,8 +56,6 @@
                 <input type="hidden" name="action" value="submit">
                 <div class="row">
                     <div class="col-sm-12">
-                        <input type="hidden" name="total" value="${cart.getTotalPrice()}">
-                        <input type="hidden" name="status" value="1">
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="fullName">Full name: </label>
                             <div class="input-group col-sm-7">
@@ -84,6 +82,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="total" value="${cart.getTotalPrice()}">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4 col-sm-offset-7">
@@ -98,8 +97,13 @@
 </c:choose>
 <script>
     $(document).on("click", ".btn-submit", function () {
-        if(!isEmail($("input#email").val())){
+        if (!isEmail($("input#email").val())) {
             alert("Please input exactly yout email!");
+            return false;
+        } else {
+            var form = $(this).closest("form");
+            var a = form.serializeArray();
+            addInvoice(a[1].value, a[2].value, a[3].value, a[4].value, a[5].value);
             return false;
         }
     });
@@ -119,7 +123,6 @@
                 url: "cart?action=delete",
                 data: "id=" + th.attr("id"),
                 success: function (data) {
-                    console.log(data);
                     th.closest("tr").fadeOut("normal", function () {
                         $(this).remove();
                         if (data.isEmpty) {
@@ -149,6 +152,25 @@
     function isEmail(email) {
         var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
+    }
+    var socket = new WebSocket("${helper:socketUrl()}/websocket");
+    socket.onmessage = onMessage;
+    function onMessage(event) {
+        var invoice = JSON.parse(event.data);
+        if (invoice.action === "add") {
+            console.log(invoice);
+        }
+    }
+    function addInvoice(fullName, email, address, phone, total) {
+        var InvoiceAction = {
+            action: "add",
+            fullName: fullName,
+            email: email,
+            address: address,
+            phone: phone,
+            total: total
+        };
+        socket.send(JSON.stringify(InvoiceAction));
     }
 </script>
 <%@include file="../layout/footer.jsp" %>

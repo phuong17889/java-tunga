@@ -16,7 +16,10 @@ import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
+import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+import model.InvoiceModel;
+import utility.Helper;
 
 /**
  *
@@ -25,7 +28,6 @@ import javax.websocket.Session;
 @ApplicationScoped
 public class InvoiceSessionHandler {
 
-    private int invoiceId = 0;
     private final Set<Session> sessions = new HashSet<>();
     private final Set<Invoice> invoices = new HashSet<>();
 
@@ -46,11 +48,15 @@ public class InvoiceSessionHandler {
     }
 
     public void addInvoice(Invoice invoice) {
-        invoice.setId(invoiceId);
-        invoices.add(invoice);
-        invoiceId++;
-        JsonObject addMessage = createAddMessage(invoice);
-        sendToAllConnectedSessions(addMessage);
+        String token = Helper.random();
+        int status = Invoice.STATUS_PENDING;
+        invoice.setToken(token);
+        invoice.setStatus(status);
+        if (InvoiceModel.insert(invoice)) {
+            invoices.add(invoice);
+            JsonObject addMessage = createAddMessage(invoice);
+            sendToAllConnectedSessions(addMessage);
+        }
     }
 
     public void removeInvoice(int id) {
@@ -63,14 +69,13 @@ public class InvoiceSessionHandler {
         }
     }
 
-    public void toggleInvoice(int id) {
+    public void updateInvoice(int id, int status) {
         JsonProvider provider = JsonProvider.provider();
         Invoice invoice = getInvoiceById(id);
         if (invoice != null) {
-            if (invoice.getStatus() == Invoice.STATUS_CANCELED) {
-                //TODO chỗ này hóa ra là nó set action toggle để bật tắt, mình nên set lại action khác
-            }
-//            JsonObject updateMessage = provider.createObjectBuilder().add("action",)
+            invoice.setStatus(status);
+            JsonObject updateMessage = provider.createObjectBuilder().add("action", "update").add("id", invoice.getId()).add("status", invoice.getStatus()).build();
+            sendToAllConnectedSessions(updateMessage);
         }
     }
 
@@ -88,14 +93,7 @@ public class InvoiceSessionHandler {
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
                 .add("id", invoice.getId())
-                .add("fullName", invoice.getFullName())
-                .add("address", invoice.getAddress())
-                .add("phone", invoice.getPhone())
-                .add("email", invoice.getEmail())
                 .add("token", invoice.getToken())
-                .add("status", invoice.getStatus())
-                .add("total", invoice.getTotal())
-                .add("createdAt", invoice.getCreatedAt())
                 .build();
         return addMessage;
     }

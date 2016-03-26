@@ -26,7 +26,7 @@ import javax.websocket.server.ServerEndpoint;
  * @author MyPC
  */
 @ApplicationScoped
-@ServerEndpoint("/actions")
+@ServerEndpoint("/websocket")
 public class InvoiceSocketServer {
 
     @Inject
@@ -57,19 +57,17 @@ public class InvoiceSocketServer {
                 invoice.setAddress(jsonMessage.getString("address"));
                 invoice.setPhone(jsonMessage.getString("phone"));
                 invoice.setEmail(jsonMessage.getString("email"));
-                invoice.setToken(jsonMessage.getString("token"));
                 invoice.setTotal(Float.parseFloat(jsonMessage.getString("total")));
-                invoice.setStatus(jsonMessage.getInt("status"));
-                invoice.setCreatedAt(jsonMessage.getString("createdAt"));
                 sessionHandler.addInvoice(invoice);
             }
             if ("remove".equals(jsonMessage.getString("action"))) {
                 int id = (int) jsonMessage.getInt("id");
                 sessionHandler.removeInvoice(id);
             }
-            if ("toggle".equals(jsonMessage.getString("action"))) {
+            if ("update".equals(jsonMessage.getString("action"))) {
                 int id = (int) jsonMessage.getInt("id");
-                sessionHandler.toggleInvoice(id);
+                int status = (int) jsonMessage.getInt("status");
+                sessionHandler.updateInvoice(id, status);
             }
         }
     }
