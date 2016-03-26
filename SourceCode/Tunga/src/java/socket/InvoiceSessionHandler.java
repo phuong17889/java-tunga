@@ -16,10 +16,7 @@ import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
-import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
-import model.InvoiceModel;
-import utility.Helper;
 
 /**
  *
@@ -48,15 +45,9 @@ public class InvoiceSessionHandler {
     }
 
     public void addInvoice(Invoice invoice) {
-        String token = Helper.random();
-        int status = Invoice.STATUS_PENDING;
-        invoice.setToken(token);
-        invoice.setStatus(status);
-        if (InvoiceModel.insert(invoice)) {
-            invoices.add(invoice);
-            JsonObject addMessage = createAddMessage(invoice);
-            sendToAllConnectedSessions(addMessage);
-        }
+        invoices.add(invoice);
+        JsonObject addMessage = createAddMessage(invoice);
+        sendToAllConnectedSessions(addMessage);
     }
 
     public void removeInvoice(int id) {
@@ -93,7 +84,6 @@ public class InvoiceSessionHandler {
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
                 .add("id", invoice.getId())
-                .add("token", invoice.getToken())
                 .build();
         return addMessage;
     }

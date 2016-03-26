@@ -82,7 +82,19 @@
             </div>
         </div>
     </div>
-
 </div>
+<script>
+    var socket = new WebSocket("${helper:socketUrl()}/websocket");
+    socket.onopen = function (e) {
+        //TODO c?n ki?m tra session ? ?ây, ?? tránh ph?i g?i quá nhi?u request lên
+        addInvoice();
+    };
+    function addInvoice() {
+        var InvoiceAction = {
+            action: "add",
+            id: ${invoice.id}
+        };
+        socket.send(JSON.stringify(InvoiceAction));
+    }
+</script>
 <%@include file="../layout/footer.jsp" %>
-

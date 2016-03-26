@@ -100,11 +100,6 @@
         if (!isEmail($("input#email").val())) {
             alert("Please input exactly yout email!");
             return false;
-        } else {
-            var form = $(this).closest("form");
-            var a = form.serializeArray();
-            addInvoice(a[1].value, a[2].value, a[3].value, a[4].value, a[5].value);
-            return false;
         }
     });
     $(document).on("click", ".btn-checkout", function () {
@@ -152,25 +147,6 @@
     function isEmail(email) {
         var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
-    }
-    var socket = new WebSocket("${helper:socketUrl()}/websocket");
-    socket.onmessage = onMessage;
-    function onMessage(event) {
-        var invoice = JSON.parse(event.data);
-        if (invoice.action === "add") {
-            console.log(invoice);
-        }
-    }
-    function addInvoice(fullName, email, address, phone, total) {
-        var InvoiceAction = {
-            action: "add",
-            fullName: fullName,
-            email: email,
-            address: address,
-            phone: phone,
-            total: total
-        };
-        socket.send(JSON.stringify(InvoiceAction));
     }
 </script>
 <%@include file="../layout/footer.jsp" %>

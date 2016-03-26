@@ -20,6 +20,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import model.InvoiceModel;
 
 /**
  *
@@ -52,23 +53,18 @@ public class InvoiceSocketServer {
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject();
             if ("add".equals(jsonMessage.getString("action"))) {
-                Invoice invoice = new Invoice();
-                invoice.setFullName(jsonMessage.getString("fullName"));
-                invoice.setAddress(jsonMessage.getString("address"));
-                invoice.setPhone(jsonMessage.getString("phone"));
-                invoice.setEmail(jsonMessage.getString("email"));
-                invoice.setTotal(Float.parseFloat(jsonMessage.getString("total")));
+                Invoice invoice = InvoiceModel.find(jsonMessage.getInt("id"));
                 sessionHandler.addInvoice(invoice);
             }
-            if ("remove".equals(jsonMessage.getString("action"))) {
-                int id = (int) jsonMessage.getInt("id");
-                sessionHandler.removeInvoice(id);
-            }
-            if ("update".equals(jsonMessage.getString("action"))) {
-                int id = (int) jsonMessage.getInt("id");
-                int status = (int) jsonMessage.getInt("status");
-                sessionHandler.updateInvoice(id, status);
-            }
+//            if ("remove".equals(jsonMessage.getString("action"))) {
+//                int id = (int) jsonMessage.getInt("id");
+//                sessionHandler.removeInvoice(id);
+//            }
+//            if ("update".equals(jsonMessage.getString("action"))) {
+//                int id = (int) jsonMessage.getInt("id");
+//                int status = (int) jsonMessage.getInt("status");
+//                sessionHandler.updateInvoice(id, status);
+//            }
         }
     }
 }
