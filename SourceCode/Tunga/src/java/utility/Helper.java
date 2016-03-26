@@ -34,6 +34,12 @@ public class Helper {
         return pref.get("baseurl", null);
     }
 
+    public static String socketUrl() {
+        Preferences pref = readConfig("app");
+        String url = pref.get("baseurl", null);
+        return url.replace("http", "ws");
+    }
+
     public static String currency(float number) {
         Locale locale = Locale.US;
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);

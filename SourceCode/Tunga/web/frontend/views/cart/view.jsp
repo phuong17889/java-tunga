@@ -56,8 +56,6 @@
                 <input type="hidden" name="action" value="submit">
                 <div class="row">
                     <div class="col-sm-12">
-                        <input type="hidden" name="total" value="${cart.getTotalPrice()}">
-                        <input type="hidden" name="status" value="1">
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="fullName">Full name: </label>
                             <div class="input-group col-sm-7">
@@ -84,6 +82,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="total" value="${cart.getTotalPrice()}">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4 col-sm-offset-7">
@@ -98,7 +97,7 @@
 </c:choose>
 <script>
     $(document).on("click", ".btn-submit", function () {
-        if(!isEmail($("input#email").val())){
+        if (!isEmail($("input#email").val())) {
             alert("Please input exactly yout email!");
             return false;
         }
@@ -119,7 +118,6 @@
                 url: "cart?action=delete",
                 data: "id=" + th.attr("id"),
                 success: function (data) {
-                    console.log(data);
                     th.closest("tr").fadeOut("normal", function () {
                         $(this).remove();
                         if (data.isEmpty) {

@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="${themeUrl}/assets/css/bootstrap.min.css" />
         <link rel="stylesheet" href="${themeUrl}/assets/font-awesome/4.2.0/css/font-awesome.min.css" />
         <link rel="stylesheet" href="${themeUrl}/assets/css/jquery-ui.custom.min.css" />
+        <link rel="stylesheet" href="${themeUrl}/assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="${themeUrl}/assets/fonts/fonts.googleapis.com.css" />
         <link rel="stylesheet" href="${themeUrl}/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
         <link rel="stylesheet" href="${themeUrl}/assets/css/style.css"/>
@@ -33,6 +34,7 @@
         <script src="${themeUrl}/assets/js/dataTables.tableTools.min.js"></script>
         <script src="${themeUrl}/assets/js/dataTables.colVis.min.js"></script>
         <script src="${themeUrl}/assets/js/jquery.inputmask.bundle.js"></script>
+        <script src="${themeUrl}/assets/js/jquery.gritter.min.js"></script>
         <script src="${themeUrl}/assets/tinymce/tinymce.min.js"></script>
         <script src="${themeUrl}/assets/js/ace-elements.min.js"></script>
         <script src="${themeUrl}/assets/js/ace.min.js"></script>

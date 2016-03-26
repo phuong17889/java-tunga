@@ -11,6 +11,13 @@
         </function-signature>
     </function>
     <function>
+        <name>socketUrl</name>
+        <function-class>utility.Helper</function-class>
+        <function-signature>
+            java.lang.String socketUrl()
+        </function-signature>
+    </function>
+    <function>
         <name>currency</name>
         <function-class>utility.Helper</function-class>
         <function-signature>
