@@ -61,7 +61,7 @@ public class Room {
     }
 
     public List<Table> getTables() {
-        return TableModel.findAll("roomId = " + this.id);
+        return TableModel.findAll("WHERE roomId = " + this.id);
     }
 
     public List<Table> getFreeTables(Book book) throws ParseException {
@@ -69,13 +69,13 @@ public class Room {
         DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
         Date date = df.parse(datetime);
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<InvoiceTable> listInvoiceTable = InvoiceTableModel.findAll("fromTime >= '" + dt.format(date) + "' AND toTime <= '" + dt.format(date) + "'");
+        List<InvoiceTable> listInvoiceTable = InvoiceTableModel.findAll("WHERE fromTime >= '" + dt.format(date) + "' AND toTime <= '" + dt.format(date) + "'");
         if (listInvoiceTable != null) {
             String[] tableId = new String[listInvoiceTable.size()];
             for (int i = 0; i < tableId.length; i++) {
                 tableId[i] = listInvoiceTable.get(i).getTableId() + "";
             }
-            return TableModel.findAll("roomId = " + this.id + " AND id NOT IN (" + Helper.implode(",", tableId) + ")");
+            return TableModel.findAll("WHERE roomId = " + this.id + " AND id NOT IN (" + Helper.implode(",", tableId) + ")");
         } else {
             return TableModel.findAll();
         }

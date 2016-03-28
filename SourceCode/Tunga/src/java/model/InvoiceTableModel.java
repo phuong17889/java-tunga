@@ -24,7 +24,7 @@ public class InvoiceTableModel extends EntityModel {
 
     public static List<InvoiceTable> findAll(String condition) {
         List<InvoiceTable> list = new ArrayList<>();
-        String sql = "SELECT * FROM invoiceTable WHERE " + condition;
+        String sql = "SELECT * FROM invoiceTable " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);

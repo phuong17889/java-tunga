@@ -7,6 +7,7 @@ package entity;
 
 import java.util.List;
 import model.InvoiceFoodModel;
+import model.InvoiceTableModel;
 
 /**
  *
@@ -23,13 +24,18 @@ public class Invoice {
     private String token;
     private int status;
     private String createdAt;
+    private int notify;
+    private String type;
 
     public final static int STATUS_CANCELED = 0;
     public final static int STATUS_PENDING = 1;
     public final static int STATUS_SHIPPED = 2;
     public final static int STATUS_DELIVERED = 3;
+    public final static int NOTIFY_PENDING = 0;
+    public final static int NOTIFY_SENT = 1;
+    public final static int NOTIFY_READ = 2;
 
-    public Invoice(int id, String fullName, String email, String address, String phone, float total, String token, int status, String createdAt) {
+    public Invoice(int id, String fullName, String email, String address, String phone, float total, String token, int status, String createdAt, int notify) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -39,9 +45,10 @@ public class Invoice {
         this.token = token;
         this.status = status;
         this.createdAt = createdAt;
+        this.notify = notify;
     }
 
-    public Invoice(String fullName, String email, String address, String phone, float total, String token, int status) {
+    public Invoice(String fullName, String email, String address, String phone, float total, String token, int status, int notify) {
         this.fullName = fullName;
         this.email = email;
         this.address = address;
@@ -49,11 +56,12 @@ public class Invoice {
         this.total = total;
         this.token = token;
         this.status = status;
+        this.notify = notify;
     }
 
     public Invoice() {
     }
-    
+
     public int getId() {
         return id;
     }
@@ -126,6 +134,14 @@ public class Invoice {
         this.createdAt = createdAt;
     }
 
+    public int getNotify() {
+        return notify;
+    }
+
+    public void setNotify(int notify) {
+        this.notify = notify;
+    }
+
     public String getStatusText() {
         String text = "Pending";
         switch (this.status) {
@@ -145,7 +161,15 @@ public class Invoice {
         return text;
     }
 
+    public String getType() {
+        return this.getInvoiceFoods() != null ? "food" : "table";
+    }
+
     public List<InvoiceFood> getInvoiceFoods() {
-        return InvoiceFoodModel.findAll("invoiceId = " + this.id);
+        return InvoiceFoodModel.findAll("WHERE invoiceId = " + this.id);
+    }
+
+    public List<InvoiceTable> getInvoiceTables() {
+        return InvoiceTableModel.findAll("WHERE invoiceId = " + this.id);
     }
 }

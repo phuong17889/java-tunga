@@ -113,7 +113,8 @@ public class OrderServlet extends FrontendServlet {
     private void actionView(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String token = request.getParameter("token");
-        Invoice i = InvoiceModel.find("token = '" + token + "'");
+        Invoice i = InvoiceModel.find("WHERE token = '" + token + "'");
+        this.setTitle(request, "Your order!");
         request.setAttribute("invoice", i);
         this.include("order/view.jsp", request, response);
     }

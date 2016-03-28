@@ -46,7 +46,7 @@ public class InvoiceFoodModel extends EntityModel {
 
     public static List<InvoiceFood> findAll(String condition) {
         List<InvoiceFood> list = new ArrayList<>();
-        String sql = "SELECT * FROM invoiceFood WHERE " + condition;
+        String sql = "SELECT * FROM invoiceFood " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);

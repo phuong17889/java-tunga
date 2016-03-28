@@ -131,7 +131,8 @@ public class CartServlet extends FrontendServlet {
             String token = Helper.random();
             float total = cart.getTotalPrice();
             int status = Invoice.STATUS_PENDING;
-            Invoice in = new Invoice(fullName, email, address, phone, total, token, status);
+            int notify = Invoice.NOTIFY_PENDING;
+            Invoice in = new Invoice(fullName, email, address, phone, total, token, status, notify);
             if (InvoiceModel.insert(in)) {
                 for (Map.Entry<Integer, Integer> entry : cart.getCartFood().entrySet()) {
                     int key = entry.getKey();

@@ -78,7 +78,7 @@ public class Helper {
         for (int i = 0; i < 8; i++) {
             token += "" + randomGenerator.nextInt(10);
         }
-        if (InvoiceModel.find("token = '" + token + "'") != null) {
+        if (InvoiceModel.find("WHERE token = '" + token + "'") != null) {
             token = random();
         }
         return token;
@@ -87,5 +87,10 @@ public class Helper {
     public static String implode(String delimiter, String... data) {
         Predicate<String> IS_NOT_SPACES_ONLY = Pattern.compile("^\\s*$").asPredicate().negate();
         return Arrays.stream(data).filter(IS_NOT_SPACES_ONLY).collect(Collectors.joining(delimiter));
+    }
+    
+    public static String ucFirst(String string){
+        String[] newString = string.split("");
+        return string.replace(newString[0], newString[0].toUpperCase());
     }
 }

@@ -89,7 +89,7 @@ public class FoodModel extends EntityModel {
 
     public static List<Food> findAll(String condition) {
         List<Food> list = new ArrayList<>();
-        String sql = "SELECT * FROM food WHERE " + condition;
+        String sql = "SELECT * FROM food " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -130,7 +130,7 @@ public class FoodModel extends EntityModel {
 
     public static Food find(String condition) {
         Food f = null;
-        String sql = "SELECT * FROM food WHERE " + condition;
+        String sql = "SELECT * FROM food " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -161,7 +161,7 @@ public class FoodModel extends EntityModel {
 
     public static boolean delete(String condition) {
         int result = 0;
-        String sql = "DELETE FROM food WHERE " + condition;
+        String sql = "DELETE FROM food " + condition;
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();

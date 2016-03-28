@@ -17,6 +17,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
 import javax.websocket.Session;
+import model.InvoiceModel;
 
 /**
  *
@@ -44,32 +45,6 @@ public class InvoiceSessionHandler {
         return new ArrayList<>(invoices);
     }
 
-    public void addInvoice(Invoice invoice) {
-        invoices.add(invoice);
-        JsonObject addMessage = createAddMessage(invoice);
-        sendToAllConnectedSessions(addMessage);
-    }
-
-    public void removeInvoice(int id) {
-        Invoice invoice = getInvoiceById(id);
-        if (invoice != null) {
-            invoices.remove(invoice);
-            JsonProvider provider = JsonProvider.provider();
-            JsonObject removeMessage = provider.createObjectBuilder().add("action", "remove").add("id", id).build();
-            sendToAllConnectedSessions(removeMessage);
-        }
-    }
-
-    public void updateInvoice(int id, int status) {
-        JsonProvider provider = JsonProvider.provider();
-        Invoice invoice = getInvoiceById(id);
-        if (invoice != null) {
-            invoice.setStatus(status);
-            JsonObject updateMessage = provider.createObjectBuilder().add("action", "update").add("id", invoice.getId()).add("status", invoice.getStatus()).build();
-            sendToAllConnectedSessions(updateMessage);
-        }
-    }
-
     private Invoice getInvoiceById(int id) {
         for (Invoice invoice : invoices) {
             if (invoice.getId() == id) {
@@ -84,6 +59,8 @@ public class InvoiceSessionHandler {
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
                 .add("id", invoice.getId())
+                .add("status", invoice.getStatus())
+                .add("notify", invoice.getNotify())
                 .build();
         return addMessage;
     }
@@ -103,6 +80,30 @@ public class InvoiceSessionHandler {
         }
     }
 
-    //TODO cần xem lại cách viết hàm for của SET MAP
-    //TODO http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/HomeWebsocket/WebsocketHome.html#section9
+    public void addInvoice(Invoice invoice) {
+        InvoiceModel.update(invoice.getId(), invoice);
+        invoices.add(invoice);
+        JsonObject addMessage = createAddMessage(invoice);
+        sendToAllConnectedSessions(addMessage);
+    }
+
+    public void removeInvoice(int id) {
+        Invoice invoice = getInvoiceById(id);
+        if (invoice != null) {
+            invoices.remove(invoice);
+            JsonProvider provider = JsonProvider.provider();
+            JsonObject removeMessage = provider.createObjectBuilder().add("action", "remove").add("id", id).build();
+            sendToAllConnectedSessions(removeMessage);
+        }
+    }
+
+    public void updateInvoice(int id, Invoice invoice) {
+        JsonProvider provider = JsonProvider.provider();
+        InvoiceModel.update(invoice.getId(), invoice);
+        JsonObject updateMessage = provider.createObjectBuilder().add("action", "update").add("id", invoice.getId()).build();
+        sendToAllConnectedSessions(updateMessage);
+    }
+
+//TODO cần xem lại cách viết hàm for của SET MAP
+//TODO http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/HomeWebsocket/WebsocketHome.html#section9
 }

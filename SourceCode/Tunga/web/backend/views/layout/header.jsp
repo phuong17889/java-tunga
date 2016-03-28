@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="helper" uri="/WEB-INF/tlds/helper" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,15 +39,43 @@
         <script src="${themeUrl}/assets/tinymce/tinymce.min.js"></script>
         <script src="${themeUrl}/assets/js/ace-elements.min.js"></script>
         <script src="${themeUrl}/assets/js/ace.min.js"></script>
+        <script>
+            var audioElement = document.createElement('audio');
+            audioElement.setAttribute('src', '${themeUrl}/assets/sound/ding.mp3');
+            var socket = new WebSocket("${helper:socketUrl()}/websocket");
+            socket.onmessage = onMessage;
+            function onMessage(event) {
+                var invoice = JSON.parse(event.data);
+                if (invoice.action === "add" && invoice.notify === 1) {
+                    $.gritter.add({
+                        title: 'Have a new food order',
+                        text: 'Order id: ' + invoice.id+'',
+                        class_name: 'gritter-success gritter-center'
+                    });
+                    audioElement.play();
+                    var readNotify = {
+                        action: "readNotify",
+                        id: invoice.id
+                    };
+                    var removeInvoice = {
+                        action: "remove",
+                        id: invoice.id
+                    };
+                    socket.send(JSON.stringify(readNotify));
+                    socket.send(JSON.stringify(removeInvoice));
+                    return false;
+                }
+            }
+        </script>
     </head>
 
     <body class="no-skin">
         <div id="navbar" class="navbar navbar-default">
             <script type="text/javascript">
-            try {
-                ace.settings.check('navbar', 'fixed')
-            } catch (e) {
-            }
+                try {
+                    ace.settings.check('navbar', 'fixed')
+                } catch (e) {
+                }
             </script>
 
             <div class="navbar-container" id="navbar-container">

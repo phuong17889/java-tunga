@@ -54,17 +54,19 @@ public class InvoiceSocketServer {
             JsonObject jsonMessage = reader.readObject();
             if ("add".equals(jsonMessage.getString("action"))) {
                 Invoice invoice = InvoiceModel.find(jsonMessage.getInt("id"));
+                invoice.setNotify(Invoice.NOTIFY_SENT);
                 sessionHandler.addInvoice(invoice);
             }
-//            if ("remove".equals(jsonMessage.getString("action"))) {
-//                int id = (int) jsonMessage.getInt("id");
-//                sessionHandler.removeInvoice(id);
-//            }
-//            if ("update".equals(jsonMessage.getString("action"))) {
-//                int id = (int) jsonMessage.getInt("id");
-//                int status = (int) jsonMessage.getInt("status");
-//                sessionHandler.updateInvoice(id, status);
-//            }
+            if ("remove".equals(jsonMessage.getString("action"))) {
+                int id = (int) jsonMessage.getInt("id");
+                sessionHandler.removeInvoice(id);
+            }
+            if ("readNotify".equals(jsonMessage.getString("action"))) {
+                int id = jsonMessage.getInt("id");
+                Invoice invoice = InvoiceModel.find(id);
+                invoice.setNotify(Invoice.NOTIFY_READ);
+                sessionHandler.updateInvoice(id, invoice);
+            }
         }
     }
 }

@@ -24,4 +24,11 @@
             java.lang.String currency(float)
         </function-signature>
     </function>
+    <function>
+        <name>ucFirst</name>
+        <function-class>utility.Helper</function-class>
+        <function-signature>
+            java.lang.String ucFirst(java.lang.String)
+        </function-signature>
+    </function>
 </taglib>

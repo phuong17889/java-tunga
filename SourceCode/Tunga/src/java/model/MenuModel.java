@@ -82,7 +82,7 @@ public class MenuModel extends EntityModel {
 
     public static List<Menu> findAll(String condition) {
         List<Menu> list = new ArrayList<>();
-        String sql = "SELECT * FROM menu WHERE " + condition + " ORDER BY [order]";
+        String sql = "SELECT * FROM menu " + condition + " ORDER BY [order]";
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -120,7 +120,7 @@ public class MenuModel extends EntityModel {
 
     public static Menu find(String condition) {
         Menu m = null;
-        String sql = "SELECT * FROM menu WHERE " + condition;
+        String sql = "SELECT * FROM menu " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -151,7 +151,7 @@ public class MenuModel extends EntityModel {
 
     public static boolean delete(String condition) {
         int result = 0;
-        String sql = "DELETE FROM menu WHERE " + condition;
+        String sql = "DELETE FROM menu " + condition;
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();

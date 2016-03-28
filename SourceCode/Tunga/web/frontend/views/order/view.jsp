@@ -84,9 +84,9 @@
     </div>
 </div>
 <script>
+    <c:if test="${invoice.notify == 0}">
     var socket = new WebSocket("${helper:socketUrl()}/websocket");
     socket.onopen = function (e) {
-        //TODO c?n ki?m tra session ? ?ây, ?? tránh ph?i g?i quá nhi?u request lên
         addInvoice();
     };
     function addInvoice() {
@@ -96,5 +96,6 @@
         };
         socket.send(JSON.stringify(InvoiceAction));
     }
+    </c:if>
 </script>
 <%@include file="../layout/footer.jsp" %>

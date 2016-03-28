@@ -54,6 +54,6 @@ public class Menu {
     }
 
     public List<Food> getFoods() {
-        return FoodModel.findAll("menuId = " + this.id);
+        return FoodModel.findAll("WHERE menuId = " + this.id);
     }
 }

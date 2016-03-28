@@ -48,16 +48,17 @@ public class InvoiceModel extends EntityModel {
 
     public static boolean update(int id, Invoice in) {
         int result = 0;
-        String sql = "UPDATE invoice SET fullName = ?, email = ?, address = ?, phone = ?, total = ?, status = ? WHERE id = ?";
+        String sql = "UPDATE invoice SET fullName = ?, email = ?, address = ?, phone = ?, total = ?, status = ?, notify = ? WHERE id = ?";
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             prst.setString(1, in.getFullName());
-            prst.setString(1, in.getEmail());
+            prst.setString(2, in.getEmail());
             prst.setString(3, in.getAddress());
             prst.setString(4, in.getPhone());
             prst.setFloat(5, in.getTotal());
             prst.setInt(6, in.getStatus());
-            prst.setInt(7, id);
+            prst.setInt(7, in.getNotify());
+            prst.setInt(8, id);
             result = prst.executeUpdate();
             prst.close();
         } catch (SQLException ex) {
@@ -82,7 +83,8 @@ public class InvoiceModel extends EntityModel {
                 String token = rs.getString("token");
                 int status = rs.getInt("status");
                 String createdAt = rs.getString("createdAt");
-                Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
+                int notify = rs.getInt("notify");
+                Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
                 list.add(in);
             }
             rs.close();
@@ -95,7 +97,7 @@ public class InvoiceModel extends EntityModel {
 
     public static List<Invoice> findAll(String condition) {
         List<Invoice> list = new ArrayList<>();
-        String sql = "SELECT * FROM invoice WHERE " + condition;
+        String sql = "SELECT * FROM invoice " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -109,7 +111,36 @@ public class InvoiceModel extends EntityModel {
                 String token = rs.getString("token");
                 int status = rs.getInt("status");
                 String createdAt = rs.getString("createdAt");
-                Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
+                int notify = rs.getInt("notify");
+                Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
+                list.add(in);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list.size() > 0 ? list : null;
+    }
+
+    public static List<Invoice> findAll(String condition, int limit) {
+        List<Invoice> list = new ArrayList<>();
+        String sql = "SELECT TOP " + limit + " * FROM invoice " + condition;
+        try {
+            Statement st = em.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                float total = rs.getFloat("total");
+                String token = rs.getString("token");
+                int status = rs.getInt("status");
+                String createdAt = rs.getString("createdAt");
+                int notify = rs.getInt("notify");
+                Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
                 list.add(in);
             }
             rs.close();
@@ -135,7 +166,8 @@ public class InvoiceModel extends EntityModel {
                 String token = rs.getString("token");
                 int status = rs.getInt("status");
                 String createdAt = rs.getString("createdAt");
-                in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
+                int notify = rs.getInt("notify");
+                in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
             }
             rs.close();
             st.close();
@@ -147,7 +179,7 @@ public class InvoiceModel extends EntityModel {
 
     public static Invoice find(String condition) {
         Invoice in = null;
-        String sql = "SELECT * FROM invoice WHERE " + condition;
+        String sql = "SELECT * FROM invoice " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -161,7 +193,8 @@ public class InvoiceModel extends EntityModel {
                 String token = rs.getString("token");
                 int status = rs.getInt("status");
                 String createdAt = rs.getString("createdAt");
-                in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt);
+                int notify = rs.getInt("notify");
+                in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
             }
             rs.close();
             st.close();
@@ -187,7 +220,7 @@ public class InvoiceModel extends EntityModel {
 
     public static boolean delete(String condition) {
         int result = 0;
-        String sql = "DELETE FROM invoice WHERE " + condition;
+        String sql = "DELETE FROM invoice " + condition;
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();

@@ -80,7 +80,7 @@ public class RoomModel extends EntityModel {
 
     public static List<Room> findAll(String condition) {
         List<Room> list = new ArrayList<>();
-        String sql = "SELECT * FROM room WHERE " + condition;
+        String sql = "SELECT * FROM room " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -118,7 +118,7 @@ public class RoomModel extends EntityModel {
 
     public static Room find(String condition) {
         Room r = null;
-        String sql = "SELECT * FROM room WHERE " + condition;
+        String sql = "SELECT * FROM room " + condition;
         try {
             Statement st = em.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -149,7 +149,7 @@ public class RoomModel extends EntityModel {
 
     public static boolean delete(String condition) {
         int result = 0;
-        String sql = "DELETE FROM room WHERE " + condition;
+        String sql = "DELETE FROM room " + condition;
         try {
             PreparedStatement prst = em.getConnection().prepareStatement(sql);
             result = prst.executeUpdate();
