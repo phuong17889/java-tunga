@@ -50,7 +50,7 @@
                     $.gritter.add({
                         title: 'Have a new food order',
                         text: 'Order id: ' + invoice.id+'',
-                        class_name: 'gritter-success gritter-center'
+                        class_name: 'gritter-success'
                     });
                     audioElement.play();
                     var readNotify = {

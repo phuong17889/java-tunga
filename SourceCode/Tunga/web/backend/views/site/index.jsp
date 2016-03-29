@@ -35,6 +35,7 @@
                         <div class="widget-body" style="display: block;">
                             <div class="widget-main no-padding">
                                 <div class="comments">
+                                    <div class="first"></div>
                                     <c:forEach var="invoice" items="${requestScope.list}">
                                         <%@include file="_order.jsp" %>
                                     </c:forEach>
@@ -116,14 +117,15 @@
             $.ajax({
                 type: "POST",
                 cache: false,
-                url: "index?action=newOrder",
+                url: "admin/index?action=newOrder",
                 data: "id=" + invoice.id,
                 success: function (response) {
                     if ($(".comments").find(".itemdiv.commentdiv").length === 10) {
-                        $(".comments").find(".itemdiv.commentdiv:last").remove();
+                        $(".comments").find(".itemdiv.commentdiv:last").slideUp("slow", function(){
+                            $(this).remove();
+                        });
                     }
-                    var html = $(".comments").html();
-                    $(".comments").html(response + html);
+                    $(response).hide().appendTo(".comments .first").slideDown("slow");
                 }
             });
             return false;

@@ -37,8 +37,13 @@ public class BackendServlet extends HttpServlet {
 
     public void include(String viewPath, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("themeUrl", Helper.baseUrl() + "/backend");
-        RequestDispatcher rd = request.getRequestDispatcher("../backend/views/" + viewPath);
-        rd.include(request, response);
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher("../backend/views/" + viewPath);
+            rd.include(request, response);
+        } catch (Exception e) {
+            RequestDispatcher rd = request.getRequestDispatcher("backend/views/" + viewPath);
+            rd.include(request, response);
+        }
     }
 
     public void setActiveSidebar(HttpServletRequest request, String route) {

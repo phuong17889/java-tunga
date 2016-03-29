@@ -97,11 +97,9 @@ public class IndexServlet extends BackendServlet {
                 j = "0" + i;
             }
             categories[i - 1] = "'" + j + "'";
-            List<InvoiceFood> listFood = InvoiceFoodModel.findAll("LEFT JOIN invoice ON invoice.id = invoiceFood.invoiceId WHERE CONVERT(VARCHAR(25), invoice.createdAt, 126) LIKE '" + year + "-" + month + "-" + j + "%'");
-            int countFood = listFood != null ? listFood.size() : 0;
+            int countFood = InvoiceFoodModel.countAllByInvoice("LEFT JOIN invoice ON invoice.id = invoiceFood.invoiceId WHERE CONVERT(VARCHAR(25), invoice.createdAt, 126) LIKE '" + year + "-" + month + "-" + j + "%'");
             foodOrdered[i - 1] = countFood + "";
-            List<InvoiceTable> listTable = InvoiceTableModel.findAll("LEFT JOIN invoice ON invoice.id = invoiceTable.invoiceId WHERE CONVERT(VARCHAR(25), invoice.createdAt, 126) LIKE '" + year + "-" + month + "-" + j + "%'");
-            int countTable = listTable != null ? listTable.size() : 0;
+            int countTable = InvoiceTableModel.countAllByInvoice("LEFT JOIN invoice ON invoice.id = invoiceTable.invoiceId WHERE CONVERT(VARCHAR(25), invoice.createdAt, 126) LIKE '" + year + "-" + month + "-" + j + "%'");
             tableBooked[i - 1] = countTable + "";
         }
         request.setAttribute("categories", Helper.implode(",", categories));

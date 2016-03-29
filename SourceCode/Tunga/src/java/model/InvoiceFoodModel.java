@@ -65,4 +65,21 @@ public class InvoiceFoodModel extends EntityModel {
         }
         return list.size() > 0 ? list : null;
     }
+    
+    public static int countAllByInvoice(String condition){
+        String sql = "SELECT DISTINCT invoice.* FROM invoiceFood " + condition;
+        int count = 0;
+        try {
+            Statement st = em.getConnection().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                count++;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceFoodModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
 }
