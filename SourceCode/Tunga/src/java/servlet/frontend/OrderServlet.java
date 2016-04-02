@@ -6,19 +6,16 @@
 package servlet.frontend;
 
 import core.FrontendServlet;
-import entity.Book;
 import entity.Invoice;
 import entity.InvoiceFood;
-import entity.Room;
+import entity.InvoiceTable;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.InvoiceModel;
-import model.RoomModel;
 import utility.Helper;
 
 /**
@@ -53,7 +50,7 @@ public class OrderServlet extends FrontendServlet {
             response.sendRedirect("index");
         }
     }
-    
+
     private void actionFood(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (this.isPost(request)) {
@@ -68,7 +65,13 @@ public class OrderServlet extends FrontendServlet {
                 }
                 cart.addCartFood(id, quantity);
                 session.setAttribute("cart", cart);
-                out.print("{\"count\": \"" + cart.getTotalCount() + "\", \"total\": \"" + Helper.currency(cart.getTotalPrice()) + "\"}");
+                if (session.getAttribute("reserve") != null) {
+                    InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
+                    out.print("{\"count\": \"" + (cart.getTotalCount() + 1) + "\", \"total\": \"" + Helper.currency((cart.getTotalPrice() + reserve.getPrice())) + "\"}");
+
+                } else {
+                    out.print("{\"count\": \"" + cart.getTotalCount() + "\", \"total\": \"" + Helper.currency(cart.getTotalPrice()) + "\"}");
+                }
             }
         }
     }
@@ -116,8 +119,12 @@ public class OrderServlet extends FrontendServlet {
             throws ServletException, IOException {
         String token = request.getParameter("token");
         Invoice i = InvoiceModel.find("WHERE token = '" + token + "'");
-        this.setTitle(request, "Your order!");
-        request.setAttribute("invoice", i);
-        this.include("order/view.jsp", request, response);
+        if (i != null) {
+            this.setTitle(request, "Your order!");
+            request.setAttribute("invoice", i);
+            this.include("order/view.jsp", request, response);
+        } else {
+            response.sendRedirect("index");
+        }
     }
 }

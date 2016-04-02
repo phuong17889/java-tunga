@@ -30,9 +30,4 @@ public class DataProcess {
         }
         return conn;
     }
-    
-    public static void main(String[] args) {
-        DataProcess dt = new DataProcess();
-        dt.getConnection();
-    }
 }

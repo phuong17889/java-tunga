@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="${themeUrl}/assets/css/jquery-ui.custom.min.css" />
         <link rel="stylesheet" href="${themeUrl}/assets/css/jquery.gritter.min.css" />
         <link rel="stylesheet" href="${themeUrl}/assets/fonts/fonts.googleapis.com.css" />
+        <link rel="stylesheet" href="${themeUrl}/assets/css/daterangepicker.min.css" />
         <link rel="stylesheet" href="${themeUrl}/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
         <link rel="stylesheet" href="${themeUrl}/assets/css/style.css"/>
         <script src="${themeUrl}/assets/js/ace-extra.min.js"></script>
@@ -28,6 +29,7 @@
         </script>
         <script src="${themeUrl}/assets/js/jquery.2.1.1.min.js"></script>
         <script src="${themeUrl}/assets/js/bootstrap.min.js"></script>
+        <script src="${themeUrl}/assets/js/moment.min.js"></script>
         <script src="${themeUrl}/assets/js/jquery-ui.custom.min.js"></script>
         <script src="${themeUrl}/assets/js/jquery.ui.touch-punch.min.js"></script>
         <script src="${themeUrl}/assets/js/jquery.dataTables.min.js"></script>
@@ -37,6 +39,7 @@
         <script src="${themeUrl}/assets/js/jquery.inputmask.bundle.js"></script>
         <script src="${themeUrl}/assets/js/jquery.gritter.min.js"></script>
         <script src="${themeUrl}/assets/tinymce/tinymce.min.js"></script>
+        <script src="${themeUrl}/assets/js/daterangepicker.min.js"></script>
         <script src="${themeUrl}/assets/js/ace-elements.min.js"></script>
         <script src="${themeUrl}/assets/js/ace.min.js"></script>
         <script>
@@ -49,7 +52,7 @@
                 if (invoice.action === "add" && invoice.notify === 1) {
                     $.gritter.add({
                         title: 'Have a new food order',
-                        text: 'Order id: ' + invoice.id+'',
+                        text: 'Order id: ' + invoice.id + '',
                         class_name: 'gritter-success'
                     });
                     audioElement.play();

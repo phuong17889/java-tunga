@@ -7,7 +7,6 @@ package model;
 
 import core.EntityModel;
 import static core.EntityModel.em;
-import entity.Invoice;
 import entity.InvoiceFood;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

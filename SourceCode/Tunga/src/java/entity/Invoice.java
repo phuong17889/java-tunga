@@ -25,7 +25,6 @@ public class Invoice {
     private int status;
     private String createdAt;
     private int notify;
-    private String type;
 
     public final static int STATUS_CANCELED = 0;
     public final static int STATUS_PENDING = 1;
@@ -162,14 +161,14 @@ public class Invoice {
     }
 
     public String getType() {
-        return this.getInvoiceFoods() != null ? "food" : "table";
+        return this.getInvoiceTable() == null ? "food" : "table";
     }
 
     public List<InvoiceFood> getInvoiceFoods() {
         return InvoiceFoodModel.findAll("WHERE invoiceId = " + this.id);
     }
 
-    public List<InvoiceTable> getInvoiceTables() {
-        return InvoiceTableModel.findAll("WHERE invoiceId = " + this.id);
+    public InvoiceTable getInvoiceTable() {
+        return InvoiceTableModel.find("WHERE invoiceId = " + this.id);
     }
 }

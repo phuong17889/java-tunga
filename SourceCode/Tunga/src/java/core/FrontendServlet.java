@@ -36,6 +36,7 @@ public class FrontendServlet extends HttpServlet {
         HttpSession session = request.getSession();
         InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
         request.setAttribute("cart", cart);
+        request.setAttribute("reserve", session.getAttribute("reserve"));
         request.setAttribute("menus", MenuModel.findAll());
         request.setAttribute("themeUrl", Helper.baseUrl() + "/frontend");
         RequestDispatcher rd = request.getRequestDispatcher("frontend/views/" + viewPath);

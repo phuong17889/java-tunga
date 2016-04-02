@@ -78,7 +78,7 @@
                         <button class="btn btn-success btn-checkout">Checkout</button>
                     </div>
                 </div>
-            </div      
+            </div>    
         </div>
         <div class="checkout" style="display: none">
             <h2>Please fill your information!</h2>

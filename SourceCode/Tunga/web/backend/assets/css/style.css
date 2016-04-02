@@ -11,3 +11,9 @@ and open the template in the editor.
 .table img{
     max-height: 40px;
 }
+.pointer {
+    cursor: pointer;
+}
+.table td.right, .table th.right{
+    text-align: right;
+}

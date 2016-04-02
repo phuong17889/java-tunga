@@ -9,6 +9,7 @@ import core.FrontendServlet;
 import entity.Food;
 import entity.Invoice;
 import entity.InvoiceFood;
+import entity.InvoiceTable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import model.FoodModel;
 import model.InvoiceFoodModel;
 import model.InvoiceModel;
+import model.InvoiceTableModel;
 import utility.Helper;
 
 /**
@@ -126,32 +128,44 @@ public class CartServlet extends FrontendServlet {
 
     private void actionSubmit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         if (this.isPost(request)) {
-            HttpSession session = request.getSession();
-            InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("email");
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
             String token = Helper.random();
-            float total = cart.getTotalPrice();
+            float total = 0;
             int status = Invoice.STATUS_PENDING;
             int notify = Invoice.NOTIFY_PENDING;
             Invoice in = new Invoice(fullName, email, address, phone, total, token, status, notify);
             if (InvoiceModel.insert(in)) {
-                for (Map.Entry<Integer, Integer> entry : cart.getCartFood().entrySet()) {
-                    int key = entry.getKey();
-                    Food f = FoodModel.find(key);
-                    int quantity = entry.getValue();
-                    InvoiceFood ifd = new InvoiceFood(in.getId(), f.getId(), quantity);
-                    InvoiceFoodModel.insert(ifd);
+                if (session.getAttribute("cart") != null) {
+                    InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+                    total += cart.getTotalPrice();
+                    for (Map.Entry<Integer, Integer> entry : cart.getCartFood().entrySet()) {
+                        int key = entry.getKey();
+                        Food f = FoodModel.find(key);
+                        int quantity = entry.getValue();
+                        InvoiceFood ifd = new InvoiceFood(in.getId(), f.getId(), quantity);
+                        InvoiceFoodModel.insert(ifd);
+                    }
+                    session.removeAttribute("cart");
                 }
-                session.removeAttribute("cart");
-                response.sendRedirect("order?action=view&token=" + token);
-            } else {
-                session.setAttribute("error", "Something went wrong!");
-                response.sendRedirect("cart?action=view");
+                if (session.getAttribute("reserve") != null) {
+                    InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
+                    total += reserve.getPrice();
+                    reserve.setInvoiceId(in.getId());
+                    InvoiceTableModel.insert(reserve);
+                    session.removeAttribute("reserve");
+                }
+                in.setTotal(total);
+                InvoiceModel.update(in.getId(), in);
             }
+            response.sendRedirect("order?action=view&token=" + token);
+        } else {
+            session.setAttribute("error", "Something went wrong!");
+            response.sendRedirect("cart?action=view");
         }
     }
 }
