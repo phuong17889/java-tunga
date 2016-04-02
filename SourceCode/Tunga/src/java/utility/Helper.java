@@ -9,8 +9,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -88,9 +92,25 @@ public class Helper {
         Predicate<String> IS_NOT_SPACES_ONLY = Pattern.compile("^\\s*$").asPredicate().negate();
         return Arrays.stream(data).filter(IS_NOT_SPACES_ONLY).collect(Collectors.joining(delimiter));
     }
-    
-    public static String ucFirst(String string){
+
+    public static String ucFirst(String string) {
         String[] newString = string.split("");
         return string.replace(newString[0], newString[0].toUpperCase());
+    }
+
+    public static Date calcToTime(String fromTime) {
+        Date dt = null;
+        try {
+            DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+            dt = df.parse(fromTime);
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            c.add(Calendar.HOUR, 6);
+            dt = c.getTime();
+            return dt;
+        } catch (ParseException ex) {
+            Logger.getLogger(Helper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dt;
     }
 }

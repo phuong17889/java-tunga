@@ -56,6 +56,10 @@
     <!--end servlet-->
     <!--begin mapping-->
     <!--begin mapping index-->
+    <servlet>
+        <servlet-name>FrontendTableServlet</servlet-name>
+        <servlet-class>servlet.frontend.TableServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>FrontendIndexServlet</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -116,6 +120,10 @@
     </servlet-mapping>
     <!--end mapping admin-->
     <!--end mapping-->
+    <servlet-mapping>
+        <servlet-name>FrontendTableServlet</servlet-name>
+        <url-pattern>/table</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             300

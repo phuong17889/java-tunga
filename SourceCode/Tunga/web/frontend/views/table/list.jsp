@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-sm-12">
             <c:forEach var="room" items="${rooms}">
-                <c:if test="${room.tables != null}">
+                <c:if test="${room.getFreeTables(sessionScope.book) != null}">
                     <div class="row">
                         <div class="col-sm-12">
                             <h2 class="head2">${room.name} (${room.type ? "VIP" : "Normal"})</h2>
@@ -16,9 +16,9 @@
                                 <div class="news row"> 
                                     <img src="${table.imageUrl}" alt="" class="img_inner fleft table-image">
                                     <div class="extra_wrapper">
-                                        <div class="col1">${table.name}</div>
+                                        <div class="col1 table-name">${table.name}</div>
                                         <p>${table.description}</p>
-                                        <a href="#" class="btn">Book this table</a> </div>
+                                        <a href="table?action=book&id=${table.id}" class="btn">Book this table</a> </div>
                                 </div>
                             </c:forEach>
                             <hr>

@@ -5,6 +5,8 @@
  */
 package entity;
 
+import model.TableModel;
+
 /**
  *
  * @author Hoangha.FPT
@@ -17,6 +19,9 @@ public class InvoiceTable {
     private float price;
     private String fromTime;
     private String toTime;
+
+    public InvoiceTable() {
+    }
 
     public InvoiceTable(int id, int invoiceId, int tableId, float price, String fromTime, String toTime) {
         this.id = id;
@@ -73,5 +78,9 @@ public class InvoiceTable {
 
     public void setToTime(String toTime) {
         this.toTime = toTime;
+    }
+
+    public Table getTable() {
+        return TableModel.find(this.tableId);
     }
 }

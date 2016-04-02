@@ -39,19 +39,21 @@ public class OrderServlet extends FrontendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        switch (action) {
-            case "food":
-                this.actionFood(request, response);
-                break;
-            case "view":
-                this.actionView(request, response);
-                break;
-            case "book":
-                this.actionBook(request, response);
+        try {
+            String action = request.getParameter("action");
+            switch (action) {
+                case "food":
+                    this.actionFood(request, response);
+                    break;
+                case "view":
+                    this.actionView(request, response);
+                    break;
+            }
+        } catch (NullPointerException e) {
+            response.sendRedirect("index");
         }
     }
-
+    
     private void actionFood(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (this.isPost(request)) {
@@ -117,26 +119,5 @@ public class OrderServlet extends FrontendServlet {
         this.setTitle(request, "Your order!");
         request.setAttribute("invoice", i);
         this.include("order/view.jsp", request, response);
-    }
-
-    private void actionBook(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        this.setTitle(request, "Table booking");
-        if (this.isPost(request)) {
-            int number = Integer.parseInt(request.getParameter("number"));
-            String date = request.getParameter("date");
-            String time = request.getParameter("time");
-            Book book = new Book(number, date, time);
-            session.setAttribute("book", book);
-            response.sendRedirect("order?action=book");
-        }
-        if (session.getAttribute("book") != null) {
-            List<Room> rooms = RoomModel.findAll();
-            request.setAttribute("rooms", rooms);
-            this.include("order/book.jsp", request, response);
-        } else {
-            response.sendRedirect("index");
-        }
     }
 }

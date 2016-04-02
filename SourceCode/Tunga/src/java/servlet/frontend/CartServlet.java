@@ -39,17 +39,21 @@ public class CartServlet extends FrontendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        switch (action) {
-            case "submit":
-                this.actionSubmit(request, response);
-                break;
-            case "view":
-                this.actionView(request, response);
-                break;
-            case "delete":
-                this.actionDelete(request, response);
-                break;
+        try {
+            String action = request.getParameter("action");
+            switch (action) {
+                case "submit":
+                    this.actionSubmit(request, response);
+                    break;
+                case "view":
+                    this.actionView(request, response);
+                    break;
+                case "delete":
+                    this.actionDelete(request, response);
+                    break;
+            }
+        } catch (NullPointerException e) {
+            response.sendRedirect("index");
         }
     }
 
@@ -58,6 +62,7 @@ public class CartServlet extends FrontendServlet {
         this.setTitle(request, "Your shopping cart");
         HttpSession session = request.getSession();
         request.setAttribute("cart", session.getAttribute("cart"));
+        request.setAttribute("reserve", session.getAttribute("reserve"));
         this.include("cart/view.jsp", request, response);
     }
 

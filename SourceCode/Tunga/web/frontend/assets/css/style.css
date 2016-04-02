@@ -774,3 +774,24 @@ hr{
 .booknow{
     text-transform: uppercase;
 }
+.menu img {
+    height: 167.5px!important;
+}
+.menu .alpha{
+    height: 325px;
+}
+.menu .price{
+    display: inline-block;
+    background: #699440;
+    color: #fff;
+    min-width: 41px;
+    height: 38px;
+    border-radius: 4px;
+    font: 20px/36px 'Lobster', cursive;
+    text-align: center;
+    margin-top: 15px;
+}
+.table-name{
+    font-size: 18pt;
+    margin-bottom: 10px;
+}

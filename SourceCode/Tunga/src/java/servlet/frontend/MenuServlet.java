@@ -31,11 +31,15 @@ public class MenuServlet extends FrontendServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Menu menu = MenuModel.find(id);
-        this.setTitle(request, menu.getName());
-        request.setAttribute("menu", menu);
-        this.include("menu/view.jsp", request, response);
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Menu menu = MenuModel.find(id);
+            this.setTitle(request, menu.getName());
+            request.setAttribute("menu", menu);
+            this.include("menu/view.jsp", request, response);
+        } catch (NullPointerException | NumberFormatException e) {
+            response.sendRedirect("index");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

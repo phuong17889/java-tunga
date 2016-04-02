@@ -55,9 +55,16 @@
                                 <a href="cart?action=view" class="relative cart-info">
                                     <i class="fa fa-shopping-cart fa-2x"></i>
                                     <c:choose>
-                                        <c:when test="${not empty requestScope.cart && requestScope.cart != null}">
-                                            <span class="count">${cart.totalCount}</span>
-                                            <p class="text">${helper:currency(cart.totalPrice)}</p>
+                                        <c:when test="${requestScope.cart != null || requestScope.reserve != null}">
+                                            <c:choose>
+                                                <c:when test="${reserve != null}">
+                                                    <span class="count">${(cart.totalCount + 1)}</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="count">${cart.totalCount}</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <p class="text">${helper:currency((cart.totalPrice + reserve.price))}</p>
                                         </c:when>
                                         <c:otherwise>
                                             <span class="count">0</span>

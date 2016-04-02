@@ -6,41 +6,71 @@
 
 <%@include file="../layout/header.jsp" %>
 <c:choose>
-    <c:when test="${cart == null}">
+    <c:when test="${cart == null && reserve == null}">
         <div class="shopping-cart">
             <h2>Your cart is empty!</h2>
         </div>
     </c:when>
     <c:otherwise>
         <div class="shopping-cart">
-            <h2>Your shopping cart</h2>
-            <div class="row">
-                <div class="col-sm-12">
-                    <table class="table table-responsive table-striped">
-                        <tr>
-                            <th class="col-sm-5">Food's name</th>
-                            <th class="col-sm-2">Price</th>
-                            <th class="col-sm-2">Quantity</th>
-                            <th class="col-sm-2">Sub-total</th>
-                            <th class="col-sm-1"></th>
-                        </tr>
-                        <c:forEach var="food" items="${cart.getCartContent()}">
+            <c:if test="${reserve != null}">
+                <h2>Your table reserve information:</h2>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-responsive table-striped">
                             <tr>
-                                <td>${food.name}</td>
-                                <td>${helper:currency(food.price)}</td>
-                                <td>${cart.getCartQuantity(food.id)}</td>
-                                <td>${helper:currency(cart.getCartQuantity(food.id) * food.price)}</td>
-                                <td><a href="javascript://" class="btn-delete" id="${food.id}"><i class="fa fa-trash"></i></a></td>
+                                <th class="col-sm-3">Room's name</th>
+                                <th class="col-sm-3">Table's name</th>
+                                <th class="col-sm-2">Price</th>
+                                <th class="col-sm-2">Sub-total</th>
+                                <th class="col-sm-1"></th>
                             </tr>
-                        </c:forEach>
-                        <tr>
-                            <td colspan="3"><strong>Total:</strong></td>
-                            <td class="total"><strong>${helper:currency(cart.getTotalPrice())}</strong></td>
-                            <td></td>
-                        </tr>
-                    </table>
+                            <tr>
+                                <td>${reserve.table.room.name}</td>
+                                <td>${reserve.table.name}</td>
+                                <td>${helper:currency(reserve.table.price)}</td>
+                                <td>${helper:currency(reserve.price)}</td>
+                                <td><a href="javascript://" class="btn-delete-table"><i class="fa fa-trash"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"><strong>Total:</strong></td>
+                                <td class="total"><strong>${helper:currency(reserve.price)}</strong></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            </c:if>
+            <c:if test="${cart != null}">
+                <h2>Your food order information:</h2>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-responsive table-striped">
+                            <tr>
+                                <th class="col-sm-5">Food's name</th>
+                                <th class="col-sm-2">Price</th>
+                                <th class="col-sm-2">Quantity</th>
+                                <th class="col-sm-2">Sub-total</th>
+                                <th class="col-sm-1"></th>
+                            </tr>
+                            <c:forEach var="food" items="${cart.getCartContent()}">
+                                <tr>
+                                    <td>${food.name}</td>
+                                    <td>${helper:currency(food.price)}</td>
+                                    <td>${cart.getCartQuantity(food.id)}</td>
+                                    <td>${helper:currency(cart.getCartQuantity(food.id) * food.price)}</td>
+                                    <td><a href="javascript://" class="btn-delete" id="${food.id}"><i class="fa fa-trash"></i></a></td>
+                                </tr>
+                            </c:forEach>
+                            <tr>
+                                <td colspan="3"><strong>Total:</strong></td>
+                                <td class="total"><strong>${helper:currency(cart.getTotalPrice())}</strong></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </c:if>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="col-sm-4 col-sm-offset-8">
@@ -48,7 +78,7 @@
                         <button class="btn btn-success btn-checkout">Checkout</button>
                     </div>
                 </div>
-            </div>
+            </div      
         </div>
         <div class="checkout" style="display: none">
             <h2>Please fill your information!</h2>

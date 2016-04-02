@@ -75,9 +75,9 @@ public class Room {
             for (int i = 0; i < tableId.length; i++) {
                 tableId[i] = listInvoiceTable.get(i).getTableId() + "";
             }
-            return TableModel.findAll("WHERE roomId = " + this.id + " AND id NOT IN (" + Helper.implode(",", tableId) + ")");
+            return TableModel.findAll("WHERE roomId = " + this.id + " AND id NOT IN (" + Helper.implode(",", tableId) + ") AND type >= " + book.getNumber() + " AND type <= " + (book.getNumber() + 2));
         } else {
-            return TableModel.findAll();
+            return TableModel.findAll("WHERE roomId = " + this.id + " AND type >= " + book.getNumber() + " AND type <= " + (book.getNumber() + 2));
         }
     }
 }

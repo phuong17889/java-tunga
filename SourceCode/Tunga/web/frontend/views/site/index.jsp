@@ -10,8 +10,8 @@
         <div class="bookonlinewrapper">
             <div class="container col-sm-12" id="bookonline">
                 <h2 class="wow fadeInUp"> Book online</h2>
-                <form class="form-inline" action="order" method="POST">
-                    <input type="hidden" name="action" value="book">
+                <form class="form-inline" action="table" method="POST">
+                    <input type="hidden" name="action" value="list">
                     <div>
                         <div class="form-group col-sm-5">
                             <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-list-ol fa-2x"></i></span>
