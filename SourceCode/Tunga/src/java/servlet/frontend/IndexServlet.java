@@ -26,17 +26,18 @@ public class IndexServlet extends FrontendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        this.setTitle(request, "Home");
-        Date date = new Date();
-        DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
-        request.setAttribute("today", df.format(date));
-        this.include("site/index.jsp", request, response);
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            this.setTitle(request, "Home");
+            Date date = new Date();
+            DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+            request.setAttribute("today", df.format(date));
+            this.include("site/index.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(500, "Something went wrong", request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -36,37 +36,38 @@ public class TableServlet extends BackendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        this.checkLogin(request, response);
-        String action = request.getParameter("action");
-        if (action == null) {
-            this.actionIndex(request, response);
-        } else {
-            switch (action) {
-                case "add":
-                    this.actionAdd(request, response);
-                    break;
-                case "index":
-                    this.actionIndex(request, response);
-                    break;
-                case "edit":
-                    this.actionEdit(request, response);
-                    break;
-                case "view":
-                    this.actionView(request, response);
-                    break;
-                case "delete":
-                    this.actionDelete(request, response);
-                    break;
-                default:
-                    this.actionIndex(request, response);
-                    break;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            this.checkLogin(request, response);
+            String action = request.getParameter("action");
+            if (action == null) {
+                this.actionIndex(request, response);
+            } else {
+                switch (action) {
+                    case "add":
+                        this.actionAdd(request, response);
+                        break;
+                    case "index":
+                        this.actionIndex(request, response);
+                        break;
+                    case "edit":
+                        this.actionEdit(request, response);
+                        break;
+                    case "view":
+                        this.actionView(request, response);
+                        break;
+                    case "delete":
+                        this.actionDelete(request, response);
+                        break;
+                    default:
+                        this.actionIndex(request, response);
+                        break;
+                }
             }
+        } catch (IOException ex) {
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
@@ -109,27 +110,30 @@ public class TableServlet extends BackendServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String uploadFile(String column, HttpServletRequest request)
-            throws ServletException, IOException {
-        String path = Helper.appPath() + "uploads/tables";
-        Part imagePart = request.getPart(column);
-        String imageName = getFileName(imagePart);
-        if (imageName != null) {
-            OutputStream out;
-            InputStream fileContent;
-            try {
-                out = new FileOutputStream(new File(path + File.separator + imageName));
-                fileContent = imagePart.getInputStream();
-                int read;
-                byte[] bytes = new byte[1024];
-                while ((read = fileContent.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
+    private String uploadFile(String column, HttpServletRequest request) {
+        try {
+            String path = Helper.appPath() + "uploads/tables";
+            Part imagePart = request.getPart(column);
+            String imageName = getFileName(imagePart);
+            if (imageName != null) {
+                OutputStream out;
+                InputStream fileContent;
+                try {
+                    out = new FileOutputStream(new File(path + File.separator + imageName));
+                    fileContent = imagePart.getInputStream();
+                    int read;
+                    byte[] bytes = new byte[1024];
+                    while ((read = fileContent.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                } catch (Exception e) {
+                    return null;
                 }
-            } catch (Exception e) {
-                return null;
             }
+            return imageName;
+        } catch (IOException | ServletException ex) {
+            return "";
         }
-        return imageName;
     }
 
     private String getFileName(Part part) {
@@ -141,54 +145,63 @@ public class TableServlet extends BackendServlet {
         return null;
     }
 
-    private void actionAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.setTitle(request, "Add a new table");
-        this.setActiveSidebar(request, "table/add");
-        if (this.isPost(request)) {
-            int roomId = Integer.parseInt(request.getParameter("roomId"));
-            String name = request.getParameter("name");
-            int type = Integer.parseInt(request.getParameter("type"));
-            float price = Float.parseFloat(request.getParameter("price"));
-            String description = request.getParameter("description");
-            String imageName = this.uploadFile("image", request);
-            Table t = new Table(roomId, name, description, imageName, type, price);
-            if (TableModel.insert(t)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "failed");
+    private void actionAdd(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Add a new table");
+            this.setActiveSidebar(request, "table/add");
+            if (this.isPost(request)) {
+                int roomId = Integer.parseInt(request.getParameter("roomId"));
+                String name = request.getParameter("name");
+                int type = Integer.parseInt(request.getParameter("type"));
+                float price = Float.parseFloat(request.getParameter("price"));
+                String description = request.getParameter("description");
+                String imageName = this.uploadFile("image", request);
+                Table t = new Table(roomId, name, description, imageName, type, price);
+                if (TableModel.insert(t)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "failed");
+                }
             }
+            List<Room> list = RoomModel.findAll();
+            request.setAttribute("rooms", list);
+            this.include("table/add.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        List<Room> list = RoomModel.findAll();
-        request.setAttribute("rooms", list);
-        this.include("table/add.jsp", request, response);
     }
 
-    private void actionIndex(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "List Table");
-        this.setActiveSidebar(request, "table/index");
-        List<Table> list = TableModel.findAll();
-        request.setAttribute("tables", list);
-        this.include("table/index.jsp", request, response);
-    }
-
-    private void actionView(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "View an existing table");
-        this.setActiveSidebar(request, "table/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Table t = TableModel.find(id);
-        if (t == null) {
-            throw new ServletException("Not found");
+    private void actionIndex(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "List Table");
+            this.setActiveSidebar(request, "table/index");
+            List<Table> list = TableModel.findAll();
+            request.setAttribute("tables", list);
+            this.include("table/index.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        List<Room> list = RoomModel.findAll();
-        request.setAttribute("rooms", list);
-        request.setAttribute("table", t);
-        this.include("table/view.jsp", request, response);
     }
 
-    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionView(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "View an existing table");
+            this.setActiveSidebar(request, "table/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Table t = TableModel.find(id);
+            if (t == null) {
+                this.error(404, "Page Not Found", request, response);
+            }
+            List<Room> list = RoomModel.findAll();
+            request.setAttribute("rooms", list);
+            request.setAttribute("table", t);
+            this.include("table/view.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
+        }
+    }
+
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
         Table t = TableModel.find(id);
         if (t != null && TableModel.delete(id)) {
@@ -199,35 +212,38 @@ public class TableServlet extends BackendServlet {
         this.actionIndex(request, response);
     }
 
-    private void actionEdit(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "Edit a table");
-        this.setActiveSidebar(request, "table/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Table t = TableModel.find(id);
-        if (this.isPost(request) && t != null) {
-            int roomId = Integer.parseInt(request.getParameter("roomId"));
-            String name = request.getParameter("name");
-            int type = Integer.parseInt(request.getParameter("type"));
-            float price = Float.parseFloat(request.getParameter("price"));
-            String description = request.getParameter("description");
-            String imageName = this.uploadFile("image", request);
-            t.setName(name);
-            t.setRoomId(roomId);
-            t.setType(type);
-            t.setPrice(price);
-            t.setDescription(description);
-            t.setImage(imageName);
-            if (TableModel.update(id, t)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "error");
+    private void actionEdit(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Edit a table");
+            this.setActiveSidebar(request, "table/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Table t = TableModel.find(id);
+            if (this.isPost(request) && t != null) {
+                int roomId = Integer.parseInt(request.getParameter("roomId"));
+                String name = request.getParameter("name");
+                int type = Integer.parseInt(request.getParameter("type"));
+                float price = Float.parseFloat(request.getParameter("price"));
+                String description = request.getParameter("description");
+                String imageName = this.uploadFile("image", request);
+                t.setName(name);
+                t.setRoomId(roomId);
+                t.setType(type);
+                t.setPrice(price);
+                t.setDescription(description);
+                t.setImage(imageName);
+                if (TableModel.update(id, t)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "error");
+                }
             }
+            List<Room> list = RoomModel.findAll();
+            request.setAttribute("rooms", list);
+            request.setAttribute("table", t);
+            this.include("table/edit.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        List<Room> list = RoomModel.findAll();
-        request.setAttribute("rooms", list);
-        request.setAttribute("table", t);
-        this.include("table/edit.jsp", request, response);
     }
 
 }

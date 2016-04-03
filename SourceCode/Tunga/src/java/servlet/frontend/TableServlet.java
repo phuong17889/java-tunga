@@ -39,11 +39,8 @@ public class TableServlet extends FrontendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         try {
             String action = request.getParameter("action");
@@ -56,7 +53,7 @@ public class TableServlet extends FrontendServlet {
                     break;
             }
         } catch (NullPointerException e) {
-            Logger.getLogger(TableServlet.class.getName()).log(Level.SEVERE, null, e);
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
@@ -99,8 +96,7 @@ public class TableServlet extends FrontendServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void actionBook(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionBook(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         try {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -135,38 +131,42 @@ public class TableServlet extends FrontendServlet {
                     session.removeAttribute("book");
                     response.sendRedirect("cart?action=view");
                 } else {
-                    System.out.println("aaaa");
-                    //TODO cần đưa về trang lỗi
-                    response.sendRedirect("index");
+                    this.error(500, "Something went wrong", request, response);
                 }
             } else {
-                System.out.println("bbb");
-                response.sendRedirect("index");
+                this.error(500, "Something went wrong", request, response);
             }
-        } catch (NumberFormatException | ParseException e) {
-            Logger.getLogger(TableServlet.class.getName()).log(Level.SEVERE, null, e);
+        } catch (NumberFormatException | ParseException | IOException e) {
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
-    private void actionList(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionList(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         this.setTitle(request, "Table booking");
         if (this.isPost(request)) {
-            int number = Integer.parseInt(request.getParameter("number"));
-            String date = request.getParameter("date");
-            String time = request.getParameter("time");
-            Book book = new Book(number, date, time);
-            session.setAttribute("book", book);
-            response.sendRedirect("table?action=list");
+            try {
+                int number = Integer.parseInt(request.getParameter("number"));
+                String date = request.getParameter("date");
+                String time = request.getParameter("time");
+                Book book = new Book(number, date, time);
+                session.setAttribute("book", book);
+                response.sendRedirect("table?action=list");
+            } catch (IOException ex) {
+                this.error(500, "Something went wrong", request, response);
+            }
         }
         if (session.getAttribute("book") != null) {
-            List<Room> rooms = RoomModel.findAll();
-            request.setAttribute("rooms", rooms);
-            request.setAttribute("sessionId", session.getId());
-            this.include("table/list.jsp", request, response);
+            try {
+                List<Room> rooms = RoomModel.findAll();
+                request.setAttribute("rooms", rooms);
+                request.setAttribute("sessionId", session.getId());
+                this.include("table/list.jsp", request, response);
+            } catch (ServletException | IOException ex) {
+                this.error(404, "Page Not Found", request, response);
+            }
         } else {
-            response.sendRedirect("index");
+            this.error(404, "Page Not Found", request, response);
         }
     }
 

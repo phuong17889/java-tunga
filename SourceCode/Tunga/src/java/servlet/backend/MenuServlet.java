@@ -27,51 +27,54 @@ public class MenuServlet extends BackendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        this.checkLogin(request, response);
-        String action = request.getParameter("action");
-        switch (action) {
-            case "add":
-                this.actionAdd(request, response);
-                break;
-            case "index":
-                this.actionIndex(request, response);
-                break;
-            case "edit":
-                this.actionEdit(request, response);
-                break;
-            case "view":
-                this.actionView(request, response);
-                break;
-            case "delete":
-                this.actionDelete(request, response);
-                break;
-            default:
-                this.actionIndex(request, response);
-                break;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            this.checkLogin(request, response);
+            String action = request.getParameter("action");
+            switch (action) {
+                case "add":
+                    this.actionAdd(request, response);
+                    break;
+                case "index":
+                    this.actionIndex(request, response);
+                    break;
+                case "edit":
+                    this.actionEdit(request, response);
+                    break;
+                case "view":
+                    this.actionView(request, response);
+                    break;
+                case "delete":
+                    this.actionDelete(request, response);
+                    break;
+                default:
+                    this.actionIndex(request, response);
+                    break;
+            }
+        } catch (IOException ex) {
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
-    private void actionView(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "View an existing menu");
-        this.setActiveSidebar(request, "menu/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Menu m = MenuModel.find(id);
-        if (m == null) {
-            throw new ServletException("Not found");
+    private void actionView(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "View an existing menu");
+            this.setActiveSidebar(request, "menu/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Menu m = MenuModel.find(id);
+            if (m == null) {
+                this.error(404, "Page Not Found", request, response);
+            }
+            request.setAttribute("menu", m);
+            this.include("menu/view.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        request.setAttribute("menu", m);
-        this.include("menu/view.jsp", request, response);
     }
 
-    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
         Menu m = MenuModel.find(id);
         if (m != null && MenuModel.delete(id)) {
@@ -82,51 +85,60 @@ public class MenuServlet extends BackendServlet {
         this.actionIndex(request, response);
     }
 
-    private void actionEdit(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "Edit a menu");
-        this.setActiveSidebar(request, "menu/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Menu m = MenuModel.find(id);
-        if (this.isPost(request) && m != null) {
-            String name = request.getParameter("name");
-            int order = Integer.parseInt(request.getParameter("order"));
-            m.setName(name);
-            m.setOrder(order);
-            if (MenuModel.update(id, m)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "error");
+    private void actionEdit(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Edit a menu");
+            this.setActiveSidebar(request, "menu/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Menu m = MenuModel.find(id);
+            if (this.isPost(request) && m != null) {
+                String name = request.getParameter("name");
+                int order = Integer.parseInt(request.getParameter("order"));
+                m.setName(name);
+                m.setOrder(order);
+                if (MenuModel.update(id, m)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "error");
+                }
             }
+            request.setAttribute("menu", m);
+            this.include("menu/edit.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        request.setAttribute("menu", m);
-        this.include("menu/edit.jsp", request, response);
     }
 
-    private void actionAdd(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "Add a new menu");
-        this.setActiveSidebar(request, "menu/add");
-        if (this.isPost(request)) {
-            String name = request.getParameter("name");
-            int order = Integer.parseInt(request.getParameter("order"));
-            Menu m = new Menu(name, order);
-            if (MenuModel.insert(m)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "error");
+    private void actionAdd(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Add a new menu");
+            this.setActiveSidebar(request, "menu/add");
+            if (this.isPost(request)) {
+                String name = request.getParameter("name");
+                int order = Integer.parseInt(request.getParameter("order"));
+                Menu m = new Menu(name, order);
+                if (MenuModel.insert(m)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "error");
+                }
             }
+            this.include("menu/add.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        this.include("menu/add.jsp", request, response);
     }
 
-    private void actionIndex(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "List menu");
-        this.setActiveSidebar(request, "menu/index");
-        List<Menu> list = MenuModel.findAll();
-        request.setAttribute("menus", list);
-        this.include("menu/index.jsp", request, response);
+    private void actionIndex(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "List menu");
+            this.setActiveSidebar(request, "menu/index");
+            List<Menu> list = MenuModel.findAll();
+            request.setAttribute("menus", list);
+            this.include("menu/index.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

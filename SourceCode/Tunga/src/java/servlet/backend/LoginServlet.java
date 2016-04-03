@@ -25,16 +25,17 @@ public class LoginServlet extends BackendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
-        if (request.getSession().getAttribute("login") == (Object) 1) {
-            response.sendRedirect("index");
-        } else {
-            this.include("site/login.jsp", request, response);
+        try {
+            if (request.getSession().getAttribute("login") == (Object) 1) {
+                response.sendRedirect("index");
+            } else {
+                this.include("site/login.jsp", request, response);
+            }
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
     }
 

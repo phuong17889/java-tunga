@@ -36,37 +36,38 @@ public class FoodServlet extends BackendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        this.checkLogin(request, response);
-        String action = request.getParameter("action");
-        if (action == null) {
-            this.actionIndex(request, response);
-        } else {
-            switch (action) {
-                case "add":
-                    this.actionAdd(request, response);
-                    break;
-                case "index":
-                    this.actionIndex(request, response);
-                    break;
-                case "edit":
-                    this.actionEdit(request, response);
-                    break;
-                case "view":
-                    this.actionView(request, response);
-                    break;
-                case "delete":
-                    this.actionDelete(request, response);
-                    break;
-                default:
-                    this.actionIndex(request, response);
-                    break;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            this.checkLogin(request, response);
+            String action = request.getParameter("action");
+            if (action == null) {
+                this.actionIndex(request, response);
+            } else {
+                switch (action) {
+                    case "add":
+                        this.actionAdd(request, response);
+                        break;
+                    case "index":
+                        this.actionIndex(request, response);
+                        break;
+                    case "edit":
+                        this.actionEdit(request, response);
+                        break;
+                    case "view":
+                        this.actionView(request, response);
+                        break;
+                    case "delete":
+                        this.actionDelete(request, response);
+                        break;
+                    default:
+                        this.actionIndex(request, response);
+                        break;
+                }
             }
+        } catch (IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
     }
 
@@ -109,27 +110,30 @@ public class FoodServlet extends BackendServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String uploadFile(String column, HttpServletRequest request)
-            throws ServletException, IOException {
-        String path = Helper.appPath() + "uploads/foods";
-        Part imagePart = request.getPart(column);
-        String imageName = getFileName(imagePart);
-        if (imageName != null) {
-            OutputStream out;
-            InputStream fileContent;
-            try {
-                out = new FileOutputStream(new File(path + File.separator + imageName));
-                fileContent = imagePart.getInputStream();
-                int read;
-                byte[] bytes = new byte[1024];
-                while ((read = fileContent.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
+    private String uploadFile(String column, HttpServletRequest request) {
+        try {
+            String path = Helper.appPath() + "uploads/foods";
+            Part imagePart = request.getPart(column);
+            String imageName = getFileName(imagePart);
+            if (imageName != null) {
+                OutputStream out;
+                InputStream fileContent;
+                try {
+                    out = new FileOutputStream(new File(path + File.separator + imageName));
+                    fileContent = imagePart.getInputStream();
+                    int read;
+                    byte[] bytes = new byte[1024];
+                    while ((read = fileContent.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                } catch (Exception e) {
+                    return null;
                 }
-            } catch (Exception e) {
-                return null;
             }
+            return imageName;
+        } catch (IOException | ServletException ex) {
+            return "";
         }
-        return imageName;
     }
 
     private String getFileName(Part part) {
@@ -141,53 +145,62 @@ public class FoodServlet extends BackendServlet {
         return null;
     }
 
-    private void actionAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.setTitle(request, "Add a new food");
-        this.setActiveSidebar(request, "food/add");
-        if (this.isPost(request)) {
-            int menuId = Integer.parseInt(request.getParameter("menuId"));
-            String name = request.getParameter("name");
-            String description = request.getParameter("description");
-            float price = Float.parseFloat(request.getParameter("price"));
-            String imageName = this.uploadFile("image", request);
-            Food f = new Food(menuId, name, description, price, imageName);
-            if (FoodModel.insert(f)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "failed");
+    private void actionAdd(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Add a new food");
+            this.setActiveSidebar(request, "food/add");
+            if (this.isPost(request)) {
+                int menuId = Integer.parseInt(request.getParameter("menuId"));
+                String name = request.getParameter("name");
+                String description = request.getParameter("description");
+                float price = Float.parseFloat(request.getParameter("price"));
+                String imageName = this.uploadFile("image", request);
+                Food f = new Food(menuId, name, description, price, imageName);
+                if (FoodModel.insert(f)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "failed");
+                }
             }
+            List<Menu> list = MenuModel.findAll();
+            request.setAttribute("menus", list);
+            this.include("food/add.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        List<Menu> list = MenuModel.findAll();
-        request.setAttribute("menus", list);
-        this.include("food/add.jsp", request, response);
     }
 
-    private void actionIndex(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "List Food");
-        this.setActiveSidebar(request, "food/index");
-        List<Food> list = FoodModel.findAll();
-        request.setAttribute("foods", list);
-        this.include("food/index.jsp", request, response);
-    }
-
-    private void actionView(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "View an existing food");
-        this.setActiveSidebar(request, "food/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Food f = FoodModel.find(id);
-        if (f == null) {
-            throw new ServletException("Not found");
+    private void actionIndex(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "List Food");
+            this.setActiveSidebar(request, "food/index");
+            List<Food> list = FoodModel.findAll();
+            request.setAttribute("foods", list);
+            this.include("food/index.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        List<Menu> list = MenuModel.findAll();
-        request.setAttribute("menus", list);
-        request.setAttribute("food", f);
-        this.include("food/view.jsp", request, response);
     }
 
-    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionView(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "View an existing food");
+            this.setActiveSidebar(request, "food/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Food f = FoodModel.find(id);
+            if (f == null) {
+                this.error(404, "Page Not Found", request, response);
+            }
+            List<Menu> list = MenuModel.findAll();
+            request.setAttribute("menus", list);
+            request.setAttribute("food", f);
+            this.include("food/view.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
+        }
+    }
+
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
         Food f = FoodModel.find(id);
         if (f != null && FoodModel.delete(id)) {
@@ -198,35 +211,38 @@ public class FoodServlet extends BackendServlet {
         this.actionIndex(request, response);
     }
 
-    private void actionEdit(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "Edit a food");
-        this.setActiveSidebar(request, "food/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Food f = FoodModel.find(id);
-        if (this.isPost(request) && f != null) {
-            int menuId = Integer.parseInt(request.getParameter("menuId"));
-            String name = request.getParameter("name");
-            String description = request.getParameter("description");
-            float price = Float.parseFloat(request.getParameter("price"));
-            String imageName = this.uploadFile("image", request);
-            f.setName(name);
-            f.setDescription(description);
-            f.setMenuId(menuId);
-            f.setPrice(price);
-            if (imageName != null) {
-                f.setImage(imageName);
+    private void actionEdit(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Edit a food");
+            this.setActiveSidebar(request, "food/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Food f = FoodModel.find(id);
+            if (this.isPost(request) && f != null) {
+                int menuId = Integer.parseInt(request.getParameter("menuId"));
+                String name = request.getParameter("name");
+                String description = request.getParameter("description");
+                float price = Float.parseFloat(request.getParameter("price"));
+                String imageName = this.uploadFile("image", request);
+                f.setName(name);
+                f.setDescription(description);
+                f.setMenuId(menuId);
+                f.setPrice(price);
+                if (imageName != null) {
+                    f.setImage(imageName);
+                }
+                if (FoodModel.update(id, f)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "error");
+                }
             }
-            if (FoodModel.update(id, f)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "error");
-            }
+            List<Menu> list = MenuModel.findAll();
+            request.setAttribute("menus", list);
+            request.setAttribute("food", f);
+            this.include("food/edit.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        List<Menu> list = MenuModel.findAll();
-        request.setAttribute("menus", list);
-        request.setAttribute("food", f);
-        this.include("food/edit.jsp", request, response);
     }
 
 }

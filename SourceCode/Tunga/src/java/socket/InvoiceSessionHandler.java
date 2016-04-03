@@ -103,7 +103,4 @@ public class InvoiceSessionHandler {
         JsonObject updateMessage = provider.createObjectBuilder().add("action", "update").add("id", invoice.getId()).build();
         sendToAllConnectedSessions(updateMessage);
     }
-
-//TODO cần xem lại cách viết hàm for của SET MAP
-//TODO http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/HomeWebsocket/WebsocketHome.html#section9
 }

@@ -35,11 +35,8 @@ public class CartServlet extends FrontendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         try {
             String action = request.getParameter("action");
@@ -55,17 +52,20 @@ public class CartServlet extends FrontendServlet {
                     break;
             }
         } catch (NullPointerException e) {
-            response.sendRedirect("index");
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
-    private void actionView(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "Your shopping cart");
-        HttpSession session = request.getSession();
-        request.setAttribute("cart", session.getAttribute("cart"));
-        request.setAttribute("reserve", session.getAttribute("reserve"));
-        this.include("cart/view.jsp", request, response);
+    private void actionView(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Your shopping cart");
+            HttpSession session = request.getSession();
+            request.setAttribute("cart", session.getAttribute("cart"));
+            request.setAttribute("reserve", session.getAttribute("reserve"));
+            this.include("cart/view.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -107,8 +107,7 @@ public class CartServlet extends FrontendServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
         if (this.isPost(request)) {
             int id = Integer.parseInt(request.getParameter("id"));
             HttpSession session = request.getSession();
@@ -122,50 +121,61 @@ public class CartServlet extends FrontendServlet {
             response.setContentType("application/json");
             try (PrintWriter out = response.getWriter()) {
                 out.print("{\"isEmpty\": \"" + cart.getCartFood().isEmpty() + "\", \"count\": \"" + cart.getTotalCount() + "\", \"totalText\": \"" + Helper.currency(cart.getTotalPrice()) + "\", \"total\": \"" + cart.getTotalPrice() + "\"}");
+            } catch (IOException ex) {
+                this.error(500, "Something went wrong", request, response);
             }
+        } else {
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
-    private void actionSubmit(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionSubmit(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         if (this.isPost(request)) {
-            String fullName = request.getParameter("fullName");
-            String email = request.getParameter("email");
-            String address = request.getParameter("address");
-            String phone = request.getParameter("phone");
-            String token = Helper.random();
-            float total = 0;
-            int status = Invoice.STATUS_PENDING;
-            int notify = Invoice.NOTIFY_PENDING;
-            Invoice in = new Invoice(fullName, email, address, phone, total, token, status, notify);
-            if (InvoiceModel.insert(in)) {
-                if (session.getAttribute("cart") != null) {
-                    InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
-                    total += cart.getTotalPrice();
-                    for (Map.Entry<Integer, Integer> entry : cart.getCartFood().entrySet()) {
-                        int key = entry.getKey();
-                        Food f = FoodModel.find(key);
-                        int quantity = entry.getValue();
-                        InvoiceFood ifd = new InvoiceFood(in.getId(), f.getId(), quantity);
-                        InvoiceFoodModel.insert(ifd);
+            try {
+                String fullName = request.getParameter("fullName");
+                String email = request.getParameter("email");
+                String address = request.getParameter("address");
+                String phone = request.getParameter("phone");
+                String token = Helper.random();
+                float total = 0;
+                int status = Invoice.STATUS_PENDING;
+                int notify = Invoice.NOTIFY_PENDING;
+                Invoice in = new Invoice(fullName, email, address, phone, total, token, status, notify);
+                if (InvoiceModel.insert(in)) {
+                    if (session.getAttribute("cart") != null) {
+                        InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+                        total += cart.getTotalPrice();
+                        for (Map.Entry<Integer, Integer> entry : cart.getCartFood().entrySet()) {
+                            int key = entry.getKey();
+                            Food f = FoodModel.find(key);
+                            int quantity = entry.getValue();
+                            InvoiceFood ifd = new InvoiceFood(in.getId(), f.getId(), quantity);
+                            InvoiceFoodModel.insert(ifd);
+                        }
+                        session.removeAttribute("cart");
                     }
-                    session.removeAttribute("cart");
+                    if (session.getAttribute("reserve") != null) {
+                        InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
+                        total += reserve.getPrice();
+                        reserve.setInvoiceId(in.getId());
+                        InvoiceTableModel.insert(reserve);
+                        session.removeAttribute("reserve");
+                    }
+                    in.setTotal(total);
+                    InvoiceModel.update(in.getId(), in);
                 }
-                if (session.getAttribute("reserve") != null) {
-                    InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
-                    total += reserve.getPrice();
-                    reserve.setInvoiceId(in.getId());
-                    InvoiceTableModel.insert(reserve);
-                    session.removeAttribute("reserve");
-                }
-                in.setTotal(total);
-                InvoiceModel.update(in.getId(), in);
+                response.sendRedirect("order?action=view&token=" + token);
+            } catch (IOException ex) {
+                this.error(500, "Something went wrong", request, response);
             }
-            response.sendRedirect("order?action=view&token=" + token);
         } else {
-            session.setAttribute("error", "Something went wrong!");
-            response.sendRedirect("cart?action=view");
+            try {
+                session.setAttribute("error", "Something went wrong!");
+                response.sendRedirect("cart?action=view");
+            } catch (IOException ex) {
+                this.error(500, "Something went wrong", request, response);
+            }
         }
     }
 }

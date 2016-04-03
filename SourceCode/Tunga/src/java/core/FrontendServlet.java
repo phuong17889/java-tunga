@@ -7,6 +7,8 @@ package core;
 
 import entity.InvoiceFood;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,4 +54,13 @@ public class FrontendServlet extends HttpServlet {
         request.setAttribute("method", method);
     }
 
+    public void error(int code, String message, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("code", code);
+            request.setAttribute("message", message);
+            this.include("site/error.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(BackendServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

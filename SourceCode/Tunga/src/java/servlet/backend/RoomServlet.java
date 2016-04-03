@@ -26,33 +26,34 @@ public class RoomServlet extends BackendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        this.checkLogin(request, response);
-        String action = request.getParameter("action");
-        switch (action) {
-            case "add":
-                this.actionAdd(request, response);
-                break;
-            case "index":
-                this.actionIndex(request, response);
-                break;
-            case "edit":
-                this.actionEdit(request, response);
-                break;
-            case "view":
-                this.actionView(request, response);
-                break;
-            case "delete":
-                this.actionDelete(request, response);
-                break;
-            default:
-                this.actionIndex(request, response);
-                break;
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            this.checkLogin(request, response);
+            String action = request.getParameter("action");
+            switch (action) {
+                case "add":
+                    this.actionAdd(request, response);
+                    break;
+                case "index":
+                    this.actionIndex(request, response);
+                    break;
+                case "edit":
+                    this.actionEdit(request, response);
+                    break;
+                case "view":
+                    this.actionView(request, response);
+                    break;
+                case "delete":
+                    this.actionDelete(request, response);
+                    break;
+                default:
+                    this.actionIndex(request, response);
+                    break;
+            }
+        } catch (IOException ex) {
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
@@ -95,46 +96,55 @@ public class RoomServlet extends BackendServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void actionAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.setTitle(request, "Add a new room");
-        this.setActiveSidebar(request, "room/add");
-        if (this.isPost(request)) {
-            String name = request.getParameter("name");
-            boolean type = (Integer.parseInt(request.getParameter("type")) == 1);
-            Room r = new Room(name, type);
-            if (RoomModel.insert(r)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "failed");
+    private void actionAdd(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Add a new room");
+            this.setActiveSidebar(request, "room/add");
+            if (this.isPost(request)) {
+                String name = request.getParameter("name");
+                boolean type = (Integer.parseInt(request.getParameter("type")) == 1);
+                Room r = new Room(name, type);
+                if (RoomModel.insert(r)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "failed");
+                }
             }
+            this.include("room/add.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        this.include("room/add.jsp", request, response);
     }
 
-    private void actionIndex(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "List room");
-        this.setActiveSidebar(request, "room/index");
-        List<Room> list = RoomModel.findAll();
-        request.setAttribute("rooms", list);
-        this.include("room/index.jsp", request, response);
-    }
-
-    private void actionView(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "View an existing room");
-        this.setActiveSidebar(request, "room/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Room r = RoomModel.find(id);
-        if (r == null) {
-            throw new ServletException("Not found");
+    private void actionIndex(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "List room");
+            this.setActiveSidebar(request, "room/index");
+            List<Room> list = RoomModel.findAll();
+            request.setAttribute("rooms", list);
+            this.include("room/index.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        request.setAttribute("room", r);
-        this.include("room/view.jsp", request, response);
     }
 
-    private void actionDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionView(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "View an existing room");
+            this.setActiveSidebar(request, "room/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Room r = RoomModel.find(id);
+            if (r == null) {
+                this.error(404, "Page Not Found", request, response);
+            }
+            request.setAttribute("room", r);
+            this.include("room/view.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
+        }
+    }
+
+    private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
         Room r = RoomModel.find(id);
         if (r != null && RoomModel.delete(id)) {
@@ -145,25 +155,28 @@ public class RoomServlet extends BackendServlet {
         this.actionIndex(request, response);
     }
 
-    private void actionEdit(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        this.setTitle(request, "Edit a room");
-        this.setActiveSidebar(request, "room/index");
-        int id = Integer.parseInt(request.getParameter("id"));
-        Room r = RoomModel.find(id);
-        if (this.isPost(request) && r != null) {
-            String name = request.getParameter("name");
-            boolean type = (Integer.parseInt(request.getParameter("type")) == 1);
-            r.setName(name);
-            r.setType(type);
-            if (RoomModel.update(id, r)) {
-                request.setAttribute("message", "success");
-            } else {
-                request.setAttribute("message", "error");
+    private void actionEdit(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "Edit a room");
+            this.setActiveSidebar(request, "room/index");
+            int id = Integer.parseInt(request.getParameter("id"));
+            Room r = RoomModel.find(id);
+            if (this.isPost(request) && r != null) {
+                String name = request.getParameter("name");
+                boolean type = (Integer.parseInt(request.getParameter("type")) == 1);
+                r.setName(name);
+                r.setType(type);
+                if (RoomModel.update(id, r)) {
+                    request.setAttribute("message", "success");
+                } else {
+                    request.setAttribute("message", "error");
+                }
             }
+            request.setAttribute("room", r);
+            this.include("room/edit.jsp", request, response);
+        } catch (ServletException | IOException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        request.setAttribute("room", r);
-        this.include("room/edit.jsp", request, response);
     }
 
 }

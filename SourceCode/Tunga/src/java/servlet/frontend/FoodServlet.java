@@ -26,11 +26,8 @@ public class FoodServlet extends FrontendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         try {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -39,8 +36,8 @@ public class FoodServlet extends FrontendServlet {
             request.setAttribute("food", food);
             request.setAttribute("foods", MenuModel.find(food.getMenuId()).getFoods());
             this.include("food/view.jsp", request, response);
-        } catch (NullPointerException | NumberFormatException e) {
-            response.sendRedirect("index");
+        } catch (NullPointerException | NumberFormatException | ServletException | IOException e) {
+            this.error(500, "Something went wrong", request, response);
         }
     }
 

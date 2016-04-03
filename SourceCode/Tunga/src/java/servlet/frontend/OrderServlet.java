@@ -30,11 +30,8 @@ public class OrderServlet extends FrontendServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         try {
             String action = request.getParameter("action");
@@ -47,12 +44,11 @@ public class OrderServlet extends FrontendServlet {
                     break;
             }
         } catch (NullPointerException e) {
-            response.sendRedirect("index");
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
-    private void actionFood(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionFood(HttpServletRequest request, HttpServletResponse response) {
         if (this.isPost(request)) {
             response.setContentType("application/json");
             int id = Integer.parseInt(request.getParameter("id"));
@@ -72,7 +68,11 @@ public class OrderServlet extends FrontendServlet {
                 } else {
                     out.print("{\"count\": \"" + cart.getTotalCount() + "\", \"total\": \"" + Helper.currency(cart.getTotalPrice()) + "\"}");
                 }
+            } catch (IOException ex) {
+                this.error(500, "Something went wrong", request, response);
             }
+        } else {
+            this.error(500, "Something went wrong", request, response);
         }
     }
 
@@ -115,16 +115,19 @@ public class OrderServlet extends FrontendServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void actionView(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void actionView(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getParameter("token");
         Invoice i = InvoiceModel.find("WHERE token = '" + token + "'");
         if (i != null) {
-            this.setTitle(request, "Your order!");
-            request.setAttribute("invoice", i);
-            this.include("order/view.jsp", request, response);
+            try {
+                this.setTitle(request, "Your order!");
+                request.setAttribute("invoice", i);
+                this.include("order/view.jsp", request, response);
+            } catch (ServletException | IOException ex) {
+                this.error(404, "Page Not Found", request, response);
+            }
         } else {
-            response.sendRedirect("index");
+            this.error(500, "Something went wrong", request, response);
         }
     }
 }
