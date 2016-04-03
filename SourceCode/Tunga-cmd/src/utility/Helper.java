@@ -49,19 +49,10 @@ public class Helper {
     }
 
     public static Preferences readConfig(String node) throws IOException {
-        Ini ini = new Ini(new File(appPath() + "config/main.ini"));
+        Ini ini = new Ini(new File("config/main.ini"));
         java.util.prefs.Preferences prefs = new IniPreferences(ini);
         Preferences pref = prefs.node(node);
         return pref;
-    }
-
-    public static String appPath() throws UnsupportedEncodingException {
-        String path = Helper.class.getResource("").getPath();
-        String fullPath = URLDecoder.decode(path, "UTF-8");
-        String pathArr[] = fullPath.split("/WEB-INF/classes");
-        fullPath = pathArr[0];
-        String reponsePath = new File(fullPath).getPath() + File.separatorChar;
-        return reponsePath;
     }
 
     public static String random() {

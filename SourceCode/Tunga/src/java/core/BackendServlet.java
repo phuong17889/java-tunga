@@ -42,7 +42,7 @@ public class BackendServlet extends HttpServlet {
         try {
             RequestDispatcher rd = request.getRequestDispatcher("../backend/views/" + viewPath);
             rd.include(request, response);
-        } catch (Exception e) {
+        } catch (ServletException | IOException e) {
             RequestDispatcher rd = request.getRequestDispatcher("backend/views/" + viewPath);
             rd.include(request, response);
         }

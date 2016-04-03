@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -31,12 +33,12 @@ import org.ini4j.IniPreferences;
  */
 public class Helper {
 
-    public static String baseUrl() throws IOException {
+    public static String baseUrl() {
         Preferences pref = readConfig("app");
         return pref.get("baseurl", null);
     }
 
-    public static String socketUrl() throws IOException {
+    public static String socketUrl() {
         Preferences pref = readConfig("app");
         String url = pref.get("baseurl", null);
         return url.replace("http", "ws");
@@ -48,20 +50,28 @@ public class Helper {
         return numberFormat.format(number);
     }
 
-    public static Preferences readConfig(String node) throws IOException {
-        Ini ini = new Ini(new File(appPath() + "config/main.ini"));
-        java.util.prefs.Preferences prefs = new IniPreferences(ini);
-        Preferences pref = prefs.node(node);
-        return pref;
+    public static Preferences readConfig(String node) {
+        try {
+            Ini ini = new Ini(new File(appPath() + "config/main.ini"));
+            java.util.prefs.Preferences prefs = new IniPreferences(ini);
+            Preferences pref = prefs.node(node);
+            return pref;
+        } catch (IOException ex) {
+            return null;
+        }
     }
 
-    public static String appPath() throws UnsupportedEncodingException {
-        String path = Helper.class.getResource("").getPath();
-        String fullPath = URLDecoder.decode(path, "UTF-8");
-        String pathArr[] = fullPath.split("/WEB-INF/classes");
-        fullPath = pathArr[0];
-        String reponsePath = new File(fullPath).getPath() + File.separatorChar;
-        return reponsePath;
+    public static String appPath() {
+        try {
+            String path = Helper.class.getResource("").getPath();
+            String fullPath = URLDecoder.decode(path, "UTF-8");
+            String pathArr[] = fullPath.split("/WEB-INF/classes");
+            fullPath = pathArr[0];
+            String reponsePath = new File(fullPath).getPath() + File.separatorChar;
+            return reponsePath;
+        } catch (UnsupportedEncodingException ex) {
+            return "";
+        }
     }
 
     public static String random() {
@@ -86,13 +96,17 @@ public class Helper {
         return string.replace(newString[0], newString[0].toUpperCase());
     }
 
-    public static Date calcToTime(String fromTime) throws ParseException {
-        DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
-        Date dt = df.parse(fromTime);
-        Calendar c = Calendar.getInstance();
-        c.setTime(dt);
-        c.add(Calendar.HOUR, 6);
-        dt = c.getTime();
-        return dt;
+    public static Date calcToTime(String fromTime) {
+        try {
+            DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+            Date dt = df.parse(fromTime);
+            Calendar c = Calendar.getInstance();
+            c.setTime(dt);
+            c.add(Calendar.HOUR, 6);
+            dt = c.getTime();
+            return dt;
+        } catch (ParseException ex) {
+            return null;
+        }
     }
 }
