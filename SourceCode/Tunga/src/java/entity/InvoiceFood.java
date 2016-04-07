@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ public class InvoiceFood {
         }
     }
 
-    public float getTotalPrice() {
+    public float getTotalPrice() throws SQLException {
         float total = 0;
         for (Map.Entry<Integer, Integer> entry : cartFood.entrySet()) {
             int key = entry.getKey();
@@ -114,7 +115,7 @@ public class InvoiceFood {
         this.quantity = quantity;
     }
 
-    public List<Food> getCartContent() {
+    public List<Food> getCartContent() throws SQLException {
         List<Food> list = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : cartFood.entrySet()) {
             int key = entry.getKey();
@@ -134,7 +135,7 @@ public class InvoiceFood {
         return quantityCart;
     }
     
-    public Food getFood(){
+    public Food getFood() throws SQLException{
         return FoodModel.find(this.foodId);
     }
 }

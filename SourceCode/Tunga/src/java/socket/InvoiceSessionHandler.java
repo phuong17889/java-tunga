@@ -7,6 +7,7 @@ package socket;
 
 import entity.Invoice;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,10 +32,9 @@ public class InvoiceSessionHandler {
 
     public void addSession(Session session) {
         sessions.add(session);
-        for (Invoice invoice : invoices) {
-            JsonObject addMessage = createAddMessage(invoice);
+        invoices.stream().map((invoice) -> createAddMessage(invoice)).forEach((addMessage) -> {
             sendToSession(session, addMessage);
-        }
+        });
     }
 
     public void removeSession(Session session) {
@@ -66,9 +66,9 @@ public class InvoiceSessionHandler {
     }
 
     private void sendToAllConnectedSessions(JsonObject message) {
-        for (Session session : sessions) {
+        sessions.stream().forEach((session) -> {
             sendToSession(session, message);
-        }
+        });
     }
 
     private void sendToSession(Session session, JsonObject message) {
@@ -80,7 +80,7 @@ public class InvoiceSessionHandler {
         }
     }
 
-    public void addInvoice(Invoice invoice) {
+    public void addInvoice(Invoice invoice) throws SQLException {
         InvoiceModel.update(invoice.getId(), invoice);
         invoices.add(invoice);
         JsonObject addMessage = createAddMessage(invoice);
@@ -97,7 +97,7 @@ public class InvoiceSessionHandler {
         }
     }
 
-    public void updateInvoice(int id, Invoice invoice) {
+    public void updateInvoice(int id, Invoice invoice) throws SQLException {
         JsonProvider provider = JsonProvider.provider();
         InvoiceModel.update(invoice.getId(), invoice);
         JsonObject updateMessage = provider.createObjectBuilder().add("action", "update").add("id", invoice.getId()).build();

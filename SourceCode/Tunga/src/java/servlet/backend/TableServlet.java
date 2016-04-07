@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -166,7 +167,7 @@ public class TableServlet extends BackendServlet {
             List<Room> list = RoomModel.findAll();
             request.setAttribute("rooms", list);
             this.include("table/add.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
@@ -178,7 +179,7 @@ public class TableServlet extends BackendServlet {
             List<Table> list = TableModel.findAll();
             request.setAttribute("tables", list);
             this.include("table/index.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
@@ -196,20 +197,24 @@ public class TableServlet extends BackendServlet {
             request.setAttribute("rooms", list);
             request.setAttribute("table", t);
             this.include("table/view.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
 
     private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Table t = TableModel.find(id);
-        if (t != null && TableModel.delete(id)) {
-            request.setAttribute("message", "success");
-        } else {
-            request.setAttribute("message", "error");
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Table t = TableModel.find(id);
+            if (t != null && TableModel.delete(id)) {
+                request.setAttribute("message", "success");
+            } else {
+                request.setAttribute("message", "error");
+            }
+            this.actionIndex(request, response);
+        } catch (SQLException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        this.actionIndex(request, response);
     }
 
     private void actionEdit(HttpServletRequest request, HttpServletResponse response) {
@@ -241,7 +246,7 @@ public class TableServlet extends BackendServlet {
             request.setAttribute("rooms", list);
             request.setAttribute("table", t);
             this.include("table/edit.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }

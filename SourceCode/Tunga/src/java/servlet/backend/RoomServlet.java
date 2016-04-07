@@ -8,6 +8,7 @@ package servlet.backend;
 import core.BackendServlet;
 import entity.Room;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -111,7 +112,7 @@ public class RoomServlet extends BackendServlet {
                 }
             }
             this.include("room/add.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
@@ -123,7 +124,7 @@ public class RoomServlet extends BackendServlet {
             List<Room> list = RoomModel.findAll();
             request.setAttribute("rooms", list);
             this.include("room/index.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
@@ -139,20 +140,24 @@ public class RoomServlet extends BackendServlet {
             }
             request.setAttribute("room", r);
             this.include("room/view.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
 
     private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Room r = RoomModel.find(id);
-        if (r != null && RoomModel.delete(id)) {
-            request.setAttribute("message", "success");
-        } else {
-            request.setAttribute("message", "error");
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Room r = RoomModel.find(id);
+            if (r != null && RoomModel.delete(id)) {
+                request.setAttribute("message", "success");
+            } else {
+                request.setAttribute("message", "error");
+            }
+            this.actionIndex(request, response);
+        } catch (SQLException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        this.actionIndex(request, response);
     }
 
     private void actionEdit(HttpServletRequest request, HttpServletResponse response) {
@@ -174,7 +179,7 @@ public class RoomServlet extends BackendServlet {
             }
             request.setAttribute("room", r);
             this.include("room/edit.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }

@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,11 +20,10 @@ import java.util.logging.Logger;
  */
 public class InvoiceModel extends EntityModel {
 
-    public static boolean insert(Invoice in) {
-        int result = 0;
-        try {
-            String sql = "INSERT INTO invoice (fullName, email, address, phone, total, token, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    public static boolean insert(Invoice in) throws SQLException {
+        int result;
+        String sql = "INSERT INTO invoice (fullName, email, address, phone, total, token, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             prst.setString(1, in.getFullName());
             prst.setString(2, in.getEmail());
             prst.setString(3, in.getAddress());
@@ -39,18 +36,14 @@ public class InvoiceModel extends EntityModel {
             if (rs.next()) {
                 in.setId(rs.getInt(1));
             }
-            prst.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }
 
-    public static boolean update(int id, Invoice in) {
-        int result = 0;
+    public static boolean update(int id, Invoice in) throws SQLException {
+        int result;
         String sql = "UPDATE invoice SET fullName = ?, email = ?, address = ?, phone = ?, total = ?, status = ?, notify = ? WHERE id = ?";
-        try {
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+        try (PreparedStatement prst = em.getConnection().prepareStatement(sql)) {
             prst.setString(1, in.getFullName());
             prst.setString(2, in.getEmail());
             prst.setString(3, in.getAddress());
@@ -60,19 +53,14 @@ public class InvoiceModel extends EntityModel {
             prst.setInt(7, in.getNotify());
             prst.setInt(8, id);
             result = prst.executeUpdate();
-            prst.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }
 
-    public static List<Invoice> findAll() {
+    public static List<Invoice> findAll() throws SQLException {
         List<Invoice> list = new ArrayList<>();
         String sql = "SELECT * FROM invoice";
-        try {
-            Statement st = em.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Statement st = em.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String fullName = rs.getString("fullName");
@@ -87,20 +75,14 @@ public class InvoiceModel extends EntityModel {
                 Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
                 list.add(in);
             }
-            rs.close();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list.size() > 0 ? list : null;
     }
 
-    public static List<Invoice> findAll(String condition) {
+    public static List<Invoice> findAll(String condition) throws SQLException {
         List<Invoice> list = new ArrayList<>();
         String sql = "SELECT * FROM invoice " + condition;
-        try {
-            Statement st = em.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Statement st = em.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String fullName = rs.getString("fullName");
@@ -115,20 +97,14 @@ public class InvoiceModel extends EntityModel {
                 Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
                 list.add(in);
             }
-            rs.close();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list.size() > 0 ? list : null;
     }
 
-    public static List<Invoice> findAll(String condition, int limit) {
+    public static List<Invoice> findAll(String condition, int limit) throws SQLException {
         List<Invoice> list = new ArrayList<>();
         String sql = "SELECT TOP " + limit + " * FROM invoice " + condition;
-        try {
-            Statement st = em.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Statement st = em.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String fullName = rs.getString("fullName");
@@ -143,20 +119,14 @@ public class InvoiceModel extends EntityModel {
                 Invoice in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
                 list.add(in);
             }
-            rs.close();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list.size() > 0 ? list : null;
     }
 
-    public static Invoice find(int id) {
+    public static Invoice find(int id) throws SQLException {
         Invoice in = null;
         String sql = "SELECT * FROM invoice WHERE id = " + id;
-        try {
-            Statement st = em.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Statement st = em.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)) {
             if (rs.next()) {
                 String fullName = rs.getString("fullName");
                 String email = rs.getString("email");
@@ -169,20 +139,14 @@ public class InvoiceModel extends EntityModel {
                 int notify = rs.getInt("notify");
                 in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
             }
-            rs.close();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return in;
     }
 
-    public static Invoice find(String condition) {
+    public static Invoice find(String condition) throws SQLException {
         Invoice in = null;
         String sql = "SELECT * FROM invoice " + condition;
-        try {
-            Statement st = em.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Statement st = em.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)) {
             if (rs.next()) {
                 int id = rs.getInt("id");
                 String fullName = rs.getString("fullName");
@@ -196,37 +160,25 @@ public class InvoiceModel extends EntityModel {
                 int notify = rs.getInt("notify");
                 in = new Invoice(id, fullName, email, address, phone, total, token, status, createdAt, notify);
             }
-            rs.close();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return in;
     }
 
-    public static boolean delete(int id) {
-        int result = 0;
+    public static boolean delete(int id) throws SQLException {
+        int result;
         String sql = "DELETE FROM invoice WHERE id = ?";
-        try {
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+        try (PreparedStatement prst = em.getConnection().prepareStatement(sql)) {
             prst.setInt(1, id);
             result = prst.executeUpdate();
-            prst.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }
 
-    public static boolean delete(String condition) {
-        int result = 0;
+    public static boolean delete(String condition) throws SQLException {
         String sql = "DELETE FROM invoice " + condition;
-        try {
-            PreparedStatement prst = em.getConnection().prepareStatement(sql);
+        int result;
+        try (PreparedStatement prst = em.getConnection().prepareStatement(sql)) {
             result = prst.executeUpdate();
-            prst.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }

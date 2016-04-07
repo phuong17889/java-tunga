@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -18,8 +19,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -74,7 +73,7 @@ public class Helper {
         }
     }
 
-    public static String random() {
+    public static String random() throws SQLException {
         Random randomGenerator = new Random();
         String token = "";
         for (int i = 0; i < 8; i++) {

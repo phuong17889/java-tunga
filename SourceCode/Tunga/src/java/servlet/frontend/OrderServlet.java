@@ -11,6 +11,7 @@ import entity.InvoiceFood;
 import entity.InvoiceTable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,7 +69,7 @@ public class OrderServlet extends FrontendServlet {
                 } else {
                     out.print("{\"count\": \"" + cart.getTotalCount() + "\", \"total\": \"" + Helper.currency(cart.getTotalPrice()) + "\"}");
                 }
-            } catch (IOException ex) {
+            } catch (IOException | SQLException ex) {
                 this.error(500, "Something went wrong", request, response);
             }
         } else {
@@ -116,18 +117,18 @@ public class OrderServlet extends FrontendServlet {
     }// </editor-fold>
 
     private void actionView(HttpServletRequest request, HttpServletResponse response) {
-        String token = request.getParameter("token");
-        Invoice i = InvoiceModel.find("WHERE token = '" + token + "'");
-        if (i != null) {
-            try {
+        try {
+            String token = request.getParameter("token");
+            Invoice i = InvoiceModel.find("WHERE token = '" + token + "'");
+            if (i != null) {
                 this.setTitle(request, "Your order!");
                 request.setAttribute("invoice", i);
                 this.include("order/view.jsp", request, response);
-            } catch (ServletException | IOException ex) {
-                this.error(404, "Page Not Found", request, response);
+            } else {
+                this.error(500, "Something went wrong", request, response);
             }
-        } else {
-            this.error(500, "Something went wrong", request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
     }
 }

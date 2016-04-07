@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.SQLException;
 import model.TableModel;
 
 /**
@@ -80,7 +81,7 @@ public class InvoiceTable {
         this.toTime = toTime;
     }
 
-    public Table getTable() {
+    public Table getTable() throws SQLException {
         return TableModel.find(this.tableId);
     }
 }

@@ -7,6 +7,7 @@ package socket;
 
 import entity.Invoice;
 import java.io.StringReader;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
@@ -49,7 +50,7 @@ public class InvoiceSocketServer {
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
+    public void onMessage(String message, Session session) throws SQLException {
         try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject();
             if ("add".equals(jsonMessage.getString("action"))) {

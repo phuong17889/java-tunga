@@ -11,15 +11,13 @@ import entity.InvoiceTable;
 import entity.Room;
 import entity.Table;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -136,36 +134,32 @@ public class TableServlet extends FrontendServlet {
             } else {
                 this.error(500, "Something went wrong", request, response);
             }
-        } catch (NumberFormatException | ParseException | IOException e) {
+        } catch (NumberFormatException | ParseException | IOException | SQLException e) {
             this.error(500, "Something went wrong", request, response);
         }
     }
 
     private void actionList(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        this.setTitle(request, "Table booking");
-        if (this.isPost(request)) {
-            try {
+        try {
+            HttpSession session = request.getSession();
+            this.setTitle(request, "Table booking");
+            if (this.isPost(request)) {
                 int number = Integer.parseInt(request.getParameter("number"));
                 String date = request.getParameter("date");
                 String time = request.getParameter("time");
                 Book book = new Book(number, date, time);
                 session.setAttribute("book", book);
                 response.sendRedirect("table?action=list");
-            } catch (IOException ex) {
-                this.error(500, "Something went wrong", request, response);
             }
-        }
-        if (session.getAttribute("book") != null) {
-            try {
+            if (session.getAttribute("book") != null) {
                 List<Room> rooms = RoomModel.findAll();
                 request.setAttribute("rooms", rooms);
                 request.setAttribute("sessionId", session.getId());
                 this.include("table/list.jsp", request, response);
-            } catch (ServletException | IOException ex) {
+            } else {
                 this.error(404, "Page Not Found", request, response);
             }
-        } else {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }

@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.SQLException;
 import java.util.List;
 import model.FoodModel;
 
@@ -53,7 +54,7 @@ public class Menu {
         this.order = order;
     }
 
-    public List<Food> getFoods() {
+    public List<Food> getFoods() throws SQLException {
         return FoodModel.findAll("WHERE menuId = " + this.id);
     }
 }

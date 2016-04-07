@@ -8,9 +8,12 @@ package servlet.backend;
 import core.BackendServlet;
 import entity.Invoice;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,11 +61,11 @@ public class OrderServlet extends BackendServlet {
     }
 
     private void actionUpdate(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        int status = Integer.parseInt(request.getParameter("status"));
-        Invoice m = InvoiceModel.find(id);
-        if (m != null) {
-            try {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            int status = Integer.parseInt(request.getParameter("status"));
+            Invoice m = InvoiceModel.find(id);
+            if (m != null) {
                 m.setStatus(status);
                 HttpSession session = request.getSession();
                 if (InvoiceModel.update(id, m)) {
@@ -71,11 +74,11 @@ public class OrderServlet extends BackendServlet {
                     session.setAttribute("message", "Something went wrong!");
                 }
                 response.sendRedirect("order?action=view&id=" + id);
-            } catch (IOException ex) {
+            } else {
                 this.error(404, "Page Not Found", request, response);
             }
-        } else {
-            this.error(404, "Page Not Found", request, response);
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(OrderServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -90,20 +93,24 @@ public class OrderServlet extends BackendServlet {
             }
             request.setAttribute("order", m);
             this.include("order/view.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
 
     private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Invoice m = InvoiceModel.find(id);
-        if (m != null && InvoiceModel.delete(id)) {
-            request.setAttribute("message", "success");
-        } else {
-            request.setAttribute("message", "error");
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Invoice m = InvoiceModel.find(id);
+            if (m != null && InvoiceModel.delete(id)) {
+                request.setAttribute("message", "success");
+            } else {
+                request.setAttribute("message", "error");
+            }
+            this.actionIndex(request, response);
+        } catch (SQLException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        this.actionIndex(request, response);
     }
 
     private void actionIndex(HttpServletRequest request, HttpServletResponse response) {
@@ -132,7 +139,7 @@ public class OrderServlet extends BackendServlet {
             }
             request.setAttribute("invoices", list);
             this.include("order/index.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
 

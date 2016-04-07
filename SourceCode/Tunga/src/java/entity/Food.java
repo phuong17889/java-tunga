@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.SQLException;
 import model.MenuModel;
 import utility.Helper;
 
@@ -108,7 +109,7 @@ public class Food {
         return Helper.baseUrl() + "/uploads/foods/" + image;
     }
 
-    public Menu getMenu() {
+    public Menu getMenu() throws SQLException {
         return MenuModel.find(this.menuId);
     }
 }

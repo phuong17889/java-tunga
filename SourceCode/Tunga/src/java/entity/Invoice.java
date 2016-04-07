@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.SQLException;
 import java.util.List;
 import model.InvoiceFoodModel;
 import model.InvoiceTableModel;
@@ -160,15 +161,15 @@ public class Invoice {
         return text;
     }
 
-    public String getType() {
+    public String getType() throws SQLException {
         return this.getInvoiceTable() == null ? "food" : "table";
     }
 
-    public List<InvoiceFood> getInvoiceFoods() {
+    public List<InvoiceFood> getInvoiceFoods() throws SQLException {
         return InvoiceFoodModel.findAll("WHERE invoiceId = " + this.id);
     }
 
-    public InvoiceTable getInvoiceTable() {
+    public InvoiceTable getInvoiceTable() throws SQLException {
         return InvoiceTableModel.find("WHERE invoiceId = " + this.id);
     }
 }

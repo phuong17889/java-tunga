@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,11 +61,11 @@ public class Room {
         this.type = type;
     }
 
-    public List<Table> getTables() {
+    public List<Table> getTables() throws SQLException {
         return TableModel.findAll("WHERE roomId = " + this.id);
     }
 
-    public List<Table> getFreeTables(Book book) throws ParseException {
+    public List<Table> getFreeTables(Book book) throws ParseException, SQLException {
         String datetime = book.getDate() + " " + book.getTime();
         DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
         Date date = df.parse(datetime);

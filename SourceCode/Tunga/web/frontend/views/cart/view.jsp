@@ -126,6 +126,13 @@
     </c:otherwise>
 </c:choose>
 <script>
+    <c:if test="${not empty sessionScope.errorTable}">
+    $(document).on("ready", function () {
+        alert("${sessionScope.errorTable}");
+        removeTable($(".btn-delete-table"));
+    });
+        <c:remove var="errorTable" scope="session"/>
+    </c:if>
     $(document).on("click", ".btn-submit", function () {
         if (!isEmail($("input#email").val())) {
             alert("Please input exactly yout email!");
@@ -136,6 +143,12 @@
         $(".shopping-cart").slideUp('normal', function () {
             $(".checkout").slideDown();
         });
+    });
+    $(document).on("click", ".btn-delete-table", function () {
+        var conf = confirm("Are you sure?");
+        if (conf) {
+            removeTable($(this));
+        }
     });
     $(document).on("click", ".btn-delete", function () {
         var conf = confirm("Are you sure?");
@@ -177,6 +190,30 @@
     function isEmail(email) {
         var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
+    }
+    function removeTable(th) {
+        $.ajax({
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            url: "cart?action=deleteTable",
+            success: function (data) {
+                th.closest("tr").fadeOut("slow", function () {
+                    $(this).remove();
+                    if (data.isEmpty) {
+                        $(".shopping-cart").html('<h2>Your cart is empty!</h2>');
+                        $(".cart .text").text('Empty cart!');
+                    } else {
+                        $("td.total").html('<strong>' + data.totalText + '</strong>');
+                        $("input[type='hidden'][name='total']").val(data.total);
+                        $(".cart .text").text(data.totalText);
+                    }
+                    $(".cart .count").text(data.count);
+                });
+            }, error: function () {
+                alert("Something went wrong!");
+            }
+        });
     }
 </script>
 <%@include file="../layout/footer.jsp" %>

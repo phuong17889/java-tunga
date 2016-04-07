@@ -7,6 +7,7 @@ package servlet.frontend;
 
 import core.FrontendServlet;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -35,7 +36,7 @@ public class IndexServlet extends FrontendServlet {
             DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
             request.setAttribute("today", df.format(date));
             this.include("site/index.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(500, "Something went wrong", request, response);
         }
     }

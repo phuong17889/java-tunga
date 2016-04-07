@@ -14,8 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -23,11 +21,10 @@ import java.util.logging.Logger;
  */
 public class InvoiceFoodModel extends EntityModel {
 
-    public static boolean insert(InvoiceFood ifd) {
-        int result = 0;
-        try {
-            String sql = "INSERT INTO invoiceFood (invoiceId, foodId, quantity) VALUES (?, ?, ?)";
-            PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    public static boolean insert(InvoiceFood ifd) throws SQLException {
+        int result;
+        String sql = "INSERT INTO invoiceFood (invoiceId, foodId, quantity) VALUES (?, ?, ?)";
+        try (PreparedStatement prst = em.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             prst.setInt(1, ifd.getInvoiceId());
             prst.setInt(2, ifd.getFoodId());
             prst.setInt(3, ifd.getQuantity());
@@ -36,19 +33,14 @@ public class InvoiceFoodModel extends EntityModel {
             if (rs.next()) {
                 ifd.setId(rs.getInt(1));
             }
-            prst.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result > 0;
     }
 
-    public static List<InvoiceFood> findAll(String condition) {
+    public static List<InvoiceFood> findAll(String condition) throws SQLException {
         List<InvoiceFood> list = new ArrayList<>();
         String sql = "SELECT * FROM invoiceFood " + condition;
-        try {
-            Statement st = em.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Statement st = em.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int invoiceId = rs.getInt("invoiceId");
@@ -57,27 +49,17 @@ public class InvoiceFoodModel extends EntityModel {
                 InvoiceFood ifd = new InvoiceFood(id, invoiceId, foodId, quantity);
                 list.add(ifd);
             }
-            rs.close();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list.size() > 0 ? list : null;
     }
-    
-    public static int countAllByInvoice(String condition){
+
+    public static int countAllByInvoice(String condition) throws SQLException {
         String sql = "SELECT DISTINCT invoice.* FROM invoiceFood " + condition;
         int count = 0;
-        try {
-            Statement st = em.getConnection().createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Statement st = em.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 count++;
             }
-            rs.close();
-            st.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(InvoiceFoodModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return count;
     }

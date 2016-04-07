@@ -8,6 +8,7 @@ package servlet.backend;
 import core.BackendServlet;
 import entity.Invoice;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -68,7 +69,7 @@ public class IndexServlet extends BackendServlet {
                 Invoice invoice = InvoiceModel.find(id);
                 request.setAttribute("invoice", invoice);
                 this.include("site/_order.jsp", request, response);
-            } catch (ServletException | IOException ex) {
+            } catch (ServletException | IOException | SQLException ex) {
                 this.error(404, "Page Not Found", request, response);
             }
         } else {
@@ -113,7 +114,7 @@ public class IndexServlet extends BackendServlet {
             request.setAttribute("tableBooked", Helper.implode(",", tableBooked));
             request.setAttribute("list", list);
             this.include("site/index.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }

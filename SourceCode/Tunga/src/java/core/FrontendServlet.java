@@ -7,6 +7,7 @@ package core;
 
 import entity.InvoiceFood;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -34,15 +35,15 @@ public class FrontendServlet extends HttpServlet {
         return "POST".equals(request.getMethod());
     }
 
-    public void include(String viewPath, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
-        request.setAttribute("cart", cart);
-        request.setAttribute("reserve", session.getAttribute("reserve"));
-        request.setAttribute("menus", MenuModel.findAll());
-        request.setAttribute("themeUrl", Helper.baseUrl() + "/frontend");
-        RequestDispatcher rd = request.getRequestDispatcher("frontend/views/" + viewPath);
-        rd.include(request, response);
+    public void include(String viewPath, HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+            HttpSession session = request.getSession();
+            InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+            request.setAttribute("cart", cart);
+            request.setAttribute("reserve", session.getAttribute("reserve"));
+            request.setAttribute("menus", MenuModel.findAll());
+            request.setAttribute("themeUrl", Helper.baseUrl() + "/frontend");
+            RequestDispatcher rd = request.getRequestDispatcher("frontend/views/" + viewPath);
+            rd.include(request, response);
     }
 
     public void setActiveMenu(HttpServletRequest request, String route) {
@@ -59,8 +60,8 @@ public class FrontendServlet extends HttpServlet {
             request.setAttribute("code", code);
             request.setAttribute("message", message);
             this.include("site/error.jsp", request, response);
-        } catch (ServletException | IOException ex) {
-            Logger.getLogger(BackendServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(FrontendServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

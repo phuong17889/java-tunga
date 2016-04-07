@@ -12,6 +12,7 @@ import entity.InvoiceFood;
 import entity.InvoiceTable;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,9 @@ public class CartServlet extends FrontendServlet {
                 case "delete":
                     this.actionDelete(request, response);
                     break;
+                case "deleteTable":
+                    this.actionDeleteTable(request, response);
+                    break;
             }
         } catch (NullPointerException e) {
             this.error(500, "Something went wrong", request, response);
@@ -63,7 +67,7 @@ public class CartServlet extends FrontendServlet {
             request.setAttribute("cart", session.getAttribute("cart"));
             request.setAttribute("reserve", session.getAttribute("reserve"));
             this.include("cart/view.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
@@ -112,6 +116,7 @@ public class CartServlet extends FrontendServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             HttpSession session = request.getSession();
             InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+            InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
             cart.deleteCartFood(id);
             if (cart.getCartFood().isEmpty()) {
                 session.removeAttribute("cart");
@@ -120,8 +125,28 @@ public class CartServlet extends FrontendServlet {
             }
             response.setContentType("application/json");
             try (PrintWriter out = response.getWriter()) {
+                int countTotal = (int) cart.getTotalCount() + (session.getAttribute("reserve") != null ? 1 : 0);
+                float total = (float) cart.getTotalPrice() + (session.getAttribute("reserve") != null ? reserve.getPrice() : 0);
+                out.print("{\"isEmpty\": \"" + (cart.getCartFood().isEmpty() && session.getAttribute("reserve") == null) + "\", \"count\": \"" + countTotal + "\", \"totalText\": \"" + Helper.currency(total) + "\", \"total\": \"" + total + "\"}");
+            } catch (IOException | SQLException ex) {
+                this.error(500, "Something went wrong", request, response);
+            }
+        } else {
+            this.error(500, "Something went wrong", request, response);
+        }
+    }
+
+    private void actionDeleteTable(HttpServletRequest request, HttpServletResponse response) {
+        if (this.isPost(request)) {
+            HttpSession session = request.getSession();
+            InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
+            if (session.getAttribute("reserve") != null) {
+                session.removeAttribute("reserve");
+            }
+            response.setContentType("application/json");
+            try (PrintWriter out = response.getWriter()) {
                 out.print("{\"isEmpty\": \"" + cart.getCartFood().isEmpty() + "\", \"count\": \"" + cart.getTotalCount() + "\", \"totalText\": \"" + Helper.currency(cart.getTotalPrice()) + "\", \"total\": \"" + cart.getTotalPrice() + "\"}");
-            } catch (IOException ex) {
+            } catch (IOException | SQLException ex) {
                 this.error(500, "Something went wrong", request, response);
             }
         } else {
@@ -142,7 +167,22 @@ public class CartServlet extends FrontendServlet {
                 int status = Invoice.STATUS_PENDING;
                 int notify = Invoice.NOTIFY_PENDING;
                 Invoice in = new Invoice(fullName, email, address, phone, total, token, status, notify);
+                if (session.getAttribute("reserve") != null) {
+                    InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
+                    if (InvoiceTableModel.checkStatus(reserve)) {
+                        session.setAttribute("errorTable", "This table has been booked by someone before, please choose another!");
+                        response.sendRedirect("cart?action=view");
+                    }
+                }
                 if (InvoiceModel.insert(in)) {
+                    if (session.getAttribute("reserve") != null) {
+                        InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
+                        total += reserve.getPrice();
+                        reserve.setInvoiceId(in.getId());
+                        if (InvoiceTableModel.insert(reserve)) {
+                            session.removeAttribute("reserve");
+                        }
+                    }
                     if (session.getAttribute("cart") != null) {
                         InvoiceFood cart = (InvoiceFood) session.getAttribute("cart");
                         total += cart.getTotalPrice();
@@ -155,18 +195,11 @@ public class CartServlet extends FrontendServlet {
                         }
                         session.removeAttribute("cart");
                     }
-                    if (session.getAttribute("reserve") != null) {
-                        InvoiceTable reserve = (InvoiceTable) session.getAttribute("reserve");
-                        total += reserve.getPrice();
-                        reserve.setInvoiceId(in.getId());
-                        InvoiceTableModel.insert(reserve);
-                        session.removeAttribute("reserve");
-                    }
                     in.setTotal(total);
                     InvoiceModel.update(in.getId(), in);
                 }
                 response.sendRedirect("order?action=view&token=" + token);
-            } catch (IOException ex) {
+            } catch (IOException | SQLException ex) {
                 this.error(500, "Something went wrong", request, response);
             }
         } else {

@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.sql.SQLException;
 import model.RoomModel;
 import utility.Helper;
 
@@ -104,7 +105,7 @@ public class Table {
         return Helper.baseUrl() + "/uploads/tables/" + image;
     }
 
-    public Room getRoom() {
+    public Room getRoom() throws SQLException {
         return RoomModel.find(this.roomId);
     }
 }

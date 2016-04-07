@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -165,7 +166,7 @@ public class FoodServlet extends BackendServlet {
             List<Menu> list = MenuModel.findAll();
             request.setAttribute("menus", list);
             this.include("food/add.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
@@ -177,7 +178,7 @@ public class FoodServlet extends BackendServlet {
             List<Food> list = FoodModel.findAll();
             request.setAttribute("foods", list);
             this.include("food/index.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
@@ -195,20 +196,24 @@ public class FoodServlet extends BackendServlet {
             request.setAttribute("menus", list);
             request.setAttribute("food", f);
             this.include("food/view.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }
 
     private void actionDelete(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Food f = FoodModel.find(id);
-        if (f != null && FoodModel.delete(id)) {
-            request.setAttribute("message", "success");
-        } else {
-            request.setAttribute("message", "error");
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Food f = FoodModel.find(id);
+            if (f != null && FoodModel.delete(id)) {
+                request.setAttribute("message", "success");
+            } else {
+                request.setAttribute("message", "error");
+            }
+            this.actionIndex(request, response);
+        } catch (SQLException ex) {
+            this.error(404, "Page Not Found", request, response);
         }
-        this.actionIndex(request, response);
     }
 
     private void actionEdit(HttpServletRequest request, HttpServletResponse response) {
@@ -240,7 +245,7 @@ public class FoodServlet extends BackendServlet {
             request.setAttribute("menus", list);
             request.setAttribute("food", f);
             this.include("food/edit.jsp", request, response);
-        } catch (ServletException | IOException ex) {
+        } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);
         }
     }

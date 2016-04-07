@@ -8,6 +8,7 @@ package servlet.frontend;
 import core.FrontendServlet;
 import entity.Menu;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +35,7 @@ public class MenuServlet extends FrontendServlet {
             this.setTitle(request, menu.getName());
             request.setAttribute("menu", menu);
             this.include("menu/view.jsp", request, response);
-        } catch (NullPointerException | NumberFormatException | ServletException | IOException e) {
+        } catch (NullPointerException | NumberFormatException | ServletException | IOException | SQLException e) {
             this.error(500, "Something went wrong", request, response);
         }
     }
