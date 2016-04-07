@@ -172,7 +172,7 @@
                                 <a class="btn btn-update btn-success" ${(order.status == 0 || order.status == 3) ? "disabled":""} href="order?action=update&status=3&id=${order.id}">Mark as Completed</a>
                             </c:when>
                             <c:otherwise>
-                                <a class="btn btn-update btn-success" ${(order.status == 0 || order.status == 3) ? "disabled":""} href=order?action=update&status=3&id=${order.id}">Mark as Delivered</a>
+                                <a class="btn btn-update btn-success" ${(order.status == 0 || order.status == 3) ? "disabled":""} href="order?action=update&status=3&id=${order.id}">Mark as Delivered</a>
                             </c:otherwise>
                         </c:choose>
                     </div>

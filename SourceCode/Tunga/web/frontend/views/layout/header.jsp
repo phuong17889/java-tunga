@@ -47,7 +47,7 @@
                                                 </c:forEach>
                                         </ul>
                                     </li>
-                                    <li><a href="Book a table">Book a table</a></li>
+                                    <li><a style="cursor: pointer" data-target="#table-reserve-popup" data-toggle="modal">Book a table</a></li>
                                     <li class="with_ul"><a href="about">About Us</a>
                                 </ul>
                             </nav>

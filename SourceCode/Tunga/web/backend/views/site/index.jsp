@@ -117,7 +117,7 @@
             $.ajax({
                 type: "POST",
                 cache: false,
-                url: "admin/index?action=newOrder",
+                url: "index?action=newOrder",
                 data: "id=" + invoice.id,
                 success: function (response) {
                     if ($(".comments").find(".itemdiv.commentdiv").length === 10) {

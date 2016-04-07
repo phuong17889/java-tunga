@@ -795,3 +795,13 @@ hr{
     font-size: 18pt;
     margin-bottom: 10px;
 }
+.modal-body{
+    min-height: 200px;
+}
+.modal-backdrop{
+    background: #000!important;
+    opacity: 0.9!important;
+}
+.modal-dialog{
+    top: 150px!important;
+}
