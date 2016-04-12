@@ -47,8 +47,9 @@
                                                 </c:forEach>
                                         </ul>
                                     </li>
-                                    <li><a style="cursor: pointer" data-target="#table-reserve-popup" data-toggle="modal">Book a table</a></li>
-                                    <li class="with_ul"><a href="about">About Us</a>
+                                    <li><a style="cursor: pointer" data-target="#table
+                                           -reserve-popup" data-toggle="modal">Book a table</a></li>
+                                    <li class="with_ul"><a href="index?action=about">About Us</a>
                                 </ul>
                             </nav>
                             <div class="cart fleft relative">

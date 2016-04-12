@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,8 +31,17 @@ public class IndexServlet extends FrontendServlet {
      * @param response servlet response
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html;charset=UTF-8");
+        String action = request.getParameter("action");
+        if ("about".equals(action)) {
+            this.actionAbout(request, response);
+        } else {
+            this.actionIndex(request, response);
+        }
+    }
+
+    private void actionIndex(HttpServletRequest request, HttpServletResponse response) {
         try {
-            response.setContentType("text/html;charset=UTF-8");
             this.setTitle(request, "Home");
             Date date = new Date();
             DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
@@ -38,6 +49,15 @@ public class IndexServlet extends FrontendServlet {
             this.include("site/index.jsp", request, response);
         } catch (ServletException | IOException | SQLException ex) {
             this.error(500, "Something went wrong", request, response);
+        }
+    }
+
+    private void actionAbout(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            this.setTitle(request, "About US");
+            this.include("site/about.jsp", request, response);
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(IndexServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
