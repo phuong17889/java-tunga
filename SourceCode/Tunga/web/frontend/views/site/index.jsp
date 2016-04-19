@@ -24,7 +24,7 @@
                             </div>
                             <div class="form-group col-sm-3">
                                 <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-clock-o fa-2x"></i></span>
-                                <input maxlength="4" name="time" required type="text" class="col-sm-12 form-control-static time-picker" placeholder="12:00">
+                                <input id="timepicker-1" name="time" required type="text" class="col-sm-12 form-control-static time-picker" placeholder="12:00 AM">
                             </div>
                         </div>
                         <button class="btn btn-success booknow" type="submit"> choose a table now </button>

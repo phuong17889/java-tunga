@@ -16,7 +16,7 @@
                     <span>Menu's name: <label>${food.menu.name}</label></span>
                     <span>Price: <label>${helper:currency(food.price)}</label></span>
                     <hr>
-                    <span class="quantity">Quantity: <input name="quantity" type="number" value="1"> food(s)</span>
+                    <span class="quantity">Quantity: <input name="quantity" type="number" value="1" min="1"> food(s)</span>
                     <button id="${food.id}" type="button" class="btn btn-success btn-add-to-cart col-sm-9">Add to cart</button>
                 </div>
             </div>

@@ -112,4 +112,8 @@ public class Food {
     public Menu getMenu() throws SQLException {
         return MenuModel.find(this.menuId);
     }
+
+    public int getPriceInt() {
+        return (int) this.price;
+    }
 }

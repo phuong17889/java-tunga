@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="form-group col-sm-3">
                                         <span class="form-control-feedback" aria-hidden="true"><i class="fa fa-clock-o fa-2x"></i></span>
-                                        <input maxlength="4" name="time" required type="text" class="col-sm-12 form-control-static time-picker" placeholder="12:00">
+                                        <input id="timepicker-2" name="time" required type="text" class="col-sm-12 form-control-static time-picker" placeholder="12:00 AM">
                                     </div>
                                 </div>
                                 <button class="btn btn-success booknow" type="submit"> choose a table now </button>
@@ -71,7 +71,7 @@
         autoclose: true,
         todayHighlight: true
     });
-    $('.time-picker').timepicker({
+    $('#timepicker-1').timepicker({
         defaultTime: 'current',
         disableFocus: false,
         disableMousewheel: false,
@@ -86,6 +86,29 @@
         showMeridian: true,
         template: 'dropdown',
         appendWidgetTo: 'body',
+        showWidgetOnAddonClick: true,
+        icons: {
+            up: 'glyphicon glyphicon-chevron-up',
+            down: 'glyphicon glyphicon-chevron-down'
+        },
+        maxHours: 24,
+        explicitMode: false
+    });
+    $('#timepicker-2').timepicker({
+        defaultTime: 'current',
+        disableFocus: false,
+        disableMousewheel: false,
+        isOpen: false,
+        minuteStep: 15,
+        modalBackdrop: false,
+        orientation: {x: 'auto', y: 'auto'},
+        secondStep: 15,
+        snapToStep: false,
+        showSeconds: false,
+        showInputs: true,
+        showMeridian: true,
+        template: 'dropdown',
+        appendWidgetTo: '.modal#table-reserve-popup',
         showWidgetOnAddonClick: true,
         icons: {
             up: 'glyphicon glyphicon-chevron-up',

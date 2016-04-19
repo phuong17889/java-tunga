@@ -145,7 +145,11 @@ public class CartServlet extends FrontendServlet {
             }
             response.setContentType("application/json");
             try (PrintWriter out = response.getWriter()) {
-                out.print("{\"isEmpty\": \"" + cart.getCartFood().isEmpty() + "\", \"count\": \"" + cart.getTotalCount() + "\", \"totalText\": \"" + Helper.currency(cart.getTotalPrice()) + "\", \"total\": \"" + cart.getTotalPrice() + "\"}");
+                if (cart.getCartFood() != null) {
+                    out.print("{\"isEmpty\": \"" + (cart.getCartFood().isEmpty() ? 1 : 0) + "\", \"count\": \"" + cart.getTotalCount() + "\", \"totalText\": \"" + Helper.currency(cart.getTotalPrice()) + "\", \"total\": \"" + cart.getTotalPrice() + "\"}");
+                } else {
+                    out.print("{\"isEmpty\": \"1\", \"count\":\"0\"}");
+                }
             } catch (IOException | SQLException ex) {
                 this.error(500, "Something went wrong", request, response);
             }

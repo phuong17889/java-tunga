@@ -20,14 +20,14 @@
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
 
                     <div class="col-sm-9">
-                        <input type="text" id="form-field-1" name="name" value="${requestScope.name}" placeholder="Menu's name" class="col-sm-5" />
+                        <input type="text" id="form-field-1" name="name" value="${requestScope.name}" placeholder="Menu's name" class="col-sm-5" required />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Order </label>
 
                     <div class="col-sm-9">
-                        <input type="number" id="form-field-1" name="order" value="${requestScope.order}" class="col-sm-2" />
+                        <input type="number" id="form-field-1" name="order" min="0" value="${requestScope.order}" class="col-sm-2" required />
                     </div>
                 </div>
 
