@@ -41,6 +41,14 @@
                     ${invoice.phone}
                 </div>
             </div>
+            <c:if test="${invoice.invoiceTable != null}">
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="phone">From time: </label>
+                    <div class="input-group col-sm-7">
+                        ${invoice.invoiceTable.fromTime}
+                    </div>
+                </div>
+            </c:if>
             <div class="form-group">
                 <label class="control-label col-sm-3" for="phone">Order status: </label>
                 <div class="input-group col-sm-7">

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -66,19 +67,22 @@ public class Room {
     }
 
     public List<Table> getFreeTables(Book book) throws ParseException, SQLException {
-        String datetime = book.getDate() + " " + book.getTime();
-        DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
-        Date date = df.parse(datetime);
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US);
+        Date date = df.parse(book.getDate() + " " + book.getTime() + ":00 AM");
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<InvoiceTable> listInvoiceTable = InvoiceTableModel.findAll("WHERE fromTime >= '" + dt.format(date) + "' AND toTime <= '" + dt.format(date) + "'");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR_OF_DAY, 6);
+        System.out.println("" + book.getTime());
+        List<InvoiceTable> listInvoiceTable = InvoiceTableModel.findAll("WHERE fromTime >= '" + dt.format(date) + "' AND toTime <= '" + dt.format(cal.getTime()) + "'");
         if (listInvoiceTable != null) {
             String[] tableId = new String[listInvoiceTable.size()];
             for (int i = 0; i < tableId.length; i++) {
                 tableId[i] = listInvoiceTable.get(i).getTableId() + "";
             }
-            return TableModel.findAll("WHERE roomId = " + this.id + " AND id NOT IN (" + Helper.implode(",", tableId) + ") AND type >= " + book.getNumber() + " AND type <= " + (book.getNumber() + 2));
+            return TableModel.findAll("WHERE roomId = " + this.id + " AND id NOT IN (" + Helper.implode(",", tableId) + ") AND type >= " + book.getNumber() + " AND type <= " + (book.getNumber() + 3));
         } else {
-            return TableModel.findAll("WHERE roomId = " + this.id + " AND type >= " + book.getNumber() + " AND type <= " + (book.getNumber() + 2));
+            return TableModel.findAll("WHERE roomId = " + this.id + " AND type >= " + book.getNumber() + " AND type <= " + (book.getNumber() + 3));
         }
     }
 }

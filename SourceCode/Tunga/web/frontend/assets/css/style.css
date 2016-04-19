@@ -809,3 +809,12 @@ hr{
 .modal-dialog{
     top: 150px!important;
 }
+.no-table{
+    text-align: center;
+    font-size: 19pt;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+h2.wow {
+    text-transform: uppercase;
+}

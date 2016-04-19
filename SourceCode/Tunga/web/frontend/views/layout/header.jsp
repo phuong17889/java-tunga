@@ -16,18 +16,19 @@
         <link rel="stylesheet" href="${themeUrl}/assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="${themeUrl}/assets/css/font-awesome.css">
         <link rel="stylesheet" href="${themeUrl}/assets/css/bootstrap-datepicker3.css">
-        <link rel="stylesheet" href="${themeUrl}/assets/css/timepicker.less">
+        <link rel="stylesheet/less" href="${themeUrl}/assets/css/timepicker.less">
         <link rel="stylesheet" href="${themeUrl}/assets/css/style.css">
         <link rel="stylesheet" href="${themeUrl}/assets/css/slider.css">
         <script src="${themeUrl}/assets/js/jquery.js"></script>
         <script src="${themeUrl}/assets/js/bootstrap.min.js"></script>
+        <script src="${themeUrl}/assets/js/less.min.js"></script>
+        <script src="${themeUrl}/assets/js/bootstrap-timepicker.js"></script>
         <script src="${themeUrl}/assets/js/jquery-migrate-1.1.1.js"></script>
         <script src="${themeUrl}/assets/js/superfish.js"></script>
         <script src="${themeUrl}/assets/js/jquery.easing.1.3.js"></script>
         <script src="${themeUrl}/assets/js/sForm.js"></script>
         <script src="${themeUrl}/assets/js/jquery.carouFredSel-6.2.1-packed.js"></script>
         <script src="${themeUrl}/assets/js/bootstrap-datepicker.js"></script>
-        <script src="${themeUrl}/assets/js/bootstrap-timepicker.js"></script>
         <script src="${themeUrl}/assets/js/tms-0.4.1.js"></script>
     </head>
     <body>
@@ -43,12 +44,13 @@
                                     <li><a href="javascript://">Food menu</a>
                                         <ul>
                                             <c:forEach var="menu" items="${menus}">
-                                                <li><a href="menu?id=${menu.id}"> ${menu.name}</a></li>
-                                                </c:forEach>
+                                                <li>
+                                                    <a href="menu?id=${menu.id}"> ${menu.name}</a>
+                                                </li>
+                                            </c:forEach>
                                         </ul>
                                     </li>
-                                    <li><a style="cursor: pointer" data-target="#table
-                                           -reserve-popup" data-toggle="modal">Book a table</a></li>
+                                    <li><a style="cursor: pointer" data-target="#table-reserve-popup" data-toggle="modal">Book a table</a></li>
                                     <li class="with_ul"><a href="index?action=about">About Us</a>
                                 </ul>
                             </nav>

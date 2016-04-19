@@ -49,6 +49,13 @@
     </div>
 </footer>
 <script>
+    var m_names = new Array("Jan", "Feb", "Mar",
+            "Apr", "May", "Jun", "Jul", "Aug", "Sep",
+            "Oct", "Nov", "Dec");
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth();
+    var curr_year = d.getFullYear();
     $(".number-only").keydown(function (e) {
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
             return;
@@ -60,14 +67,32 @@
     $('.date-picker').datepicker({
         orientation: "bottom left",
         format: "M dd, yyyy",
+        startDate: m_names[curr_month] + " " + curr_date + ", " + curr_year,
         autoclose: true,
         todayHighlight: true
     });
     $('.time-picker').timepicker({
-        minuteStep: 1,
+        defaultTime: 'current',
+        disableFocus: false,
+        disableMousewheel: false,
+        isOpen: false,
+        minuteStep: 15,
+        modalBackdrop: false,
+        orientation: {x: 'auto', y: 'auto'},
+        secondStep: 15,
+        snapToStep: false,
         showSeconds: false,
-        showMeridian: false,
-        defaultTime: false
+        showInputs: true,
+        showMeridian: true,
+        template: 'dropdown',
+        appendWidgetTo: 'body',
+        showWidgetOnAddonClick: true,
+        icons: {
+            up: 'glyphicon glyphicon-chevron-up',
+            down: 'glyphicon glyphicon-chevron-down'
+        },
+        maxHours: 24,
+        explicitMode: false
     });
 </script>
 </body>

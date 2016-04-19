@@ -7,6 +7,7 @@
 <div class="table-reserved">
     <div class="row">
         <div class="col-sm-12">
+            <c:set var="countTable" value="0" scope="session"/>
             <c:forEach var="room" items="${rooms}">
                 <c:if test="${room.getFreeTables(sessionScope.book) != null}">
                     <div class="row">
@@ -20,12 +21,16 @@
                                         <p>${table.description}</p>
                                         <a href="table?action=book&id=${table.id}" class="btn">Book this table</a> </div>
                                 </div>
+                                <c:set var="countTable" value="${countTable + 1}" scope="session"/>
                             </c:forEach>
                             <hr>
                         </div>
                     </div>
                 </c:if>
             </c:forEach>
+            <c:if test="${countTable == 0}">
+                <h1 class="no-table">No tables available</h1>
+            </c:if>
         </div>
     </div>
 </div>
