@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -117,14 +118,17 @@ public class TableServlet extends FrontendServlet {
                     }
                 }
                 if (valid != null) {
-                    DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+                    DateFormat df = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT, Locale.US);
                     Date date = df.parse(book.getDate() + " " + book.getTime());
                     SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    cal.add(Calendar.HOUR_OF_DAY, 6);
                     InvoiceTable reserve = new InvoiceTable();
                     reserve.setPrice(valid.getPrice());
                     reserve.setTableId(valid.getId());
                     reserve.setFromTime(dt.format(date));
-                    reserve.setToTime(dt.format(Helper.calcToTime(book.getDate() + " " + book.getTime())));
+                    reserve.setToTime(dt.format(cal.getTime()));
                     session.setAttribute("reserve", reserve);
                     session.removeAttribute("book");
                     response.sendRedirect("cart?action=view");

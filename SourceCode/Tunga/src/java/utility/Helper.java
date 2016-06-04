@@ -94,18 +94,4 @@ public class Helper {
         String[] newString = string.split("");
         return string.replace(newString[0], newString[0].toUpperCase());
     }
-
-    public static Date calcToTime(String fromTime) {
-        try {
-            DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
-            Date dt = df.parse(fromTime);
-            Calendar c = Calendar.getInstance();
-            c.setTime(dt);
-            c.add(Calendar.HOUR, 6);
-            dt = c.getTime();
-            return dt;
-        } catch (ParseException ex) {
-            return null;
-        }
-    }
 }

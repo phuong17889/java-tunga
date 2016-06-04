@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Name </label>
                     <div class="col-sm-9">
-                        <input type="text" name="name" value="${food.name}" placeholder="Food's name" class="col-sm-5" />
+                        <input type="text" name="name" value="${food.name}" placeholder="Food's name" class="col-sm-5" required />
                     </div>
                 </div>
                 <div class="form-group">
@@ -44,7 +44,7 @@
 
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Price </label>
                     <div class="col-sm-9">
-                        <input type="text" name="price" value="${food.price}" placeholder="Price" class="col-sm-2 mask-input"/>
+                        <input type="text" name="price" value="${food.price}" placeholder="Price" class="col-sm-2 mask-input" required/>
                     </div>
                 </div>
                 <div class="form-group">

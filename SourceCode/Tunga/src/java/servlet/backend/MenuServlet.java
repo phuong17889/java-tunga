@@ -128,6 +128,7 @@ public class MenuServlet extends BackendServlet {
                     request.setAttribute("message", "error");
                 }
             }
+            request.setAttribute("order", 1);
             this.include("menu/add.jsp", request, response);
         } catch (ServletException | IOException | SQLException ex) {
             this.error(404, "Page Not Found", request, response);

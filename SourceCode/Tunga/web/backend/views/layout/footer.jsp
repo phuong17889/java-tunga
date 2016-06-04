@@ -18,7 +18,7 @@
     $(document).on("click", ".btn.btn-back", function () {
         window.history.back();
     });
-    $(".mask-input").inputmask('$ 999,999,999', {
+    $(".mask-input").inputmask('$ 999,999,999.99', {
         numericInput: true
     });
     var ucFirst = function (string) {

@@ -67,14 +67,13 @@ public class Room {
     }
 
     public List<Table> getFreeTables(Book book) throws ParseException, SQLException {
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.US);
-        Date date = df.parse(book.getDate() + " " + book.getTime() + ":00 AM");
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.SHORT, Locale.US);
+        Date date = df.parse(book.getDate() + " " + book.getTime());
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.HOUR_OF_DAY, 6);
-        System.out.println("" + book.getTime());
-        List<InvoiceTable> listInvoiceTable = InvoiceTableModel.findAll("WHERE fromTime >= '" + dt.format(date) + "' AND toTime <= '" + dt.format(cal.getTime()) + "'");
+        List<InvoiceTable> listInvoiceTable = InvoiceTableModel.findAll("WHERE (fromTime <= '" + dt.format(date) + "' AND toTime >= '" + dt.format(date) + "') OR (fromTime <= '" + dt.format(cal.getTime()) + "' AND toTime >= '" + dt.format(cal.getTime()) + "')");
         if (listInvoiceTable != null) {
             String[] tableId = new String[listInvoiceTable.size()];
             for (int i = 0; i < tableId.length; i++) {
