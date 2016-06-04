@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!--begin servlet-->
+    <!--begin index servlet-->
+    <servlet>
+        <servlet-name>FrontendIndexServlet</servlet-name>
+        <servlet-class>servlet.frontend.IndexServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FrontendMenuServlet</servlet-name>
+        <servlet-class>servlet.frontend.MenuServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FrontendFoodServlet</servlet-name>
+        <servlet-class>servlet.frontend.FoodServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FrontendOrderServlet</servlet-name>
+        <servlet-class>servlet.frontend.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FrontendCartServlet</servlet-name>
+        <servlet-class>servlet.frontend.CartServlet</servlet-class>
+    </servlet>
+    <!--end index servlet-->
+    <!--begin admin servlet-->
+    <servlet>
+        <servlet-name>BackendLoginServlet</servlet-name>
+        <servlet-class>servlet.backend.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <servlet-class>servlet.backend.IndexServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendMenuServlet</servlet-name>
+        <servlet-class>servlet.backend.MenuServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendFoodServlet</servlet-name>
+        <servlet-class>servlet.backend.FoodServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendRoomServlet</servlet-name>
+        <servlet-class>servlet.backend.RoomServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendTableServlet</servlet-name>
+        <servlet-class>servlet.backend.TableServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BackendOrderServlet</servlet-name>
+        <servlet-class>servlet.backend.OrderServlet</servlet-class>
+    </servlet>
+    <!--end admin servlet-->
+    <!--end servlet-->
+    <!--begin mapping-->
+    <!--begin mapping index-->
+    <servlet>
+        <servlet-name>FrontendTableServlet</servlet-name>
+        <servlet-class>servlet.frontend.TableServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FrontendIndexServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendMenuServlet</servlet-name>
+        <url-pattern>/menu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendFoodServlet</servlet-name>
+        <url-pattern>/food</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendOrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontendCartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <!--end mapping index-->
+    <!--begin mapping admin-->
+    <servlet-mapping>
+        <servlet-name>BackendLoginServlet</servlet-name>
+        <url-pattern>/admin/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <url-pattern>/admin/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <url-pattern>/admin/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendIndexServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendMenuServlet</servlet-name>
+        <url-pattern>/admin/menu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendFoodServlet</servlet-name>
+        <url-pattern>/admin/food</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendRoomServlet</servlet-name>
+        <url-pattern>/admin/room</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendTableServlet</servlet-name>
+        <url-pattern>/admin/table</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackendOrderServlet</servlet-name>
+        <url-pattern>/admin/order</url-pattern>
+    </servlet-mapping>
+    <!--end mapping admin-->
+    <!--end mapping-->
+    <servlet-mapping>
+        <servlet-name>FrontendTableServlet</servlet-name>
+        <url-pattern>/table</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            300
+        </session-timeout>
+    </session-config>
+</web-app>
